@@ -262,69 +262,7 @@ body{
     background-position:-120px 320px;
   }
 }
-
-/* ========================= */
-/* LIGHTNING */
-/* ========================= */
-
-.lightning{
-  position:fixed;
-  inset:0;
-
-  pointer-events:none;
-
-  z-index:3;
-}
-
-.lightning::after{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  background:
-  radial-gradient(
-    circle at top,
-    rgba(255,255,255,0.15),
-    transparent 60%
-  );
-
-  opacity:0;
-
-  animation:lightning 14s infinite;
-}
-
-@keyframes lightning{
-
-  0%{
-    opacity:0;
-  }
-
-  1%{
-    opacity:.15;
-  }
-
-  2%{
-    opacity:0;
-  }
-
-  30%{
-    opacity:0;
-  }
-
-  31%{
-    opacity:.08;
-  }
-
-  32%{
-    opacity:0;
-  }
-
-  100%{
-    opacity:0;
-  }
-}
-
+  
 /* ========================= */
 /* CUSTOM CURSOR */
 /* ========================= */
