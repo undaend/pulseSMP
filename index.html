@@ -1,14 +1,327 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>Vexsounds</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Everdusk</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#050505;
+      color:white;
+      font-family:Arial, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* BACKGROUND */
+
+    .background{
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at top, rgba(120,0,0,0.4), transparent 40%),
+        linear-gradient(to bottom, #050505, #120000);
+      z-index:-2;
+    }
+
+    .fog{
+      position:fixed;
+      inset:0;
+      background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+      background-size:cover;
+      opacity:0.08;
+      filter:blur(8px);
+      animation:fogMove 30s linear infinite;
+      z-index:-1;
+    }
+
+    @keyframes fogMove{
+      0%{
+        transform:scale(1.1) translateX(0);
+      }
+      50%{
+        transform:scale(1.15) translateX(-20px);
+      }
+      100%{
+        transform:scale(1.1) translateX(0);
+      }
+    }
+
+    /* NAVBAR */
+
+    nav{
+      width:100%;
+      padding:20px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:fixed;
+      top:0;
+      backdrop-filter:blur(8px);
+      background:rgba(0,0,0,0.2);
+      border-bottom:1px solid rgba(255,0,0,0.1);
+    }
+
+    nav h2{
+      color:#8b0000;
+      letter-spacing:3px;
+    }
+
+    nav ul{
+      display:flex;
+      gap:20px;
+      list-style:none;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      color:#00ff88;
+    }
+
+    /* HERO */
+
+    .hero{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    }
+
+    .hero img{
+      width:160px;
+      margin-bottom:20px;
+      filter:drop-shadow(0 0 15px rgba(255,0,0,0.5));
+    }
+
+    .hero h1{
+      font-size:5rem;
+      color:#7a0000;
+      letter-spacing:8px;
+      text-shadow:0 0 20px rgba(255,0,0,0.4);
+    }
+
+    .hero p{
+      margin-top:15px;
+      color:#cfcfcf;
+      font-size:1.2rem;
+      max-width:600px;
+    }
+
+    .buttons{
+      margin-top:35px;
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .btn{
+      padding:14px 28px;
+      border:1px solid #7a0000;
+      background:rgba(122,0,0,0.2);
+      color:white;
+      text-decoration:none;
+      transition:0.3s;
+      border-radius:8px;
+    }
+
+    .btn:hover{
+      background:#00ff88;
+      color:black;
+      box-shadow:0 0 20px #00ff88;
+    }
+
+    /* SECTIONS */
+
+    section{
+      padding:100px 20px;
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .section-title{
+      font-size:2rem;
+      color:#7a0000;
+      margin-bottom:20px;
+    }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,0,0,0.1);
+      padding:25px;
+      border-radius:12px;
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+      border-color:#00ff88;
+      box-shadow:0 0 20px rgba(0,255,136,0.2);
+    }
+
+    .card h3{
+      margin-bottom:10px;
+      color:#00ff88;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px;
+      color:#777;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:3rem;
+      }
+
+      nav{
+        padding:15px 20px;
+      }
+
+      nav ul{
+        gap:10px;
+        font-size:0.9rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="background"></div>
+  <div class="fog"></div>
+
+  <!-- NAVBAR -->
+
+  <nav>
+    <h2>EVERDUSK</h2>
+
+    <ul>
+      <li><a href="#">Lore</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Community</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+
+  <div class="hero">
+
+    <!-- PUT YOUR LOGO HERE -->
+    <!-- Replace logo.png with your image -->
+
+    <img src="logo.png" alt="Everdusk Logo">
+
+    <h1>EVERDUSK</h1>
+
+    <p>
+      A dark Minecraft horror community where forgotten worlds,
+      corrupted lore, and endless night collide.
+    </p>
+
+    <div class="buttons">
+      <a href="#" class="btn">Enter The Realm</a>
+      <a href="#" class="btn">Read The Lore</a>
+    </div>
+
+  </div>
+
+  <!-- PROJECTS -->
+
+  <section>
+
+    <h2 class="section-title">Projects</h2>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <h3>Black Hollow</h3>
+        <p>
+          A cursed Minecraft region abandoned after mysterious disappearances.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>The Watchers</h3>
+        <p>
+          Unknown entities seen in deep forests during server events.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Corrupted Archives</h3>
+        <p>
+          Hidden lore fragments scattered throughout the Everdusk world.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- COMMUNITY -->
+
+  <section>
+
+    <h2 class="section-title">Community</h2>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <h3>Discord</h3>
+        <p>
+          Join the Everdusk community and survive the darkness together.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Events</h3>
+        <p>
+          Horror nights, entity hunts, and immersive roleplay events.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Lore Updates</h3>
+        <p>
+          New story chapters and discoveries released regularly.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    © 2026 Everdusk — The night remembers.
+  </footer>
+
+</body>
 </html>
