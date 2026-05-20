@@ -20,7 +20,7 @@
       overflow-x:hidden;
     }
 
-    /* MAIN BACKGROUND */
+    /* BACKGROUND */
 
     .background{
       position:fixed;
@@ -40,6 +40,7 @@
     }
 
     @keyframes bgZoom{
+
       0%{
         transform:scale(1);
       }
@@ -53,16 +54,18 @@
       }
     }
 
-    /* DARK RED OVERLAY */
+    /* RED OVERLAY */
 
     .red-overlay{
       position:fixed;
       inset:0;
 
       background:
-        radial-gradient(circle at top,
+      radial-gradient(
+        circle at top,
         rgba(255,0,0,0.18),
-        transparent 40%);
+        transparent 45%
+      );
 
       z-index:-4;
     }
@@ -102,137 +105,111 @@
       }
     }
 
-    /* WEATHER SYSTEM */
+    /* WEATHER */
 
     .weather{
       position:fixed;
       inset:0;
-      pointer-events:none;
+
       overflow:hidden;
-      z-index:-2;
+
+      pointer-events:none;
+
+      z-index:1;
     }
 
-    /* RAIN */
+    /* MAIN RAIN */
 
-    .rain::before{
+    .weather::before{
       content:"";
+
       position:absolute;
-      inset:-100px;
+
+      inset:-200px;
 
       background-image:
-        linear-gradient(
-          transparent,
-          rgba(255,255,255,0.7)
-        );
+      linear-gradient(
+        transparent,
+        rgba(255,255,255,0.9)
+      );
 
-      background-size:2px 120px;
+      background-size:3px 140px;
 
-      transform:rotate(15deg) scale(1.5);
+      transform:rotate(15deg) scale(1.8);
 
-      animation:rainFall .22s linear infinite;
+      animation:rain 0.18s linear infinite;
 
-      opacity:.65;
+      opacity:0.75;
     }
 
-    .rain::after{
+    /* RED RAIN */
+
+    .weather::after{
       content:"";
+
       position:absolute;
-      inset:-100px;
+
+      inset:-200px;
 
       background-image:
-        linear-gradient(
-          transparent,
-          rgba(255,0,0,0.35)
-        );
+      linear-gradient(
+        transparent,
+        rgba(255,0,0,0.35)
+      );
 
-      background-size:3px 160px;
+      background-size:4px 180px;
 
-      transform:rotate(14deg) scale(1.8);
+      transform:rotate(14deg) scale(2);
 
-      animation:rainFall .35s linear infinite;
-
-      opacity:.35;
-    }
-
-    @keyframes rainFall{
-
-      from{
-        background-position:0 0;
-      }
-
-      to{
-        background-position:-100px 300px;
-      }
-    }
-
-    /* SNOW */
-
-    .snow{
-      background-image:
-        radial-gradient(white 1px, transparent 1px);
-
-      background-size:25px 25px;
-
-      animation:snowFall 10s linear infinite;
-
-      opacity:0.5;
-    }
-
-    @keyframes snowFall{
-
-      from{
-        background-position:0 0;
-      }
-
-      to{
-        background-position:50px 500px;
-      }
-    }
-
-    /* BLOOD ASH */
-
-    .ash{
-      background-image:
-        radial-gradient(rgba(255,0,0,0.8) 1px, transparent 1px);
-
-      background-size:30px 30px;
-
-      animation:ashFloat 12s linear infinite;
+      animation:rain 0.3s linear infinite;
 
       opacity:0.4;
     }
 
-    @keyframes ashFloat{
+    @keyframes rain{
 
       from{
         background-position:0 0;
       }
 
       to{
-        background-position:100px 600px;
+        background-position:-120px 320px;
       }
+    }
+
+    /* CONTENT ABOVE BACKGROUND */
+
+    nav,
+    .hero,
+    section,
+    footer{
+      position:relative;
+      z-index:10;
     }
 
     /* NAVBAR */
 
     nav{
       width:100%;
+
       padding:20px 40px;
 
       display:flex;
+
       justify-content:space-between;
+
       align-items:center;
 
       position:fixed;
+
       top:0;
 
       backdrop-filter:blur(10px);
 
-      background:rgba(0,0,0,0.2);
+      background:rgba(0,0,0,0.25);
 
-      border-bottom:1px solid rgba(255,0,0,0.15);
-
-      z-index:100;
+      border-bottom:
+      1px solid rgba(255,0,0,0.15);
     }
 
     nav h2{
@@ -250,10 +227,16 @@
       color:white;
       text-decoration:none;
       transition:.3s;
+      position:relative;
     }
 
     nav a:hover{
+
       color:#00ff88;
+
+      text-shadow:
+      0 0 10px #00ff88,
+      0 0 20px #00ff88;
     }
 
     /* HERO */
@@ -262,8 +245,11 @@
       height:100vh;
 
       display:flex;
+
       flex-direction:column;
+
       justify-content:center;
+
       align-items:center;
 
       text-align:center;
@@ -271,10 +257,11 @@
       padding:20px;
     }
 
-    /* YOUR LOGO */
+    /* FOX LOGO */
 
     .hero img{
       width:180px;
+
       margin-bottom:20px;
 
       filter:
@@ -300,6 +287,7 @@
     }
 
     .hero h1{
+
       font-size:5rem;
 
       color:#7a0000;
@@ -312,6 +300,7 @@
     }
 
     .hero p{
+
       margin-top:15px;
 
       color:#cfcfcf;
@@ -326,16 +315,20 @@
     /* BUTTONS */
 
     .buttons{
+
       margin-top:35px;
 
       display:flex;
+
       gap:20px;
 
       flex-wrap:wrap;
+
       justify-content:center;
     }
 
     .btn{
+
       padding:14px 28px;
 
       border:1px solid #7a0000;
@@ -354,8 +347,11 @@
     }
 
     .btn:hover{
+
       background:#00ff88;
+
       color:black;
+
       box-shadow:0 0 20px #00ff88;
     }
 
@@ -374,6 +370,7 @@
     }
 
     .card-grid{
+
       display:grid;
 
       grid-template-columns:
@@ -383,9 +380,11 @@
     }
 
     .card{
+
       background:rgba(255,255,255,0.03);
 
-      border:1px solid rgba(255,0,0,0.1);
+      border:
+      1px solid rgba(255,0,0,0.1);
 
       padding:25px;
 
@@ -397,11 +396,13 @@
     }
 
     .card:hover{
+
       transform:translateY(-5px);
 
       border-color:#00ff88;
 
-      box-shadow:0 0 20px rgba(0,255,136,0.2);
+      box-shadow:
+      0 0 20px rgba(0,255,136,0.2);
     }
 
     .card h3{
@@ -410,13 +411,15 @@
     }
 
     footer{
+
       text-align:center;
 
       padding:40px;
 
       color:#777;
 
-      border-top:1px solid rgba(255,255,255,0.08);
+      border-top:
+      1px solid rgba(255,255,255,0.08);
     }
 
     /* MOBILE */
@@ -454,9 +457,9 @@
 
   <div class="fog"></div>
 
-  <!-- WEATHER -->
+  <!-- RAIN -->
 
-  <div class="weather" id="weather"></div>
+  <div class="weather"></div>
 
   <!-- NAVBAR -->
 
@@ -465,9 +468,34 @@
     <h2>EVERDUSK</h2>
 
     <ul>
-      <li><a href="#">Lore</a></li>
-      <li><a href="#">Projects</a></li>
-      <li><a href="#">Community</a></li>
+
+      <li>
+        <a
+          href="https://discord.gg/ryvdWa7SEG"
+          target="_blank"
+        >
+          Discord
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="https://discord.gg/dseKG8dpWv"
+          target="_blank"
+        >
+          Pulse
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="https://vexsound.base44.app/"
+          target="_blank"
+        >
+          VexSound
+        </a>
+      </li>
+
     </ul>
 
   </nav>
@@ -475,8 +503,6 @@
   <!-- HERO -->
 
   <div class="hero">
-
-    <!-- YOUR FOX LOGO -->
 
     <img
       src="https://cdn.corenexis.com/files/c/8547675720.png"
@@ -492,12 +518,20 @@
 
     <div class="buttons">
 
-      <a href="#" class="btn">
-        Enter The Realm
+      <a
+        href="https://discord.gg/ryvdWa7SEG"
+        class="btn"
+        target="_blank"
+      >
+        Join Discord
       </a>
 
-      <a href="#" class="btn">
-        Read The Lore
+      <a
+        href="https://vexsound.base44.app/"
+        class="btn"
+        target="_blank"
+      >
+        Open VexSound
       </a>
 
     </div>
@@ -508,35 +542,43 @@
 
   <section>
 
-    <h2 class="section-title">Projects</h2>
+    <h2 class="section-title">
+      Projects
+    </h2>
 
     <div class="card-grid">
 
       <div class="card">
+
         <h3>Black Hollow</h3>
 
         <p>
           A cursed Minecraft region abandoned
           after mysterious disappearances.
         </p>
+
       </div>
 
       <div class="card">
+
         <h3>The Watchers</h3>
 
         <p>
           Unknown entities seen in deep forests
           during server events.
         </p>
+
       </div>
 
       <div class="card">
+
         <h3>Corrupted Archives</h3>
 
         <p>
           Hidden lore fragments scattered
           throughout the Everdusk world.
         </p>
+
       </div>
 
     </div>
@@ -547,35 +589,43 @@
 
   <section>
 
-    <h2 class="section-title">Community</h2>
+    <h2 class="section-title">
+      Community
+    </h2>
 
     <div class="card-grid">
 
       <div class="card">
+
         <h3>Discord</h3>
 
         <p>
           Join the Everdusk community and
           survive the darkness together.
         </p>
+
       </div>
 
       <div class="card">
+
         <h3>Events</h3>
 
         <p>
           Horror nights, entity hunts,
           and immersive roleplay events.
         </p>
+
       </div>
 
       <div class="card">
+
         <h3>Lore Updates</h3>
 
         <p>
           New story chapters and discoveries
           released regularly.
         </p>
+
       </div>
 
     </div>
@@ -587,28 +637,6 @@
   <footer>
     © 2026 Everdusk — The night remembers.
   </footer>
-
-  <!-- WEATHER SCRIPT -->
-
-  <script>
-
-    const weather =
-      document.getElementById("weather");
-
-    const effects = [
-      "rain",
-      "snow",
-      "ash"
-    ];
-
-    // random weather every reload/join
-
-    const randomEffect =
-      effects[Math.floor(Math.random() * effects.length)];
-
-    weather.classList.add(randomEffect);
-
-  </script>
 
 </body>
 </html>
