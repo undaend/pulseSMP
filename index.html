@@ -20,7 +20,7 @@
       overflow-x:hidden;
     }
 
-    /* MAIN BLOODMOON BACKGROUND */
+    /* MAIN BACKGROUND */
 
     .background{
       position:fixed;
@@ -106,7 +106,7 @@
       z-index:-8;
     }
 
-    /* MOVING FOG */
+    /* FOG */
 
     .fog{
       position:fixed;
@@ -141,7 +141,7 @@
       }
     }
 
-    /* PARTICLES */
+    /* RED PARTICLES */
 
     .particles{
       position:fixed;
@@ -320,6 +320,49 @@
       0 0 20px #00ff88;
     }
 
+    /* SERVER IPS */
+
+    .server-ips{
+
+      display:flex;
+
+      gap:20px;
+
+      align-items:center;
+
+      background:
+      rgba(0,0,0,0.35);
+
+      padding:10px 18px;
+
+      border-radius:10px;
+
+      border:
+      1px solid rgba(255,0,0,0.15);
+
+      backdrop-filter:blur(10px);
+
+      box-shadow:
+      0 0 20px rgba(255,0,0,0.08);
+    }
+
+    .server-ips span{
+
+      color:#d0d0d0;
+
+      font-size:.9rem;
+
+      letter-spacing:.5px;
+    }
+
+    .server-ips strong{
+
+      color:#00ff88;
+
+      text-shadow:
+      0 0 8px rgba(0,255,136,0.6);
+    }
+
     /* HERO */
 
     .hero{
@@ -423,8 +466,6 @@
       transition:.3s;
 
       backdrop-filter:blur(8px);
-
-      pointer-events:auto;
     }
 
     .btn:hover{
@@ -513,7 +554,23 @@
 
     /* MOBILE */
 
-    @media(max-width:768px){
+    @media(max-width:900px){
+
+      nav{
+
+        flex-direction:column;
+
+        gap:15px;
+      }
+
+      .server-ips{
+
+        flex-direction:column;
+
+        width:100%;
+
+        text-align:center;
+      }
 
       .hero h1{
         font-size:3rem;
@@ -548,7 +605,7 @@
 
   <div class="fog"></div>
 
-  <!-- RED PARTICLES -->
+  <!-- PARTICLES -->
 
   <div class="particles" id="particles"></div>
 
@@ -561,6 +618,24 @@
   <nav>
 
     <h2>EVERDUSK</h2>
+
+    <!-- SERVER IPS -->
+
+    <div class="server-ips">
+
+      <span>
+        Eagler:
+        <strong>mythfall.xyz</strong>
+      </span>
+
+      <span>
+        Java:
+        <strong>java.mythfall.xyz</strong>
+      </span>
+
+    </div>
+
+    <!-- LINKS -->
 
     <ul>
 
@@ -619,6 +694,14 @@
         class="btn"
       >
         Join Discord
+      </a>
+
+      <a
+        href="https://discord.gg/dseKG8dpWv"
+        target="_blank"
+        class="btn"
+      >
+        Pulse
       </a>
 
       <a
