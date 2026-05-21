@@ -1,108 +1,32 @@
-<!-- ======================================== -->
-<!-- ADD THIS RIGHT UNDER <body> -->
-<!-- ======================================== -->
-
-<div id="loading-screen">
-
-  <div class="loading-logo">
-    <img src="https://cdn.corenexis.com/files/c/8547675720.png">
-  </div>
-
-  <h1>ENTERING EVERDUSK</h1>
-
-  <div class="loading-bar">
-
-    <div class="loading-fill"></div>
-
-  </div>
-
-</div>
-
-<!-- ======================================== -->
-<!-- ADD THIS UNDER .background -->
-<!-- ======================================== -->
-
-<div class="red-glow"></div>
-
-<div class="particles"></div>
-
-<!-- ======================================== -->
-<!-- ADD THIS INSIDE HERO UNDER THE <p> -->
-<!-- ======================================== -->
-
-<div class="hero-buttons">
-
-  <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
-    JOIN DISCORD
-  </a>
-
-  <a href="https://discord.gg/dseKG8dpWv" target="_blank">
-    PULSE
-  </a>
-
-  <a href="https://vexsound.base44.app/" target="_blank">
-    VEXSOUND
-  </a>
-
-</div>
-
-<!-- ======================================== -->
-<!-- ADD THIS UNDER LIVE FEED -->
-<!-- ======================================== -->
-
-<section class="stats-section">
-
-  <div class="stat-card">
-
-    <h2>127</h2>
-
-    <p>Players Online</p>
-
-  </div>
-
-  <div class="stat-card">
-
-    <h2>24/7</h2>
-
-    <p>Server Uptime</p>
-
-  </div>
-
-  <div class="stat-card">
-
-    <h2>4</h2>
-
-    <p>Corrupted Realms</p>
-
-  </div>
-
-  <div class="stat-card">
-
-    <h2>∞</h2>
-
-    <p>Darkness</p>
-
-  </div>
-
-</section>
-
-<!-- ======================================== -->
-<!-- ADD THIS ABOVE FOOTER -->
-<!-- ======================================== -->
-
-<section class="quote-banner">
-
-  <h2>
-    “The night does not forgive.”
-  </h2>
-
-</section>
-
-<!-- ======================================== -->
-<!-- ADD THIS CSS AT BOTTOM OF YOUR STYLE -->
-<!-- ======================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everdusk</title>
 
 <style>
+
+/* ========================= */
+/* RESET */
+/* ========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#050505;
+  color:white;
+  font-family:Arial,sans-serif;
+  overflow-x:hidden;
+}
 
 /* ========================= */
 /* LOADING SCREEN */
@@ -124,13 +48,12 @@
   align-items:center;
 
   animation:fadeOut 1.5s ease forwards;
-
   animation-delay:3s;
 }
 
 .loading-logo img{
 
-  width:160px;
+  width:170px;
 
   filter:
   drop-shadow(0 0 25px red);
@@ -149,7 +72,7 @@
 
 .loading-bar{
 
-  width:300px;
+  width:320px;
   height:10px;
 
   background:#111;
@@ -187,8 +110,45 @@
   }
 }
 
+@keyframes pulse{
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.05);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+
 /* ========================= */
-/* EXTRA RED GLOW */
+/* BACKGROUND */
+/* ========================= */
+
+.background{
+  position:fixed;
+  inset:0;
+
+  background:
+  linear-gradient(
+    rgba(0,0,0,0.72),
+    rgba(0,0,0,0.88)
+  ),
+  url('https://cdn.corenexis.com/files/c/3236352720.png');
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  z-index:-10;
+}
+
+/* ========================= */
+/* RED GLOW */
 /* ========================= */
 
 .red-glow{
@@ -226,7 +186,7 @@
 }
 
 /* ========================= */
-/* EXTRA PARTICLES */
+/* PARTICLES */
 /* ========================= */
 
 .particles{
@@ -275,6 +235,184 @@
 }
 
 /* ========================= */
+/* RAIN */
+/* ========================= */
+
+.rain{
+  position:fixed;
+  inset:0;
+
+  pointer-events:none;
+
+  z-index:5;
+
+  overflow:hidden;
+}
+
+.rain::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:100%;
+  height:100%;
+
+  background-image:
+  repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.08) 0px,
+    rgba(255,255,255,0.08) 2px,
+    transparent 10px,
+    transparent 22px
+  );
+
+  background-size:2px 120px;
+
+  animation:rainMove .5s linear infinite;
+
+  opacity:.18;
+}
+
+@keyframes rainMove{
+
+  from{
+    transform:translateY(-120px);
+  }
+
+  to{
+    transform:translateY(120px);
+  }
+}
+
+/* ========================= */
+/* TOPBAR */
+/* ========================= */
+
+.topbar{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+
+  padding:20px 40px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background:rgba(0,0,0,0.35);
+
+  backdrop-filter:blur(10px);
+
+  border-bottom:
+  1px solid rgba(255,255,255,0.06);
+
+  z-index:999;
+}
+
+.logo-text{
+
+  color:#a40000;
+
+  font-size:2rem;
+
+  letter-spacing:5px;
+}
+
+.server-box{
+
+  background:
+  rgba(255,255,255,0.03);
+
+  padding:12px 20px;
+
+  border-radius:12px;
+
+  border:
+  1px solid rgba(255,255,255,0.05);
+}
+
+.server-box strong{
+  color:#00ff88;
+}
+
+.links{
+
+  display:flex;
+
+  gap:20px;
+}
+
+.links a{
+
+  color:white;
+
+  text-decoration:none;
+
+  transition:.3s;
+}
+
+.links a:hover{
+
+  color:#00ff88;
+}
+
+/* ========================= */
+/* HERO */
+/* ========================= */
+
+.hero{
+
+  min-height:100vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+
+  padding:120px 20px 80px;
+}
+
+.hero img{
+
+  width:180px;
+
+  margin-bottom:20px;
+
+  filter:
+  drop-shadow(0 0 20px rgba(255,0,0,0.35));
+}
+
+.hero h1{
+
+  font-size:5rem;
+
+  letter-spacing:12px;
+
+  color:white;
+}
+
+.hero p{
+
+  margin-top:15px;
+
+  max-width:700px;
+
+  color:#b0b0b0;
+
+  line-height:1.8;
+
+  font-size:1.1rem;
+}
+
+/* ========================= */
 /* HERO BUTTONS */
 /* ========================= */
 
@@ -319,6 +457,59 @@
 
   box-shadow:
   0 0 30px rgba(255,0,0,0.45);
+}
+
+/* ========================= */
+/* NEWS */
+/* ========================= */
+
+.news-wrapper{
+
+  width:100%;
+
+  overflow:hidden;
+
+  background:
+  rgba(120,0,0,0.2);
+
+  border-top:
+  1px solid rgba(255,0,0,0.15);
+
+  border-bottom:
+  1px solid rgba(255,0,0,0.15);
+
+  padding:14px 0;
+}
+
+.news-track{
+
+  display:flex;
+
+  gap:80px;
+
+  white-space:nowrap;
+
+  animation:scrollNews 28s linear infinite;
+}
+
+.news-track span{
+
+  color:#ff4a4a;
+
+  letter-spacing:1px;
+
+  font-size:.95rem;
+}
+
+@keyframes scrollNews{
+
+  from{
+    transform:translateX(100%);
+  }
+
+  to{
+    transform:translateX(-100%);
+  }
 }
 
 /* ========================= */
@@ -382,6 +573,112 @@
 }
 
 /* ========================= */
+/* VIDEO */
+/* ========================= */
+
+.media-section{
+
+  width:100%;
+
+  padding:80px 40px;
+}
+
+.media-header{
+
+  text-align:center;
+
+  margin-bottom:40px;
+}
+
+.media-header h2{
+
+  color:#ff3b3b;
+
+  font-size:2rem;
+
+  letter-spacing:4px;
+
+  margin-bottom:12px;
+}
+
+.media-header p{
+  color:#aaa;
+}
+
+.video-player{
+
+  width:100%;
+
+  max-width:1200px;
+
+  height:700px;
+
+  margin:auto;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  background:black;
+
+  box-shadow:
+  0 0 40px rgba(255,0,0,0.12);
+}
+
+.video-player iframe{
+
+  width:100%;
+  height:100%;
+}
+
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
+
+.unmute-wrap,
+.youtube-button-wrap{
+
+  display:flex;
+  justify-content:center;
+
+  margin-top:20px;
+}
+
+#unmuteBtn,
+.youtube-btn{
+
+  padding:14px 30px;
+
+  background:#8b0000;
+
+  border:none;
+
+  color:white;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-size:1rem;
+
+  text-decoration:none;
+
+  transition:.3s;
+}
+
+#unmuteBtn:hover,
+.youtube-btn:hover{
+
+  background:red;
+
+  box-shadow:
+  0 0 20px rgba(255,0,0,0.5);
+}
+
+/* ========================= */
 /* QUOTE */
 /* ========================= */
 
@@ -406,4 +703,270 @@
   0 0 25px rgba(255,0,0,0.25);
 }
 
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+
+footer{
+
+  padding:40px;
+
+  text-align:center;
+
+  color:#777;
+
+  border-top:
+  1px solid rgba(255,255,255,0.06);
+}
+
 </style>
+</head>
+
+<body>
+
+<!-- LOADING -->
+
+<div id="loading-screen">
+
+  <div class="loading-logo">
+    <img src="https://cdn.corenexis.com/files/c/8547675720.png">
+  </div>
+
+  <h1>ENTERING EVERDUSK</h1>
+
+  <div class="loading-bar">
+    <div class="loading-fill"></div>
+  </div>
+
+</div>
+
+<div class="background"></div>
+
+<div class="red-glow"></div>
+
+<div class="particles"></div>
+
+<div class="rain"></div>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+  <div class="logo-text">
+    EVERDUSK
+  </div>
+
+  <div class="server-box">
+
+    Eagler:
+    <strong>mythfall.xyz</strong>
+
+    &nbsp;&nbsp;&nbsp;
+
+    Java:
+    <strong>java.mythfall.xyz</strong>
+
+  </div>
+
+  <div class="links">
+
+    <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
+      Discord
+    </a>
+
+    <a href="https://discord.gg/dseKG8dpWv" target="_blank">
+      Pulse
+    </a>
+
+    <a href="https://vexsound.base44.app/" target="_blank">
+      VexSound
+    </a>
+
+    <a href="https://www.youtube.com/@Everduskofficial" target="_blank">
+      YouTube
+    </a>
+
+  </div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+  <img
+    src="https://cdn.corenexis.com/files/c/8547675720.png"
+    alt="Everdusk Logo"
+  >
+
+  <h1>EVERDUSK</h1>
+
+  <p>
+    A cinematic Minecraft horror universe where
+    forgotten realms, corrupted entities, and endless
+    night consume everything.
+  </p>
+
+  <div class="hero-buttons">
+
+    <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
+      JOIN DISCORD
+    </a>
+
+    <a href="https://discord.gg/dseKG8dpWv" target="_blank">
+      PULSE
+    </a>
+
+    <a href="https://vexsound.base44.app/" target="_blank">
+      VEXSOUND
+    </a>
+
+  </div>
+
+</div>
+
+<!-- NEWS -->
+
+<div class="news-wrapper">
+
+  <div class="news-track">
+
+    <span>⚠ New corrupted zones discovered beneath Mythfall...</span>
+
+    <span>⚠ Pulse systems are now active...</span>
+
+    <span>⚠ Unknown entities detected in the Everdusk forests...</span>
+
+    <span>⚠ Java Server: java.mythfall.xyz</span>
+
+    <span>⚠ Eagler Server: mythfall.xyz</span>
+
+    <span>⚠ VexSound integration online...</span>
+
+  </div>
+
+</div>
+
+<!-- STATS -->
+
+<section class="stats-section">
+
+  <div class="stat-card">
+
+    <h2>127</h2>
+
+    <p>Players Online</p>
+
+  </div>
+
+  <div class="stat-card">
+
+    <h2>24/7</h2>
+
+    <p>Server Uptime</p>
+
+  </div>
+
+  <div class="stat-card">
+
+    <h2>4</h2>
+
+    <p>Corrupted Realms</p>
+
+  </div>
+
+  <div class="stat-card">
+
+    <h2>∞</h2>
+
+    <p>Darkness</p>
+
+  </div>
+
+</section>
+
+<!-- VIDEO -->
+
+<section class="media-section">
+
+  <div class="media-header">
+
+    <h2>EVERDUSK BROADCAST</h2>
+
+    <p>
+      Latest transmissions from the Everdusk network.
+    </p>
+
+  </div>
+
+  <div class="video-player">
+
+    <iframe
+      id="ytplayer"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&rel=0"
+      title="Everdusk Video"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+  <div class="unmute-wrap">
+
+    <button id="unmuteBtn">
+      ENABLE AUDIO
+    </button>
+
+  </div>
+
+  <div class="youtube-button-wrap">
+
+    <a
+      href="https://www.youtube.com/@Everduskofficial"
+      target="_blank"
+      class="youtube-btn"
+    >
+      Visit The Everdusk Channel
+    </a>
+
+  </div>
+
+</section>
+
+<!-- QUOTE -->
+
+<section class="quote-banner">
+
+  <h2>
+    “The night does not forgive.”
+  </h2>
+
+</section>
+
+<footer>
+  © 2026 Everdusk — The night remembers.
+</footer>
+
+<script>
+
+const player =
+document.getElementById("ytplayer");
+
+const button =
+document.getElementById("unmuteBtn");
+
+button.onclick = () => {
+
+  player.src =
+  "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&rel=0";
+
+  button.innerHTML =
+  "AUDIO ENABLED";
+
+};
+
+</script>
+
+</body>
+</html>
