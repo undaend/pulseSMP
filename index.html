@@ -14,181 +14,10 @@
 }
 
 body{
-  overflow:hidden;
   background:black;
-  font-family:Arial,sans-serif;
   color:white;
-  cursor:none;
-}
-
-/* ========================= */
-/* DARK BACKGROUND */
-/* ========================= */
-
-.background{
-  position:fixed;
-  inset:0;
-
-  background:
-  radial-gradient(
-    circle,
-    rgba(20,20,20,0.4),
-    rgba(0,0,0,1)
-  );
-
-  z-index:-10;
-}
-
-/* ========================= */
-/* RAIN */
-/* ========================= */
-
-.rain{
-  position:fixed;
-  inset:0;
-
+  font-family:Arial,sans-serif;
   overflow:hidden;
-
-  pointer-events:none;
-
-  z-index:5;
-}
-
-.rain::before{
-  content:"";
-
-  position:absolute;
-
-  inset:-200px;
-
-  background-image:
-  linear-gradient(
-    transparent,
-    rgba(255,255,255,0.55)
-  );
-
-  background-size:3px 140px;
-
-  transform:rotate(15deg) scale(1.7);
-
-  animation:rain .18s linear infinite;
-
-  opacity:.55;
-}
-
-.rain::after{
-  content:"";
-
-  position:absolute;
-
-  inset:-200px;
-
-  background-image:
-  linear-gradient(
-    transparent,
-    rgba(180,180,180,0.15)
-  );
-
-  background-size:4px 180px;
-
-  transform:rotate(14deg) scale(2);
-
-  animation:rain .3s linear infinite;
-
-  opacity:.15;
-}
-
-@keyframes rain{
-
-  from{
-    background-position:0 0;
-  }
-
-  to{
-    background-position:-120px 320px;
-  }
-}
-
-/* ========================= */
-/* THUNDER FLASH */
-/* ========================= */
-
-.thunder{
-  position:fixed;
-  inset:0;
-
-  pointer-events:none;
-
-  z-index:9;
-}
-
-.thunder::after{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  background:
-  rgba(255,255,255,0.04);
-
-  opacity:0;
-
-  animation:flash 12s infinite;
-}
-
-@keyframes flash{
-
-  0%{
-    opacity:0;
-  }
-
-  1%{
-    opacity:.08;
-  }
-
-  2%{
-    opacity:0;
-  }
-
-  18%{
-    opacity:0;
-  }
-
-  19%{
-    opacity:.04;
-  }
-
-  20%{
-    opacity:0;
-  }
-
-  100%{
-    opacity:0;
-  }
-}
-
-/* ========================= */
-/* CURSOR */
-/* ========================= */
-
-.cursor{
-  width:18px;
-  height:18px;
-
-  border:2px solid white;
-
-  border-radius:50%;
-
-  position:fixed;
-
-  pointer-events:none;
-
-  z-index:99999;
-
-  transform:translate(-50%,-50%);
-
-  box-shadow:
-  0 0 15px rgba(255,255,255,0.4);
 }
 
 /* ========================= */
@@ -206,38 +35,14 @@ body{
 
   text-align:center;
 
-  position:relative;
-
-  z-index:100;
+  padding:20px;
 }
 
 /* LOGO */
 
 .hero img{
   width:180px;
-
   margin-bottom:20px;
-
-  filter:
-  brightness(.9)
-  drop-shadow(0 0 20px rgba(255,255,255,0.15));
-
-  animation:float 5s ease-in-out infinite;
-}
-
-@keyframes float{
-
-  0%{
-    transform:translateY(0px);
-  }
-
-  50%{
-    transform:translateY(-8px);
-  }
-
-  100%{
-    transform:translateY(0px);
-  }
 }
 
 /* TITLE */
@@ -247,43 +52,7 @@ body{
 
   letter-spacing:12px;
 
-  color:#ddd;
-
-  text-shadow:
-  0 0 10px rgba(255,255,255,0.15);
-
-  animation:flicker 5s infinite;
-}
-
-@keyframes flicker{
-
-  0%{
-    opacity:1;
-  }
-
-  2%{
-    opacity:.7;
-  }
-
-  4%{
-    opacity:1;
-  }
-
-  50%{
-    opacity:.95;
-  }
-
-  52%{
-    opacity:.6;
-  }
-
-  54%{
-    opacity:1;
-  }
-
-  100%{
-    opacity:1;
-  }
+  color:white;
 }
 
 /* TEXT */
@@ -317,10 +86,9 @@ body{
 .btn{
   padding:14px 28px;
 
-  border:1px solid rgba(255,255,255,0.12);
+  border:1px solid #333;
 
-  background:
-  rgba(255,255,255,0.04);
+  background:#111;
 
   color:white;
 
@@ -329,16 +97,11 @@ body{
   border-radius:8px;
 
   transition:.3s;
-
-  backdrop-filter:blur(6px);
 }
 
 .btn:hover{
   background:white;
   color:black;
-
-  box-shadow:
-  0 0 20px rgba(255,255,255,0.25);
 }
 
 /* ========================= */
@@ -364,16 +127,6 @@ body{
 </head>
 
 <body>
-
-<div class="background"></div>
-
-<div class="rain"></div>
-
-<div class="thunder"></div>
-
-<div class="cursor"></div>
-
-<!-- HERO -->
 
 <div class="hero">
 
@@ -417,26 +170,6 @@ body{
   </div>
 
 </div>
-
-<script>
-
-/* CUSTOM CURSOR */
-
-const cursor =
-document.querySelector(".cursor");
-
-document.addEventListener(
-"mousemove",
-e => {
-
-  cursor.style.left =
-  e.clientX + "px";
-
-  cursor.style.top =
-  e.clientY + "px";
-});
-
-</script>
 
 </body>
 </html>
