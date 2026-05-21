@@ -30,8 +30,8 @@ body{
 
   background:
   linear-gradient(
-    rgba(0,0,0,0.55),
-    rgba(0,0,0,0.75)
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.8)
   ),
   url('https://cdn.corenexis.com/files/c/3236352720.png');
 
@@ -43,7 +43,7 @@ body{
 }
 
 /* ========================= */
-/* CLEAN RAIN */
+/* SOFT RAIN */
 /* ========================= */
 
 .rain{
@@ -66,111 +66,30 @@ body{
   height:100%;
 
   background-image:
-  linear-gradient(
-    transparent,
-    rgba(255,255,255,0.18)
+  repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.10) 0px,
+    rgba(255,255,255,0.10) 2px,
+    transparent 8px,
+    transparent 18px
   );
 
-  background-size:2px 80px;
+  background-size:2px 120px;
 
-  animation:rain .35s linear infinite;
+  animation:rainMove .45s linear infinite;
 
-  opacity:.35;
+  opacity:.18;
 }
 
-@keyframes rain{
+@keyframes rainMove{
 
   from{
-    background-position:0 0;
+    transform:translateY(-120px);
   }
 
   to{
-    background-position:-20px 120px;
+    transform:translateY(120px);
   }
-}
-
-/* ========================= */
-/* HERO */
-/* ========================= */
-
-.hero{
-  height:100vh;
-
-  display:flex;
-  flex-direction:column;
-
-  justify-content:center;
-  align-items:center;
-
-  text-align:center;
-
-  padding:20px;
-}
-
-/* LOGO */
-
-.hero img{
-  width:180px;
-  margin-bottom:20px;
-}
-
-/* TITLE */
-
-.hero h1{
-  font-size:5rem;
-
-  letter-spacing:12px;
-
-  color:white;
-}
-
-/* TEXT */
-
-.hero p{
-  margin-top:15px;
-
-  max-width:650px;
-
-  color:#999;
-
-  font-size:1.1rem;
-
-  line-height:1.7;
-}
-
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
-
-.buttons{
-  margin-top:35px;
-
-  display:flex;
-  gap:20px;
-
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.btn{
-  padding:14px 28px;
-
-  border:1px solid #333;
-
-  background:#111;
-
-  color:white;
-
-  text-decoration:none;
-
-  border-radius:8px;
-
-  transition:.3s;
-}
-
-.btn:hover{
-  background:white;
-  color:black;
 }
 
 /* ========================= */
@@ -228,10 +147,61 @@ body{
 .links a{
   color:white;
   text-decoration:none;
+
+  transition:.3s;
 }
 
 .links a:hover{
   color:#00ff88;
+}
+
+/* ========================= */
+/* HERO */
+/* ========================= */
+
+.hero{
+  height:100vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+
+  padding:20px;
+}
+
+/* LOGO */
+
+.hero img{
+  width:180px;
+  margin-bottom:20px;
+}
+
+/* TITLE */
+
+.hero h1{
+  font-size:5rem;
+
+  letter-spacing:12px;
+
+  color:white;
+}
+
+/* TEXT */
+
+.hero p{
+  margin-top:15px;
+
+  max-width:650px;
+
+  color:#999;
+
+  font-size:1.1rem;
+
+  line-height:1.7;
 }
 
 /* ========================= */
@@ -246,10 +216,6 @@ body{
 
   .hero img{
     width:130px;
-  }
-
-  .buttons{
-    flex-direction:column;
   }
 
   .topbar{
@@ -328,34 +294,6 @@ body{
   <p>
     The signal never ends.
   </p>
-
-  <div class="buttons">
-
-    <a
-      href="https://discord.gg/ryvdWa7SEG"
-      target="_blank"
-      class="btn"
-    >
-      Discord
-    </a>
-
-    <a
-      href="https://discord.gg/dseKG8dpWv"
-      target="_blank"
-      class="btn"
-    >
-      Pulse
-    </a>
-
-    <a
-      href="https://vexsound.base44.app/"
-      target="_blank"
-      class="btn"
-    >
-      VexSound
-    </a>
-
-  </div>
 
 </div>
 
