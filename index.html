@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Everdusk</title>
 
 <style>
@@ -17,8 +17,7 @@ body{
   background:black;
   color:white;
   font-family:Arial,sans-serif;
-  overflow-x:hidden;
-  cursor:none;
+  overflow:hidden;
 }
 
 /* ========================= */
@@ -31,8 +30,8 @@ body{
 
   background:
   linear-gradient(
-    rgba(0,0,0,0.65),
-    rgba(0,0,0,0.85)
+    rgba(0,0,0,0.55),
+    rgba(0,0,0,0.75)
   ),
   url('https://cdn.corenexis.com/files/c/3236352720.png');
 
@@ -40,117 +39,14 @@ body{
   background-position:center;
   background-repeat:no-repeat;
 
-  animation:bgMove 25s ease-in-out infinite;
-
   z-index:-10;
-
-  will-change:transform;
-}
-
-@keyframes bgMove{
-
-  0%{
-    transform:scale(1);
-  }
-
-  50%{
-    transform:scale(1.08);
-  }
-
-  100%{
-    transform:scale(1);
-  }
 }
 
 /* ========================= */
-/* BLOOD MOON */
+/* CLEAN RAIN */
 /* ========================= */
 
-.bloodmoon{
-  position:fixed;
-
-  width:400px;
-  height:400px;
-
-  top:-100px;
-  right:-80px;
-
-  border-radius:50%;
-
-  background:
-  radial-gradient(
-    circle,
-    rgba(255,50,50,0.95),
-    rgba(120,0,0,0.85)
-  );
-
-  box-shadow:
-  0 0 80px rgba(255,0,0,0.6),
-  0 0 200px rgba(255,0,0,0.4);
-
-  animation:moonPulse 8s ease-in-out infinite;
-
-  z-index:-9;
-}
-
-@keyframes moonPulse{
-
-  0%{
-    transform:scale(1);
-    opacity:.8;
-  }
-
-  50%{
-    transform:scale(1.05);
-    opacity:1;
-  }
-
-  100%{
-    transform:scale(1);
-    opacity:.8;
-  }
-}
-
-/* ========================= */
-/* RED GLOW */
-/* ========================= */
-
-.red-glow{
-  position:fixed;
-  inset:0;
-
-  background:
-  radial-gradient(
-    circle at top,
-    rgba(255,0,0,0.18),
-    transparent 45%
-  );
-
-  z-index:-8;
-
-  animation:redPulse 6s ease-in-out infinite;
-}
-
-@keyframes redPulse{
-
-  0%{
-    opacity:.5;
-  }
-
-  50%{
-    opacity:1;
-  }
-
-  100%{
-    opacity:.5;
-  }
-}
-
-/* ========================= */
-/* PARTICLES */
-/* ========================= */
-
-.particles{
+.rain{
   position:fixed;
   inset:0;
 
@@ -158,98 +54,28 @@ body{
 
   pointer-events:none;
 
-  z-index:-6;
+  z-index:5;
 }
 
-.particles span{
-  position:absolute;
-
-  width:2px;
-  height:2px;
-
-  background:red;
-
-  border-radius:50%;
-
-  opacity:.4;
-
-  animation:floatUp linear infinite;
-}
-
-@keyframes floatUp{
-
-  from{
-    transform:translateY(100vh);
-    opacity:0;
-  }
-
-  20%{
-    opacity:.5;
-  }
-
-  to{
-    transform:translateY(-100px);
-    opacity:0;
-  }
-}
-
-/* ========================= */
-/* RAIN */
-/* ========================= */
-
-.weather{
-  position:fixed;
-  inset:0;
-
-  overflow:hidden;
-
-  pointer-events:none;
-
-  z-index:2;
-}
-
-.weather::before{
+.rain::before{
   content:"";
 
   position:absolute;
 
-  inset:-200px;
+  width:100%;
+  height:100%;
 
   background-image:
   linear-gradient(
     transparent,
-    rgba(255,255,255,0.9)
+    rgba(255,255,255,0.18)
   );
 
-  background-size:3px 140px;
+  background-size:2px 80px;
 
-  transform:rotate(15deg) scale(1.8);
+  animation:rain .35s linear infinite;
 
-  animation:rain 0.18s linear infinite;
-
-  opacity:0.75;
-}
-
-.weather::after{
-  content:"";
-
-  position:absolute;
-
-  inset:-200px;
-
-  background-image:
-  linear-gradient(
-    transparent,
-    rgba(255,0,0,0.4)
-  );
-
-  background-size:4px 180px;
-
-  transform:rotate(14deg) scale(2);
-
-  animation:rain 0.3s linear infinite;
-
-  opacity:0.4;
+  opacity:.35;
 }
 
 @keyframes rain{
@@ -259,127 +85,8 @@ body{
   }
 
   to{
-    background-position:-120px 320px;
+    background-position:-20px 120px;
   }
-}
-
-/* ========================= */
-/* CUSTOM CURSOR */
-/* ========================= */
-
-.cursor{
-  width:18px;
-  height:18px;
-
-  border:
-  2px solid red;
-
-  border-radius:50%;
-
-  position:fixed;
-
-  pointer-events:none;
-
-  z-index:99999;
-
-  transform:
-  translate(-50%,-50%);
-
-  box-shadow:
-  0 0 20px red;
-}
-
-/* ========================= */
-/* NAVBAR */
-/* ========================= */
-
-nav{
-  width:100%;
-
-  padding:20px 40px;
-
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  position:fixed;
-  top:0;
-
-  z-index:100;
-
-  backdrop-filter:blur(12px);
-
-  background:
-  rgba(0,0,0,0.3);
-
-  border-bottom:
-  1px solid rgba(255,0,0,0.15);
-}
-
-nav h2{
-  color:#8b0000;
-  letter-spacing:3px;
-
-  text-shadow:
-  0 0 10px red;
-}
-
-nav ul{
-  display:flex;
-  gap:20px;
-  list-style:none;
-}
-
-nav a{
-  color:white;
-  text-decoration:none;
-
-  transition:.3s;
-}
-
-nav a:hover{
-  color:#00ff88;
-
-  text-shadow:
-  0 0 10px #00ff88,
-  0 0 20px #00ff88;
-}
-
-/* ========================= */
-/* SERVER IPS */
-/* ========================= */
-
-.server-ips{
-
-  display:flex;
-
-  gap:20px;
-
-  align-items:center;
-
-  background:
-  rgba(0,0,0,0.35);
-
-  padding:10px 18px;
-
-  border-radius:10px;
-
-  border:
-  1px solid rgba(255,0,0,0.15);
-
-  backdrop-filter:blur(10px);
-}
-
-.server-ips span{
-  color:#d0d0d0;
-  font-size:.9rem;
-}
-
-.server-ips strong{
-  color:#00ff88;
-
-  text-shadow:
-  0 0 8px rgba(0,255,136,0.6);
 }
 
 /* ========================= */
@@ -397,123 +104,36 @@ nav a:hover{
 
   text-align:center;
 
-  position:relative;
-
-  z-index:100;
+  padding:20px;
 }
 
 /* LOGO */
 
 .hero img{
-  width:200px;
-
+  width:180px;
   margin-bottom:20px;
-
-  filter:
-  drop-shadow(0 0 20px rgba(255,0,0,0.8))
-  drop-shadow(0 0 40px rgba(255,0,0,0.5));
-
-  animation:logoFloat 5s ease-in-out infinite;
 }
 
-@keyframes logoFloat{
-
-  0%{
-    transform:translateY(0px);
-  }
-
-  50%{
-    transform:translateY(-10px);
-  }
-
-  100%{
-    transform:translateY(0px);
-  }
-}
-
-/* GLOWING PARTICLES */
-
-.hero::before{
-  content:"";
-
-  position:absolute;
-
-  width:300px;
-  height:300px;
-
-  background:
-  radial-gradient(
-    circle,
-    rgba(255,0,0,0.25),
-    transparent 70%
-  );
-
-  filter:blur(30px);
-
-  animation:pulseGlow 4s infinite;
-
-  z-index:-1;
-}
-
-@keyframes pulseGlow{
-
-  0%{
-    transform:scale(1);
-    opacity:.5;
-  }
-
-  50%{
-    transform:scale(1.2);
-    opacity:1;
-  }
-
-  100%{
-    transform:scale(1);
-    opacity:.5;
-  }
-}
+/* TITLE */
 
 .hero h1{
-
   font-size:5rem;
 
-  letter-spacing:10px;
+  letter-spacing:12px;
 
-  color:#7a0000;
-
-  animation:neonPulse 3s infinite;
+  color:white;
 }
 
-@keyframes neonPulse{
-
-  0%{
-    text-shadow:
-    0 0 10px red,
-    0 0 20px red;
-  }
-
-  50%{
-    text-shadow:
-    0 0 20px red,
-    0 0 40px red,
-    0 0 80px red;
-  }
-
-  100%{
-    text-shadow:
-    0 0 10px red,
-    0 0 20px red;
-  }
-}
+/* TEXT */
 
 .hero p{
   margin-top:15px;
 
-  color:#d0d0d0;
-
-  font-size:1.2rem;
-
   max-width:650px;
+
+  color:#999;
+
+  font-size:1.1rem;
 
   line-height:1.7;
 }
@@ -533,145 +153,108 @@ nav a:hover{
 }
 
 .btn{
+  padding:14px 28px;
 
-  padding:14px 30px;
+  border:1px solid #333;
 
-  border:
-  1px solid rgba(255,0,0,0.4);
-
-  background:
-  rgba(255,0,0,0.12);
+  background:#111;
 
   color:white;
 
   text-decoration:none;
 
-  border-radius:10px;
+  border-radius:8px;
 
   transition:.3s;
-
-  backdrop-filter:blur(8px);
 }
 
 .btn:hover{
-
-  background:#00ff88;
-
+  background:white;
   color:black;
-
-  box-shadow:
-  0 0 20px #00ff88;
-
-  transform:
-  translateY(-3px);
 }
 
 /* ========================= */
-/* MUSIC BUTTON */
+/* TOP BAR */
 /* ========================= */
 
-.music-btn{
+.topbar{
   position:fixed;
 
-  bottom:20px;
-  right:20px;
+  top:0;
+  left:0;
 
-  padding:12px 20px;
+  width:100%;
 
-  background:
-  rgba(0,0,0,0.4);
+  padding:20px 40px;
 
-  border:
-  1px solid red;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 
-  color:white;
-
-  border-radius:10px;
-
-  cursor:pointer;
-
-  z-index:999;
+  background:rgba(0,0,0,0.35);
 
   backdrop-filter:blur(10px);
 
-  transition:.3s;
+  z-index:100;
 }
 
-.music-btn:hover{
+.logo-text{
+  color:#a40000;
 
-  background:red;
+  font-size:2rem;
 
-  box-shadow:
-  0 0 20px red;
+  letter-spacing:5px;
 }
 
-/* ========================= */
-/* LOADING SCREEN */
-/* ========================= */
+.server-box{
+  background:rgba(0,0,0,0.45);
 
-.loading-screen{
-  position:fixed;
-  inset:0;
+  padding:12px 20px;
 
-  background:black;
+  border-radius:12px;
 
+  color:white;
+}
+
+.server-box strong{
+  color:#00ff88;
+}
+
+.links{
   display:flex;
-  flex-direction:column;
-
-  justify-content:center;
-  align-items:center;
-
-  z-index:999999;
-
-  animation:fadeOut 3s forwards;
-
-  animation-delay:2s;
+  gap:20px;
 }
 
-.loading-screen h1{
-  font-size:5rem;
-  color:red;
-
-  text-shadow:
-  0 0 20px red;
+.links a{
+  color:white;
+  text-decoration:none;
 }
 
-.loading-screen p{
-  margin-top:20px;
-  color:#aaa;
-}
-
-@keyframes fadeOut{
-
-  to{
-    opacity:0;
-    visibility:hidden;
-  }
+.links a:hover{
+  color:#00ff88;
 }
 
 /* ========================= */
 /* MOBILE */
 /* ========================= */
 
-@media(max-width:900px){
-
-  nav{
-    flex-direction:column;
-    gap:15px;
-  }
-
-  .server-ips{
-    flex-direction:column;
-    width:100%;
-    text-align:center;
-  }
+@media(max-width:768px){
 
   .hero h1{
     font-size:3rem;
   }
 
   .hero img{
-    width:150px;
+    width:130px;
+  }
+
+  .buttons{
+    flex-direction:column;
+  }
+
+  .topbar{
+    flex-direction:column;
+    gap:15px;
   }
 }
 
@@ -682,82 +265,54 @@ nav a:hover{
 
 <div class="background"></div>
 
-<div class="bloodmoon"></div>
+<div class="rain"></div>
 
-<div class="red-glow"></div>
+<!-- TOPBAR -->
 
-<div class="fog"></div>
+<div class="topbar">
 
-<div class="particles" id="particles"></div>
+  <div class="logo-text">
+    EVERDUSK
+  </div>
 
-<div class="weather"></div>
+  <div class="server-box">
 
-<div class="lightning"></div>
+    Eagler:
+    <strong>mythfall.xyz</strong>
 
-<div class="cursor"></div>
+    &nbsp;&nbsp;&nbsp;
 
-<!-- LOADING -->
-
-<div class="loading-screen">
-
-  <h1>EVERDUSK</h1>
-
-  <p>Entering the darkness...</p>
-
-</div>
-
-<!-- NAVBAR -->
-
-<nav>
-
-  <h2>EVERDUSK</h2>
-
-  <div class="server-ips">
-
-    <span>
-      Eagler:
-      <strong>mythfall.xyz</strong>
-    </span>
-
-    <span>
-      Java:
-      <strong>java.mythfall.xyz</strong>
-    </span>
+    Java:
+    <strong>java.mythfall.xyz</strong>
 
   </div>
 
-  <ul>
+  <div class="links">
 
-    <li>
-      <a
-        href="https://discord.gg/ryvdWa7SEG"
-        target="_blank"
-      >
-        Discord
-      </a>
-    </li>
+    <a
+      href="https://discord.gg/ryvdWa7SEG"
+      target="_blank"
+    >
+      Discord
+    </a>
 
-    <li>
-      <a
-        href="https://discord.gg/dseKG8dpWv"
-        target="_blank"
-      >
-        Pulse
-      </a>
-    </li>
+    <a
+      href="https://discord.gg/dseKG8dpWv"
+      target="_blank"
+    >
+      Pulse
+    </a>
 
-    <li>
-      <a
-        href="https://vexsound.base44.app/"
-        target="_blank"
-      >
-        VexSound
-      </a>
-    </li>
+    <a
+      href="https://vexsound.base44.app/"
+      target="_blank"
+    >
+      VexSound
+    </a>
 
-  </ul>
+  </div>
 
-</nav>
+</div>
 
 <!-- HERO -->
 
@@ -771,8 +326,7 @@ nav a:hover{
   <h1>EVERDUSK</h1>
 
   <p>
-    A dark Minecraft horror community where forgotten worlds,
-    corrupted lore, and endless night collide.
+    The signal never ends.
   </p>
 
   <div class="buttons">
@@ -782,7 +336,7 @@ nav a:hover{
       target="_blank"
       class="btn"
     >
-      Join Discord
+      Discord
     </a>
 
     <a
@@ -798,131 +352,12 @@ nav a:hover{
       target="_blank"
       class="btn"
     >
-      Open VexSound
+      VexSound
     </a>
 
   </div>
 
 </div>
-
-<!-- MUSIC -->
-
-<audio
-  id="bgMusic"
-  loop
->
-  <source
-    src="YOUR-MUSIC.mp3"
-    type="audio/mpeg"
-  >
-</audio>
-
-<button
-  id="musicToggle"
-  class="music-btn"
->
-  Music
-</button>
-
-<!-- SCRIPTS -->
-
-<script>
-
-/* PARTICLES */
-
-const particles =
-document.getElementById("particles");
-
-for(let i = 0; i < 60; i++){
-
-  const particle =
-  document.createElement("span");
-
-  particle.style.left =
-  Math.random() * 100 + "vw";
-
-  particle.style.animationDuration =
-  5 + Math.random() * 10 + "s";
-
-  particle.style.animationDelay =
-  Math.random() * 5 + "s";
-
-  particle.style.opacity =
-  Math.random();
-
-  particle.style.width =
-  particle.style.height =
-  Math.random() * 3 + 1 + "px";
-
-  particles.appendChild(particle);
-}
-
-/* CUSTOM CURSOR */
-
-const cursor =
-document.querySelector(".cursor");
-
-document.addEventListener(
-"mousemove",
-e => {
-
-  cursor.style.left =
-  e.clientX + "px";
-
-  cursor.style.top =
-  e.clientY + "px";
-});
-
-/* MUSIC */
-
-const music =
-document.getElementById("bgMusic");
-
-const musicBtn =
-document.getElementById("musicToggle");
-
-let playing = false;
-
-musicBtn.onclick = () => {
-
-  if(!playing){
-
-    music.play();
-
-    musicBtn.innerText =
-    "Pause Music";
-
-  }else{
-
-    music.pause();
-
-    musicBtn.innerText =
-    "Music";
-  }
-
-  playing = !playing;
-};
-
-/* PARALLAX */
-
-document.addEventListener(
-"mousemove",
-e => {
-
-  const bg =
-  document.querySelector(".background");
-
-  let x =
-  (e.clientX / window.innerWidth - .5) * 10;
-
-  let y =
-  (e.clientY / window.innerHeight - .5) * 10;
-
-  bg.style.transform =
-  `scale(1.08) translate(${x}px, ${y}px)`;
-});
-
-</script>
 
 </body>
 </html>
