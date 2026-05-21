@@ -30,73 +30,92 @@ body{
 }
 
 /* ========================= */
-/* LOADING SCREEN */
+/* CUSTOM SCROLLBAR */
 /* ========================= */
 
-#loading-screen{
+::-webkit-scrollbar{
+  width:12px;
+}
+
+::-webkit-scrollbar-track{
+  background:black;
+}
+
+::-webkit-scrollbar-thumb{
+  background:red;
+  border-radius:20px;
+}
+
+/* ========================= */
+/* INTRO CUTSCENE */
+/* ========================= */
+
+#intro-cutscene{
   position:fixed;
   inset:0;
   background:black;
-  z-index:999999;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  animation:fadeOut 1.5s ease forwards;
-  animation-delay:3s;
-}
-
-.loading-logo img{
-  width:170px;
-  filter:drop-shadow(0 0 25px red);
-  animation:pulse 2s infinite;
-}
-
-#loading-screen h1{
-  margin-top:20px;
-  letter-spacing:6px;
-  color:#ff2a2a;
-}
-
-.loading-bar{
-  width:320px;
-  height:10px;
-  background:#111;
-  border-radius:20px;
-  margin-top:30px;
+  z-index:9999999;
   overflow:hidden;
 }
 
-.loading-fill{
-  width:0%;
+#introVideo{
+  width:100%;
   height:100%;
+  object-fit:cover;
+}
+
+.intro-overlay{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.55);
+
+  animation:introFade 3s infinite alternate;
+}
+
+@keyframes introFade{
+  from{
+    background:rgba(0,0,0,.45);
+  }
+
+  to{
+    background:rgba(0,0,0,.65);
+  }
+}
+
+.intro-overlay h1{
+  font-size:6rem;
+  letter-spacing:14px;
+  text-shadow:0 0 40px red;
+}
+
+.intro-overlay p{
+  margin-top:20px;
+  color:#ccc;
+  letter-spacing:5px;
+}
+
+#enterBtn{
+  margin-top:40px;
+  padding:18px 45px;
   background:red;
-  animation:loadBar 3s linear forwards;
+  border:none;
+  border-radius:16px;
+  color:white;
+  font-size:1rem;
+  cursor:pointer;
+  transition:.3s;
 }
 
-@keyframes loadBar{
-  to{
-    width:100%;
-  }
-}
-
-@keyframes fadeOut{
-  to{
-    opacity:0;
-    visibility:hidden;
-  }
-}
-
-@keyframes pulse{
-  0%{
-    transform:scale(1);
-  }
-  50%{
-    transform:scale(1.05);
-  }
-  100%{
-    transform:scale(1);
-  }
+#enterBtn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 40px red;
 }
 
 /* ========================= */
@@ -109,8 +128,8 @@ body{
 
   background:
   linear-gradient(
-    rgba(0,0,0,0.72),
-    rgba(0,0,0,0.88)
+    rgba(0,0,0,.72),
+    rgba(0,0,0,.88)
   ),
   url('https://cdn.corenexis.com/files/c/3236352720.png');
 
@@ -119,84 +138,47 @@ body{
   background-repeat:no-repeat;
 
   z-index:-10;
-
-  transition:transform .2s linear;
 }
 
 /* ========================= */
-/* RED GLOW */
+/* BLOOD MOON */
 /* ========================= */
 
-.red-glow{
+.bloodmoon{
   position:fixed;
-  inset:0;
+
+  top:120px;
+  right:100px;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
 
   background:
   radial-gradient(
-    circle at center,
-    rgba(255,0,0,0.12),
-    transparent 60%
+    circle,
+    #ff2a2a 0%,
+    #8b0000 60%,
+    rgba(255,0,0,.08) 100%
   );
 
-  pointer-events:none;
+  box-shadow:
+  0 0 80px rgba(255,0,0,.45),
+  0 0 140px rgba(255,0,0,.2);
 
-  z-index:-8;
+  z-index:-5;
 
-  animation:redPulse 8s infinite;
+  animation:moonPulse 8s infinite alternate;
 }
 
-@keyframes redPulse{
-  0%{
-    opacity:.4;
-  }
-
-  50%{
-    opacity:.7;
-  }
-
-  100%{
-    opacity:.4;
-  }
-}
-
-/* ========================= */
-/* PARTICLES */
-/* ========================= */
-
-.particles{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:2;
-}
-
-.particles::before{
-  content:"";
-  position:absolute;
-  width:200%;
-  height:200%;
-
-  background-image:
-  radial-gradient(
-    rgba(255,0,0,0.4) 1px,
-    transparent 1px
-  );
-
-  background-size:80px 80px;
-
-  animation:particlesMove 35s linear infinite;
-
-  opacity:.3;
-}
-
-@keyframes particlesMove{
+@keyframes moonPulse{
   from{
-    transform:translateY(0);
+    transform:scale(1);
   }
 
   to{
-    transform:translateY(-400px);
+    transform:scale(1.08);
   }
 }
 
@@ -214,6 +196,7 @@ body{
 
 .rain::before{
   content:"";
+
   position:absolute;
   width:100%;
   height:100%;
@@ -221,8 +204,8 @@ body{
   background-image:
   repeating-linear-gradient(
     to bottom,
-    rgba(255,255,255,0.08) 0px,
-    rgba(255,255,255,0.08) 2px,
+    rgba(255,255,255,.08) 0px,
+    rgba(255,255,255,.08) 2px,
     transparent 10px,
     transparent 22px
   );
@@ -231,7 +214,7 @@ body{
 
   animation:rainMove .5s linear infinite;
 
-  opacity:.18;
+  opacity:.15;
 }
 
 @keyframes rainMove{
@@ -245,14 +228,85 @@ body{
 }
 
 /* ========================= */
-/* VHS */
+/* LIGHTNING */
+/* ========================= */
+
+.lightning{
+  position:fixed;
+  inset:0;
+  background:white;
+  opacity:0;
+  z-index:99999;
+  pointer-events:none;
+  animation:lightningFlash 14s infinite;
+}
+
+@keyframes lightningFlash{
+
+  0%,94%,100%{
+    opacity:0;
+  }
+
+  95%{
+    opacity:.14;
+  }
+
+  96%{
+    opacity:0;
+  }
+
+  97%{
+    opacity:.08;
+  }
+
+  98%{
+    opacity:0;
+  }
+}
+
+/* ========================= */
+/* FOG */
+/* ========================= */
+
+.floating-fog{
+  position:fixed;
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at 20% 50%,
+    rgba(255,0,0,.04),
+    transparent 30%
+  ),
+  radial-gradient(
+    circle at 80% 70%,
+    rgba(255,255,255,.03),
+    transparent 30%
+  );
+
+  animation:fogMove 18s infinite alternate;
+
+  z-index:-4;
+}
+
+@keyframes fogMove{
+
+  from{
+    transform:translateX(-20px);
+  }
+
+  to{
+    transform:translateX(20px);
+  }
+}
+
+/* ========================= */
+/* SCANLINES */
 /* ========================= */
 
 .scanlines{
   position:fixed;
   inset:0;
-
-  pointer-events:none;
 
   background:
   repeating-linear-gradient(
@@ -263,9 +317,9 @@ body{
     transparent 4px
   );
 
-  z-index:9999;
+  pointer-events:none;
 
-  opacity:.2;
+  z-index:999;
 }
 
 /* ========================= */
@@ -273,8 +327,8 @@ body{
 /* ========================= */
 
 .cursor-glow{
-  width:20px;
-  height:20px;
+  width:18px;
+  height:18px;
 
   border-radius:50%;
 
@@ -290,8 +344,7 @@ body{
   0 0 20px red,
   0 0 40px red;
 
-  transform:
-  translate(-50%,-50%);
+  transform:translate(-50%,-50%);
 }
 
 /* ========================= */
@@ -300,8 +353,10 @@ body{
 
 .topbar{
   position:fixed;
+
   top:0;
   left:0;
+
   width:100%;
 
   padding:20px 40px;
@@ -310,32 +365,32 @@ body{
   justify-content:space-between;
   align-items:center;
 
-  background:rgba(0,0,0,0.35);
+  background:rgba(0,0,0,.35);
 
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(12px);
 
   border-bottom:
-  1px solid rgba(255,255,255,0.06);
+  1px solid rgba(255,255,255,.06);
 
-  z-index:999;
+  z-index:9999;
 }
 
 .logo-text{
-  color:#a40000;
+  color:#ff2a2a;
   font-size:2rem;
   letter-spacing:5px;
 }
 
 .server-box{
   background:
-  rgba(255,255,255,0.03);
+  rgba(255,255,255,.03);
 
   padding:12px 20px;
 
-  border-radius:12px;
+  border-radius:14px;
 
   border:
-  1px solid rgba(255,255,255,0.05);
+  1px solid rgba(255,255,255,.05);
 }
 
 .server-box strong{
@@ -354,7 +409,7 @@ body{
 }
 
 .links a:hover{
-  color:#00ff88;
+  color:#ff2a2a;
 }
 
 /* ========================= */
@@ -376,28 +431,42 @@ body{
 }
 
 .hero img{
-  width:180px;
-  margin-bottom:20px;
+  width:190px;
 
   filter:
-  drop-shadow(0 0 20px rgba(255,0,0,0.35));
+  drop-shadow(0 0 25px rgba(255,0,0,.45));
+
+  animation:logoFloat 5s infinite ease-in-out;
+}
+
+@keyframes logoFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
 }
 
 .hero h1{
   font-size:5rem;
+
   letter-spacing:12px;
-  color:white;
+
+  margin-top:20px;
 
   text-shadow:
-  0 0 25px rgba(255,0,0,0.4);
+  0 0 30px rgba(255,0,0,.45);
 
   animation:glitch 6s infinite;
 }
 
 @keyframes glitch{
+
   0%,100%{
-    text-shadow:
-    0 0 20px red;
+    transform:translateX(0);
   }
 
   20%{
@@ -414,229 +483,301 @@ body{
 }
 
 .hero p{
-  margin-top:15px;
-  max-width:700px;
-  color:#b0b0b0;
-  line-height:1.8;
-  font-size:1.1rem;
-}
+  margin-top:20px;
 
-/* ========================= */
-/* HERO BUTTONS */
-/* ========================= */
+  max-width:700px;
+
+  color:#bbb;
+
+  line-height:1.8;
+}
 
 .hero-buttons{
   display:flex;
   gap:20px;
-  margin-top:35px;
   flex-wrap:wrap;
-  justify-content:center;
+
+  margin-top:40px;
 }
 
 .hero-buttons a{
-  padding:15px 30px;
+  padding:15px 35px;
 
   background:
-  rgba(120,0,0,0.35);
+  rgba(120,0,0,.35);
 
   border:
-  1px solid rgba(255,0,0,0.3);
+  1px solid rgba(255,0,0,.25);
 
   border-radius:14px;
 
   color:white;
+
   text-decoration:none;
 
   transition:.35s;
 }
 
 .hero-buttons a:hover{
+  transform:
+  translateY(-5px);
+
   background:red;
 
-  transform:
-  translateY(-8px) scale(1.03);
-
   box-shadow:
-  0 0 30px rgba(255,0,0,0.45);
-}
-
-/* ========================= */
-/* QUICK STATS */
-/* ========================= */
-
-.quick-stats{
-  display:flex;
-  gap:20px;
-  margin-top:40px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.quick-box{
-  background:
-  rgba(0,0,0,0.4);
-
-  border:
-  1px solid rgba(255,0,0,0.2);
-
-  border-radius:16px;
-
-  padding:20px 30px;
-
-  min-width:200px;
-
-  transition:.35s;
-}
-
-.quick-box:hover{
-  transform:
-  translateY(-6px);
-
-  border-color:red;
-
-  box-shadow:
-  0 0 25px rgba(255,0,0,0.25);
-}
-
-.quick-box h3{
-  color:#ff3b3b;
-  margin-bottom:10px;
-  letter-spacing:2px;
-}
-
-.quick-box span{
-  color:#ccc;
-}
-
-/* ========================= */
-/* NEWS */
-/* ========================= */
-
-.news-wrapper{
-  width:100%;
-  overflow:hidden;
-
-  background:
-  rgba(120,0,0,0.2);
-
-  border-top:
-  1px solid rgba(255,0,0,0.15);
-
-  border-bottom:
-  1px solid rgba(255,0,0,0.15);
-
-  padding:14px 0;
-}
-
-.news-track{
-  display:flex;
-  gap:80px;
-  white-space:nowrap;
-  animation:scrollNews 28s linear infinite;
-}
-
-.news-track span{
-  color:#ff4a4a;
-  letter-spacing:1px;
-  font-size:.95rem;
-}
-
-@keyframes scrollNews{
-  from{
-    transform:translateX(100%);
-  }
-
-  to{
-    transform:translateX(-100%);
-  }
+  0 0 30px rgba(255,0,0,.4);
 }
 
 /* ========================= */
 /* TERMINAL */
 /* ========================= */
 
-.terminal-section{
+.terminal-window{
+  width:90%;
   max-width:1100px;
-  margin:auto;
-  padding:80px 40px;
-}
+  height:420px;
 
-.terminal-header{
-  background:#111;
-  padding:15px;
-  color:red;
-  border:1px solid rgba(255,0,0,.3);
-  border-bottom:none;
-  letter-spacing:2px;
-}
+  margin:60px auto;
 
-.terminal-body{
-  background:black;
-  padding:30px;
-  color:#00ff88;
-  font-family:monospace;
-  line-height:2;
-  border:1px solid rgba(255,0,0,.3);
-  min-height:250px;
-}
-
-/* ========================= */
-/* STATS */
-/* ========================= */
-
-.stats-section{
-  display:grid;
-
-  grid-template-columns:
-  repeat(auto-fit,minmax(220px,1fr));
-
-  gap:25px;
-
-  padding:80px 40px;
-}
-
-.stat-card{
   background:
-  rgba(0,0,0,0.45);
+  rgba(0,0,0,.65);
 
   border:
-  1px solid rgba(255,255,255,0.08);
+  1px solid rgba(255,0,0,.2);
 
-  border-radius:18px;
+  border-radius:20px;
 
-  text-align:center;
+  overflow:hidden;
 
-  padding:40px 20px;
-
-  transition:.35s;
-}
-
-.stat-card:hover{
-  transform:
-  translateY(-8px);
-
-  border-color:red;
+  backdrop-filter:blur(10px);
 
   box-shadow:
-  0 0 35px rgba(255,0,0,0.25);
+  0 0 40px rgba(255,0,0,.12);
 }
 
-.stat-card h2{
-  font-size:3rem;
-  color:#ff2a2a;
-  margin-bottom:12px;
+.terminal-top{
+  height:60px;
+
+  background:
+  rgba(255,0,0,.08);
+
+  border-bottom:
+  1px solid rgba(255,0,0,.15);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:0 25px;
+
+  color:#ff3b3b;
 }
 
-.stat-card p{
-  color:#aaa;
+.terminal-dots{
+  display:flex;
+  gap:10px;
+}
+
+.terminal-dots div{
+  width:12px;
+  height:12px;
+
+  border-radius:50%;
+
+  background:red;
+}
+
+.terminal-scroll{
+  height:calc(100% - 60px);
+
+  overflow-y:auto;
+
+  padding:30px;
+
+  color:#00ff88;
+
+  font-family:monospace;
+
+  line-height:2;
+}
+
+/* ========================= */
+/* QUOTE */
+/* ========================= */
+
+.quote-rotator{
+  position:fixed;
+
+  top:100px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  background:
+  rgba(0,0,0,.45);
+
+  border:
+  1px solid rgba(255,0,0,.15);
+
+  border-radius:20px;
+
+  padding:14px 28px;
+
+  z-index:999;
+
+  color:#ddd;
+}
+
+/* ========================= */
+/* RADAR */
+/* ========================= */
+
+.radar{
+  position:fixed;
+
+  bottom:30px;
+  left:30px;
+
+  width:160px;
+  height:160px;
+
+  border-radius:50%;
+
+  border:
+  2px solid rgba(255,0,0,.25);
+
+  overflow:hidden;
+
+  z-index:999;
+}
+
+.radar::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+  conic-gradient(
+    transparent,
+    rgba(255,0,0,.5)
+  );
+
+  animation:radarSpin 3s linear infinite;
+}
+
+@keyframes radarSpin{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* ========================= */
+/* XP */
+/* ========================= */
+
+.xp-bar-wrap{
+  position:fixed;
+
+  bottom:30px;
+  right:30px;
+
+  width:280px;
+
+  z-index:999;
+}
+
+.xp-text{
+  margin-bottom:10px;
+
+  color:#ff3b3b;
+
   letter-spacing:2px;
 }
 
+.xp-bar{
+  height:14px;
+
+  background:#111;
+
+  border-radius:20px;
+
+  overflow:hidden;
+}
+
+.xp-fill{
+  width:72%;
+  height:100%;
+
+  background:
+  linear-gradient(
+    to right,
+    darkred,
+    red
+  );
+
+  animation:xpPulse 3s infinite;
+}
+
+@keyframes xpPulse{
+  0%,100%{
+    opacity:1;
+  }
+
+  50%{
+    opacity:.7;
+  }
+}
+
 /* ========================= */
-/* FEATURES */
+/* POPUP */
 /* ========================= */
 
-.feature-grid{
+.hacking-popup{
+  position:fixed;
+
+  bottom:30px;
+  left:220px;
+
+  width:320px;
+
+  background:black;
+
+  border:
+  1px solid red;
+
+  z-index:9999;
+
+  box-shadow:
+  0 0 30px rgba(255,0,0,.3);
+}
+
+.popup-top{
+  background:red;
+  padding:10px;
+  font-weight:bold;
+}
+
+.popup-body{
+  padding:20px;
+
+  color:#00ff88;
+
+  font-family:monospace;
+
+  line-height:1.8;
+}
+
+/* ========================= */
+/* LORE BOOKS */
+/* ========================= */
+
+.lore-books{
   display:grid;
 
   grid-template-columns:
@@ -644,268 +785,132 @@ body{
 
   gap:30px;
 
-  padding:80px 40px;
+  padding:100px 40px;
 }
 
-.feature-card{
+.lore-book{
   background:
-  rgba(0,0,0,0.45);
+  rgba(0,0,0,.55);
 
   border:
-  1px solid rgba(255,255,255,0.08);
+  1px solid rgba(255,0,0,.15);
 
-  border-radius:18px;
+  border-radius:20px;
 
   padding:30px;
 
   transition:.35s;
 }
 
-.feature-card:hover{
+.lore-book:hover{
   transform:
   translateY(-8px);
 
-  border-color:red;
-
   box-shadow:
-  0 0 35px rgba(255,0,0,0.2);
+  0 0 35px rgba(255,0,0,.2);
 }
 
-.feature-card h2{
+.lore-book h2{
   color:#ff3b3b;
   margin-bottom:15px;
 }
 
-.feature-card p{
-  color:#cfcfcf;
+.lore-book p{
+  color:#ccc;
   line-height:1.7;
 }
 
 /* ========================= */
-/* TIMELINE */
+/* GALLERY */
 /* ========================= */
 
-.timeline-section{
+.gallery{
   padding:100px 40px;
-  text-align:center;
 }
 
-.timeline-section h2{
+.gallery h2{
+  text-align:center;
   color:#ff3b3b;
-  margin-bottom:50px;
-}
-
-.timeline{
-  display:flex;
-  flex-direction:column;
-  gap:30px;
-  max-width:800px;
-  margin:auto;
-}
-
-.timeline-item{
-  background:
-  rgba(0,0,0,.45);
-
-  border-left:
-  4px solid red;
-
-  padding:25px;
-
-  text-align:left;
-
-  border-radius:10px;
-}
-
-.timeline-item span{
-  color:red;
-  font-size:1.2rem;
-  font-weight:bold;
-}
-
-.timeline-item p{
-  margin-top:10px;
-  color:#ccc;
-}
-
-/* ========================= */
-/* VIDEO */
-/* ========================= */
-
-.media-section{
-  width:100%;
-  padding:80px 40px;
-}
-
-.media-header{
-  text-align:center;
   margin-bottom:40px;
 }
 
-.media-header h2{
-  color:#ff3b3b;
-  font-size:2rem;
-  margin-bottom:12px;
+.gallery-grid{
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(320px,1fr));
+
+  gap:25px;
 }
 
-.media-header p{
-  color:#aaa;
-}
-
-.video-player{
+.gallery-grid img{
   width:100%;
-  max-width:1200px;
-  height:700px;
-  margin:auto;
 
-  border-radius:20px;
-  overflow:hidden;
+  border-radius:18px;
 
-  border:
-  1px solid rgba(255,255,255,0.08);
+  transition:.35s;
+}
 
-  background:black;
+.gallery-grid img:hover{
+  transform:scale(1.03);
 
   box-shadow:
-  0 0 40px rgba(255,0,0,0.12);
-}
-
-.video-player iframe{
-  width:100%;
-  height:100%;
+  0 0 40px rgba(255,0,0,.25);
 }
 
 /* ========================= */
-/* BUTTONS */
+/* STAFF */
 /* ========================= */
 
-.unmute-wrap,
-.youtube-button-wrap{
-  display:flex;
-  justify-content:center;
-  margin-top:20px;
-}
-
-#unmuteBtn,
-.youtube-btn{
-  padding:14px 30px;
-  background:#8b0000;
-  border:none;
-  color:white;
-  border-radius:12px;
-  cursor:pointer;
-  font-size:1rem;
-  text-decoration:none;
-  transition:.3s;
-}
-
-#unmuteBtn:hover,
-.youtube-btn:hover{
-  background:red;
-
-  box-shadow:
-  0 0 20px rgba(255,0,0,0.5);
-}
-
-/* ========================= */
-/* ACTIVITY */
-/* ========================= */
-
-.activity-feed{
+.staff-section{
   padding:100px 40px;
+}
+
+.staff-section h2{
   text-align:center;
-}
-
-.activity-feed h2{
   color:#ff3b3b;
-  margin-bottom:30px;
+  margin-bottom:40px;
 }
 
-.feed-box{
-  max-width:800px;
-  margin:auto;
+.staff-grid{
+  display:grid;
 
-  display:flex;
-  flex-direction:column;
-  gap:20px;
+  grid-template-columns:
+  repeat(auto-fit,minmax(260px,1fr));
+
+  gap:25px;
 }
 
-.feed-item{
+.staff-card{
   background:
   rgba(0,0,0,.45);
 
-  padding:20px;
-
   border:
-  1px solid rgba(255,0,0,.2);
+  1px solid rgba(255,0,0,.12);
 
-  border-radius:14px;
+  border-radius:18px;
 
-  transition:.3s;
+  padding:35px;
+
+  text-align:center;
+
+  transition:.35s;
 }
 
-.feed-item:hover{
-  transform:
-  translateX(8px);
-
-  border-color:red;
+.staff-card:hover{
+  transform:translateY(-8px);
 
   box-shadow:
-  0 0 25px rgba(255,0,0,.2);
+  0 0 35px rgba(255,0,0,.18);
 }
 
-/* ========================= */
-/* COUNTDOWN */
-/* ========================= */
-
-.countdown-section{
-  text-align:center;
-  padding:100px 20px;
-}
-
-.countdown-section h2{
+.staff-card h3{
   color:#ff3b3b;
-  margin-bottom:20px;
-  font-size:2rem;
+  margin-bottom:10px;
 }
 
-#countdown{
-  font-size:2.5rem;
-  color:white;
-
-  text-shadow:
-  0 0 20px rgba(255,0,0,0.35);
-}
-
-/* ========================= */
-/* QUOTE */
-/* ========================= */
-
-.quote-banner{
-  padding:100px 20px;
-  text-align:center;
-}
-
-.quote-banner h2{
-  font-size:2.2rem;
-  color:#cfcfcf;
-  font-style:italic;
-
-  text-shadow:
-  0 0 25px rgba(255,0,0,0.25);
-}
-
-/* ========================= */
-/* FOOTER */
-/* ========================= */
-
-footer{
-  padding:40px;
-  text-align:center;
-  color:#777;
-
-  border-top:
-  1px solid rgba(255,255,255,0.06);
+.staff-card p{
+  color:#ccc;
 }
 
 /* ========================= */
@@ -927,8 +932,10 @@ footer{
     width:140px;
   }
 
-  .video-player{
-    height:320px;
+  .bloodmoon{
+    width:120px;
+    height:120px;
+    right:20px;
   }
 
 }
@@ -938,35 +945,91 @@ footer{
 
 <body>
 
-<div id="loading-screen">
+<!-- INTRO -->
 
-  <div class="loading-logo">
-    <img src="https://cdn.corenexis.com/files/c/8547675720.png">
-  </div>
+<div id="intro-cutscene">
 
-  <h1>ENTERING EVERDUSK</h1>
+  <video autoplay muted loop playsinline id="introVideo">
 
-  <div class="loading-bar">
-    <div class="loading-fill"></div>
+    <source src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p" type="video/mp4">
+
+  </video>
+
+  <div class="intro-overlay">
+
+    <h1>EVERDUSK</h1>
+
+    <p>ENTER THE DARKNESS</p>
+
+    <button id="enterBtn">
+      ENTER
+    </button>
+
   </div>
 
 </div>
 
+<!-- EFFECTS -->
+
 <div class="background"></div>
 
-<div class="red-glow"></div>
-
-<div class="particles"></div>
+<div class="bloodmoon"></div>
 
 <div class="rain"></div>
+
+<div class="lightning"></div>
+
+<div class="floating-fog"></div>
 
 <div class="scanlines"></div>
 
 <div class="cursor-glow"></div>
 
-<audio id="ambientAudio" loop autoplay>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8e02e36.mp3?filename=dark-atmosphere-110997.mp3" type="audio/mpeg">
-</audio>
+<!-- QUOTE -->
+
+<div class="quote-rotator" id="quoteRotator">
+
+  “The night remembers.”
+
+</div>
+
+<!-- RADAR -->
+
+<div class="radar"></div>
+
+<!-- XP -->
+
+<div class="xp-bar-wrap">
+
+  <div class="xp-text">
+    DARKNESS LEVEL 27
+  </div>
+
+  <div class="xp-bar">
+
+    <div class="xp-fill"></div>
+
+  </div>
+
+</div>
+
+<!-- POPUP -->
+
+<div class="hacking-popup">
+
+  <div class="popup-top">
+    ENTITY SCAN
+  </div>
+
+  <div class="popup-body">
+
+    SIGNAL DETECTED...<br>
+    CORRUPTION LEVEL: 92%<br>
+    UNKNOWN PRESENCE FOUND
+
+  </div>
+
+</div>
 
 <!-- TOPBAR -->
 
@@ -979,12 +1042,12 @@ footer{
   <div class="server-box">
 
     Eagler:
-    <strong>mythfall.xyz</strong>
+    <strong>everdusk.xyz</strong>
 
     &nbsp;&nbsp;&nbsp;
 
     Java:
-    <strong>java.mythfall.xyz</strong>
+    <strong>java.everdusk.xyz</strong>
 
   </div>
 
@@ -1030,7 +1093,7 @@ footer{
   <div class="hero-buttons">
 
     <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
-      EVERDUSK
+      JOIN DISCORD
     </a>
 
     <a href="https://discord.gg/dseKG8dpWv" target="_blank">
@@ -1043,58 +1106,27 @@ footer{
 
   </div>
 
-  <div class="quick-stats">
-
-    <div class="quick-box">
-      <h3>ONLINE</h3>
-      <span>127 PLAYERS</span>
-    </div>
-
-    <div class="quick-box">
-      <h3>STATUS</h3>
-      <span>NETWORK ACTIVE</span>
-    </div>
-
-    <div class="quick-box">
-      <h3>VERSION</h3>
-      <span>1.8 - 26+</span>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- NEWS -->
-
-<div class="news-wrapper">
-
-  <div class="news-track">
-
-    <span>⚠ New corrupted zones discovered beneath Everdusk...</span>
-
-    <span>⚠ Pulse systems are now active...</span>
-
-    <span>⚠ Unknown entities detected in the Everdusk forests...</span>
-
-    <span>⚠ Java Server: java.mythfall.xyz</span>
-
-    <span>⚠ Eagler Server: mythfall.xyz</span>
-
-    <span>⚠ VexSound integration online...</span>
-
-  </div>
-
 </div>
 
 <!-- TERMINAL -->
 
-<section class="terminal-section">
+<section class="terminal-window">
 
-  <div class="terminal-header">
-    EVERDUSK TERMINAL
+  <div class="terminal-top">
+
+    <span>EVERDUSK TERMINAL</span>
+
+    <div class="terminal-dots">
+
+      <div></div>
+      <div></div>
+      <div></div>
+
+    </div>
+
   </div>
 
-  <div class="terminal-body" id="terminal">
+  <div class="terminal-scroll" id="terminal">
 
     > CONNECTING TO EVERDUSK...<br>
     > ACCESSING CORRUPTED ARCHIVES...<br>
@@ -1105,213 +1137,107 @@ footer{
 
 </section>
 
-<!-- STATS -->
+<!-- LORE -->
 
-<section class="stats-section">
+<section class="lore-books">
 
-  <div class="stat-card">
-    <h2>127</h2>
-    <p>Players Online</p>
-  </div>
+  <div class="lore-book">
 
-  <div class="stat-card">
-    <h2>24/7</h2>
-    <p>Server Uptime</p>
-  </div>
-
-  <div class="stat-card">
-    <h2>4</h2>
-    <p>Corrupted Realms</p>
-  </div>
-
-  <div class="stat-card">
-    <h2>∞</h2>
-    <p>Darkness</p>
-  </div>
-
-</section>
-
-<!-- FEATURES -->
-
-<section class="feature-grid">
-
-  <div class="feature-card">
-    <h2>ENTITY EVENTS</h2>
-    <p>
-      Random horror encounters happen throughout the server.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <h2>CORRUPTED LORE</h2>
-    <p>
-      Discover hidden archives and forbidden dimensions.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <h2>LIVE BROADCASTS</h2>
-    <p>
-      Watch Everdusk updates directly from the website.
-    </p>
-  </div>
-
-  <div class="feature-card">
-    <h2>DARK NETWORK</h2>
-    <p>
-      Integrated systems powered by knight and VexSound.
-    </p>
-  </div>
-
-</section>
-
-<!-- TIMELINE -->
-
-<section class="timeline-section">
-
-  <h2>LORE TIMELINE</h2>
-
-  <div class="timeline">
-
-    <div class="timeline-item">
-      <span>2026</span>
-      <p>Unknown entities began watching players..</p>
-    </div>
-
-    <div class="timeline-item">
-      <span>2025</span>
-      <p>a player has gone missing.</p>
-    </div>
-
-    <div class="timeline-item">
-      <span>2024</span>
-      <p>Everdusk officially opened the gates.</p>
-    </div>
-
-  </div>
-
-</section>
-
-<!-- VIDEO -->
-
-<section class="media-section">
-
-  <div class="media-header">
-
-    <h2>EVERDUSK BROADCAST</h2>
+    <h2>BLACK HOLLOW</h2>
 
     <p>
-      Latest transmissions from the Everdusk network.
+      A cursed realm where players vanish after midnight.
     </p>
 
   </div>
 
-  <div class="video-player">
+  <div class="lore-book">
 
-    <iframe
-      id="ytplayer"
-      src="https://youtu.be/IcfmgLZ_D-A"
-      title="Everdusk Video"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen>
-    </iframe>
+    <h2>THE WATCHERS</h2>
+
+    <p>
+      Unknown eyes seen within corrupted forests.
+    </p>
 
   </div>
 
-  <div class="unmute-wrap">
+  <div class="lore-book">
 
-    <button id="unmuteBtn">
-      ENABLE AUDIO
-    </button>
+    <h2>THE SIGNAL</h2>
 
-  </div>
-
-  <div class="youtube-button-wrap">
-
-    <a
-      href="https://www.youtube.com/@Everduskofficial"
-      target="_blank"
-      class="youtube-btn"
-    >
-      Visit The Everdusk Channel
-    </a>
+    <p>
+      A mysterious transmission from beneath Everdusk.
+    </p>
 
   </div>
 
 </section>
 
-<!-- ACTIVITY -->
+<!-- GALLERY -->
 
-<section class="activity-feed">
+<section class="gallery">
 
-  <h2>LIVE ACTIVITY</h2>
+  <h2>COMMUNITY SCREENSHOTS</h2>
 
-  <div class="feed-box">
+  <div class="gallery-grid">
 
-    <div class="feed-item">
-      ⚠ ShadowWalker joined the realm...
-    </div>
+    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop">
 
-    <div class="feed-item">
-      ⚠ Pulse systems synced...
-    </div>
+    <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=1200&auto=format&fit=crop">
 
-    <div class="feed-item">
-      ⚠ Unknown sounds detected...
-    </div>
-
-    <div class="feed-item">
-      ⚠ Entity sighting reported...
-    </div>
+    <img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?q=80&w=1200&auto=format&fit=crop">
 
   </div>
 
 </section>
 
-<!-- COUNTDOWN -->
+<!-- STAFF -->
 
-<section class="countdown-section">
+<section class="staff-section">
 
-  <h2>NEXT EVENT</h2>
+  <h2>STAFF TEAM</h2>
 
-  <div id="countdown">
-    Loading...
+  <div class="staff-grid">
+
+    <div class="staff-card">
+
+      <h3>OWNER</h3>
+
+      <p>Everdusk Founder</p>
+
+    </div>
+
+    <div class="staff-card">
+
+      <h3>LORE TEAM</h3>
+
+      <p>Archive Keepers</p>
+
+    </div>
+
+    <div class="staff-card">
+
+      <h3>ENTITY HUNTERS</h3>
+
+      <p>Corruption Response</p>
+
+    </div>
+
   </div>
 
 </section>
-
-<!-- QUOTE -->
-
-<section class="quote-banner">
-
-  <h2>
-    “Made by knight.”
-  </h2>
-
-</section>
-
-<footer>
-  © 2026 Everdusk.
-</footer>
 
 <script>
 
-/* VIDEO AUDIO */
+/* INTRO */
 
-const player =
-document.getElementById("ytplayer");
+document
+.getElementById("enterBtn")
+.onclick = () => {
 
-const button =
-document.getElementById("unmuteBtn");
-
-button.onclick = () => {
-
-  player.src =
-  "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&rel=0";
-
-  button.innerHTML =
-  "AUDIO ENABLED";
+  document
+  .getElementById("intro-cutscene")
+  .style.display = "none";
 
 };
 
@@ -1330,57 +1256,6 @@ document.addEventListener("mousemove", e => {
 
 });
 
-/* PARALLAX */
-
-document.addEventListener("mousemove", e => {
-
-  const x =
-  (window.innerWidth / 2 - e.pageX) / 90;
-
-  const y =
-  (window.innerHeight / 2 - e.pageY) / 90;
-
-  document.querySelector(".background").style.transform =
-  `translate(${x}px, ${y}px)`;
-
-});
-
-/* COUNTDOWN */
-
-const countdown =
-document.getElementById("countdown");
-
-const targetDate =
-new Date("2026-01-01 00:00:00").getTime();
-
-setInterval(() => {
-
-  const now =
-  new Date().getTime();
-
-  const distance =
-  targetDate - now;
-
-  const days =
-  Math.floor(distance / (1000 * 60 * 60 * 24));
-
-  const hours =
-  Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-  const minutes =
-  Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-  const seconds =
-  Math.floor((distance % (1000 * 60)) / 1000);
-
-  countdown.innerHTML =
-  days + "D " +
-  hours + "H " +
-  minutes + "M " +
-  seconds + "S";
-
-},1000);
-
 /* TERMINAL */
 
 const terminal =
@@ -1388,12 +1263,16 @@ document.getElementById("terminal");
 
 const lines = [
 
-  "> Searching corrupted archives...",
   "> Connecting to Everdusk nodes...",
-  "> Unknown entity detected...",
-  "> Warning: do not enter Black Hollow...",
-  "> Everdusk systems online...",
-  "> VexSound integration active..."
+  "> Searching corrupted archives...",
+  "> Unknown signal detected...",
+  "> Entity movement confirmed...",
+  "> Pulse systems online...",
+  "> Accessing forbidden files...",
+  "> Distorted whispers detected...",
+  "> Network corruption spreading...",
+  "> Black Hollow gateway opened...",
+  "> VexSound synchronization complete..."
 
 ];
 
@@ -1410,7 +1289,29 @@ setInterval(() => {
   terminal.scrollTop =
   terminal.scrollHeight;
 
-},4000);
+},2500);
+
+/* QUOTES */
+
+const quotes = [
+
+  "The night remembers.",
+  "They are watching.",
+  "Do not trust the whispers.",
+  "The corruption spreads.",
+  "Everdusk never sleeps."
+
+];
+
+const quoteBox =
+document.getElementById("quoteRotator");
+
+setInterval(() => {
+
+  quoteBox.innerHTML =
+  quotes[Math.floor(Math.random()*quotes.length)];
+
+},5000);
 
 </script>
 
