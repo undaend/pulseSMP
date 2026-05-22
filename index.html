@@ -26,7 +26,23 @@ body{
   color:white;
   font-family:Arial,sans-serif;
   overflow-x:hidden;
-  cursor:none;
+  cursor:auto !important;
+}
+
+/* ========================= */
+/* FORCE CURSOR */
+/* ========================= */
+
+html,
+body,
+button,
+input,
+textarea,
+a,
+video{
+
+  cursor:auto !important;
+
 }
 
 /* ========================= */
@@ -47,147 +63,114 @@ body{
 }
 
 /* ========================= */
-/* INTRO */
+/* ACCESS SCREEN */
 /* ========================= */
 
-#intro-cutscene{
+#access-screen{
+
   position:fixed;
   inset:0;
+
   background:black;
-  z-index:9999999;
-  overflow:hidden;
-}
 
-#introVideo{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.intro-overlay{
-  position:absolute;
-  inset:0;
+  z-index:99999999;
 
   display:flex;
-  flex-direction:column;
-
   justify-content:center;
   align-items:center;
 
-  background:rgba(0,0,0,.7);
+  overflow:hidden;
 }
 
-/* ========================= */
-/* ACCESS TERMINAL */
-/* ========================= */
+.access-bg{
+
+  position:absolute;
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at center,
+    rgba(255,0,0,.2),
+    transparent 70%
+  );
+
+  animation:bgPulse 6s infinite alternate;
+}
+
+@keyframes bgPulse{
+
+  from{
+    transform:scale(1);
+    opacity:.5;
+  }
+
+  to{
+    transform:scale(1.1);
+    opacity:.9;
+  }
+}
 
 .access-terminal{
 
-  width:90%;
+  position:relative;
 
-  max-width:720px;
+  width:90%;
+  max-width:850px;
 
   background:
-  rgba(0,0,0,.72);
+  rgba(0,0,0,.88);
 
   border:
-  1px solid rgba(255,0,0,.2);
+  1px solid rgba(255,0,0,.25);
 
-  border-radius:20px;
+  border-radius:24px;
 
   overflow:hidden;
 
-  backdrop-filter:blur(14px);
-
   box-shadow:
-  0 0 40px rgba(255,0,0,.2);
+  0 0 70px rgba(255,0,0,.25);
+
+  z-index:5;
 }
 
 .access-top{
 
-  padding:18px 25px;
+  padding:20px 30px;
 
   background:
   rgba(255,0,0,.08);
 
   border-bottom:
-  1px solid rgba(255,0,0,.15);
+  1px solid rgba(255,0,0,.18);
 
   color:#ff3b3b;
 
-  letter-spacing:3px;
+  letter-spacing:4px;
 
-  font-family:monospace;
+  font-weight:bold;
 }
 
-.access-loading{
+.access-console{
+
+  height:320px;
+
+  overflow-y:auto;
 
   padding:25px;
 
-  color:#00ff88;
-
   font-family:monospace;
+
+  color:#00ff88;
 
   line-height:2;
 }
 
-.loading-line{
+.access-input-area{
 
-  opacity:0;
+  padding:25px;
 
-  animation:loadText .8s forwards;
-}
-
-.loading-line:nth-child(1){
-  animation-delay:.3s;
-}
-
-.loading-line:nth-child(2){
-  animation-delay:1.2s;
-}
-
-.loading-line:nth-child(3){
-  animation-delay:2s;
-}
-
-.loading-line:nth-child(4){
-  animation-delay:2.8s;
-}
-
-@keyframes loadText{
-
-  to{
-    opacity:1;
-  }
-}
-
-.hint-box{
-
-  padding:0 25px 20px;
-
-  color:#888;
-
-  font-size:.9rem;
-
-  letter-spacing:2px;
-
-  opacity:0;
-
-  animation:showHints 1s forwards;
-
-  animation-delay:4s;
-}
-
-@keyframes showHints{
-
-  to{
-    opacity:1;
-  }
-}
-
-.code-area{
-
-  padding:0 25px 30px;
+  border-top:
+  1px solid rgba(255,0,0,.15);
 
   display:none;
 
@@ -196,62 +179,68 @@ body{
   gap:18px;
 }
 
-#accessCode{
+.access-input{
+
+  width:100%;
+
+  padding:18px;
 
   background:black;
 
   border:
   1px solid rgba(255,0,0,.25);
 
-  border-radius:14px;
-
-  padding:18px;
+  border-radius:16px;
 
   color:#00ff88;
 
-  font-family:monospace;
-
   font-size:1rem;
 
-  outline:none;
+  font-family:monospace;
 
-  cursor:none;
+  outline:none;
 }
 
-#unlockBtn{
+.access-btn{
 
-  padding:16px;
+  padding:18px;
 
   background:red;
 
   border:none;
 
-  border-radius:14px;
+  border-radius:16px;
 
   color:white;
 
   font-size:1rem;
 
   transition:.3s;
-
-  cursor:none;
 }
 
-#unlockBtn:hover{
+.access-btn:hover{
 
-  transform:translateY(-4px);
+  transform:translateY(-3px);
 
   box-shadow:
-  0 0 30px rgba(255,0,0,.45);
+  0 0 30px rgba(255,0,0,.4);
 }
 
-#accessMessage{
+.hint-box{
 
-  color:#ff3b3b;
+  background:
+  rgba(255,0,0,.08);
 
-  font-family:monospace;
+  border:
+  1px solid rgba(255,0,0,.15);
 
-  min-height:20px;
+  border-radius:14px;
+
+  padding:15px;
+
+  color:#aaa;
+
+  line-height:1.7;
 }
 
 /* ========================= */
@@ -437,31 +426,6 @@ body{
 }
 
 /* ========================= */
-/* CURSOR */
-/* ========================= */
-
-.cursor-glow{
-  width:18px;
-  height:18px;
-
-  border-radius:50%;
-
-  background:red;
-
-  position:fixed;
-
-  pointer-events:none;
-
-  z-index:999999;
-
-  box-shadow:
-  0 0 20px red,
-  0 0 40px red;
-
-  transform:translate(-50%,-50%);
-}
-
-/* ========================= */
 /* TOPBAR */
 /* ========================= */
 
@@ -585,68 +549,117 @@ body{
   line-height:1.8;
 }
 
-.hero-buttons{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
+/* ========================= */
+/* PORTALS */
+/* ========================= */
 
-  margin-top:40px;
+.portal-section{
+
+  width:90%;
+
+  max-width:1400px;
+
+  margin:70px auto;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(300px,1fr));
+
+  gap:35px;
 }
 
-.hero-buttons a{
-  padding:15px 35px;
+.portal-card{
 
-  background:
-  rgba(120,0,0,.35);
+  position:relative;
+
+  height:420px;
+
+  border-radius:26px;
+
+  overflow:hidden;
 
   border:
-  1px solid rgba(255,0,0,.25);
+  1px solid rgba(255,0,0,.15);
 
-  border-radius:14px;
+  transition:.45s;
 
-  color:white;
-
-  text-decoration:none;
-
-  transition:.35s;
+  background:black;
 }
 
-.hero-buttons a:hover{
-  transform:
-  translateY(-5px);
+.portal-card:hover{
 
-  background:red;
+  transform:
+  translateY(-10px)
+  scale(1.02);
 
   box-shadow:
-  0 0 30px rgba(255,0,0,.4);
+  0 0 60px rgba(255,0,0,.25);
 }
 
-/* NETWORK BUTTONS */
+.portal-card video{
 
-.network-buttons{
+  position:absolute;
 
-  display:flex;
+  inset:0;
 
-  flex-wrap:wrap;
+  width:100%;
+  height:100%;
 
-  gap:20px;
+  object-fit:cover;
 
-  justify-content:center;
-
-  margin-top:50px;
+  opacity:.45;
 }
 
-.network-btn{
+.portal-overlay{
 
-  padding:16px 30px;
+  position:absolute;
+  inset:0;
 
   background:
-  rgba(120,0,0,.35);
+  linear-gradient(
+    to top,
+    rgba(0,0,0,.92),
+    rgba(0,0,0,.25)
+  );
 
-  border:
-  1px solid rgba(255,0,0,.25);
+  display:flex;
+  flex-direction:column;
+
+  justify-content:flex-end;
+
+  padding:35px;
+}
+
+.portal-overlay h2{
+
+  color:#ff3b3b;
+
+  font-size:2rem;
+
+  letter-spacing:4px;
+
+  margin-bottom:18px;
+}
+
+.portal-overlay p{
+
+  color:#ddd;
+
+  line-height:1.8;
+
+  margin-bottom:25px;
+}
+
+.portal-btn{
+
+  width:max-content;
+
+  padding:15px 30px;
 
   border-radius:16px;
+
+  background:red;
 
   color:white;
 
@@ -657,20 +670,33 @@ body{
   transition:.35s;
 }
 
-.network-btn:hover{
-
-  transform:
-  translateY(-5px);
-
-  background:red;
+.portal-btn:hover{
 
   box-shadow:
-  0 0 35px rgba(255,0,0,.4);
+  0 0 30px rgba(255,0,0,.45);
 }
 
-/* SERVER STATUS */
+/* ========================= */
+/* SERVER PANEL */
+/* ========================= */
 
-.server-status-panel{
+.server-panel{
+
+  width:90%;
+
+  max-width:1100px;
+
+  margin:40px auto;
+
+  background:
+  rgba(0,0,0,.5);
+
+  border:
+  1px solid rgba(255,0,0,.12);
+
+  border-radius:22px;
+
+  padding:40px;
 
   display:grid;
 
@@ -678,56 +704,31 @@ body{
   repeat(auto-fit,minmax(320px,1fr));
 
   gap:25px;
-
-  width:90%;
-
-  max-width:1000px;
-
-  margin:40px auto 100px;
 }
 
 .server-card{
 
   background:
-  rgba(0,0,0,.45);
+  rgba(255,255,255,.03);
 
   border:
-  1px solid rgba(255,0,0,.15);
+  1px solid rgba(255,0,0,.12);
 
-  border-radius:20px;
+  border-radius:18px;
 
-  padding:40px;
-
-  text-align:center;
-
-  transition:.35s;
+  padding:25px;
 }
 
-.server-card:hover{
-
-  transform:
-  translateY(-8px);
-
-  box-shadow:
-  0 0 40px rgba(255,0,0,.2);
-}
-
-.server-card h2{
+.server-card h3{
 
   color:#ff3b3b;
 
-  margin-bottom:18px;
-
-  letter-spacing:3px;
+  margin-bottom:15px;
 }
 
 .server-card p{
 
-  color:#00ff88;
-
-  font-family:monospace;
-
-  font-size:1.1rem;
+  color:#ddd;
 }
 
 /* ========================= */
@@ -762,65 +763,48 @@ body{
 
 <body>
 
-<!-- INTRO -->
+<!-- ACCESS SCREEN -->
 
-<div id="intro-cutscene">
+<div id="access-screen">
 
-  <video autoplay muted loop playsinline id="introVideo">
+  <div class="access-bg"></div>
 
-    <source src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p" type="video/mp4">
+  <div class="access-terminal">
 
-  </video>
+    <div class="access-top">
+      EVERDUSK ACCESS TERMINAL
+    </div>
 
-  <div class="intro-overlay">
+    <div class="access-console" id="accessConsole">
 
-    <div class="access-terminal">
+      > INITIALIZING EVERDUSK SYSTEMS...<br><br>
 
-      <div class="access-top">
-        EVERDUSK ACCESS TERMINAL
-      </div>
+    </div>
 
-      <div class="access-loading">
+    <div class="access-input-area" id="accessInputArea">
 
-        <div class="loading-line">
-          > CONNECTING TO ARCHIVE...
-        </div>
+      <input
+        type="password"
+        id="accessCode"
+        class="access-input"
+        placeholder="ENTER ACCESS CODE..."
+      >
 
-        <div class="loading-line">
-          > VERIFYING SIGNAL...
-        </div>
+      <button
+        class="access-btn"
+        id="unlockBtn"
+      >
+        UNLOCK ARCHIVES
+      </button>
 
-        <div class="loading-line">
-          > SEARCHING FOR ENTITY KEY...
-        </div>
+      <div class="hint-box">
 
-        <div class="loading-line">
-          > ACCESS LEVEL REQUIRED
-        </div>
+        HINTS:<br><br>
 
-      </div>
-
-      <div class="hint-box" id="hintBox">
-
-        HINT:
-        THE CODE HAS 6 DIGITS
-
-      </div>
-
-      <div class="code-area" id="codeArea">
-
-        <input
-          type="password"
-          id="accessCode"
-          placeholder="ENTER ACCESS CODE"
-          autocomplete="off"
-        >
-
-        <button id="unlockBtn">
-          UNLOCK
-        </button>
-
-        <div id="accessMessage"></div>
+        • THE CODE HAS 6 NUMBERS<br>
+        • THE FIRST 2 DIGITS ARE 43<br>
+        • THE LAST NUMBER IS 2<br>
+        • ARCHIVE LEVEL = 8542
 
       </div>
 
@@ -841,8 +825,6 @@ body{
 <div class="lightning"></div>
 
 <div class="floating-fog"></div>
-
-<div class="cursor-glow"></div>
 
 <!-- TOPBAR -->
 
@@ -901,75 +883,167 @@ body{
     A cinematic Minecraft horror universe where forgotten realms consume everything.
   </p>
 
-  <div class="hero-buttons">
-
-    <a href="https://discord.gg/5Xdkuq7h9h" target="_blank">
-      JOIN DISCORD
-    </a>
-
-    <a href="https://www.youtube.com/@Everduskofficial" target="_blank">
-      WATCH ARCHIVES
-    </a>
-
-    <a href="https://vexsound.base44.app/" target="_blank">
-      VEXSOUND
-    </a>
-
-  </div>
-
-  <div class="network-buttons">
-
-    <a
-      href="https://discord.gg/5Xdkuq7h9h"
-      target="_blank"
-      class="network-btn"
-    >
-      EVERDUSK DISCORD
-    </a>
-
-    <a
-      href="https://discord.gg/r68g9MN6bx"
-      target="_blank"
-      class="network-btn"
-    >
-      PULSE NETWORK
-    </a>
-
-    <a
-      href="https://www.youtube.com/@Everduskofficial"
-      target="_blank"
-      class="network-btn"
-    >
-      YOUTUBE ARCHIVES
-    </a>
-
-    <a
-      href="https://vexsound.base44.app/"
-      target="_blank"
-      class="network-btn"
-    >
-      VEXSOUND
-    </a>
-
-  </div>
-
 </div>
 
-<section class="server-status-panel">
+<!-- SERVER INFO -->
+
+<section class="server-panel">
 
   <div class="server-card">
 
-    <h2>EAGLER SERVER</h2>
+    <h3>EAGLER SERVER</h3>
 
-    <p>everdusk.xyz</p>
+    <p>
+      everdusk.xyz
+    </p>
 
   </div>
 
   <div class="server-card">
 
-    <h2>JAVA SERVER</h2>
+    <h3>JAVA SERVER</h3>
 
-    <p>java.everdusk.xyz</p>
+    <p>
+      java.everdusk.xyz
+    </p>
+
+  </div>
+
+</section>
+
+<!-- PORTALS -->
+
+<section class="portal-section">
+
+  <!-- DISCORD -->
+
+  <div class="portal-card">
+
+    <video autoplay muted loop playsinline>
+
+      <source
+        src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p"
+        type="video/mp4"
+      >
+
+    </video>
+
+    <div class="portal-overlay">
+
+      <h2>DISCORD GATEWAY</h2>
+
+      <p>
+        Enter the main Everdusk network and communicate with survivors.
+      </p>
+
+      <a
+        href="https://discord.gg/5Xdkuq7h9h"
+        target="_blank"
+        class="portal-btn"
+      >
+        ENTER NETWORK
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- PULSE -->
+
+  <div class="portal-card">
+
+    <video autoplay muted loop playsinline>
+
+      <source
+        src="https://cdn.coverr.co/videos/coverr-lightning-over-a-city-1572871735452?download=1080p"
+        type="video/mp4"
+      >
+
+    </video>
+
+    <div class="portal-overlay">
+
+      <h2>PULSE SYSTEM</h2>
+
+      <p>
+        Access hidden Pulse transmissions and corrupted broadcasts.
+      </p>
+
+      <a
+        href="https://discord.gg/r68g9MN6bx"
+        target="_blank"
+        class="portal-btn"
+      >
+        OPEN PULSE
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- YOUTUBE -->
+
+  <div class="portal-card">
+
+    <video autoplay muted loop playsinline>
+
+      <source
+        src="https://cdn.coverr.co/videos/coverr-static-noise-1560084096117?download=1080p"
+        type="video/mp4"
+      >
+
+    </video>
+
+    <div class="portal-overlay">
+
+      <h2>ARCHIVE TAPES</h2>
+
+      <p>
+        Watch analog horror transmissions recovered from Everdusk.
+      </p>
+
+      <a
+        href="https://www.youtube.com/@Everduskofficial"
+        target="_blank"
+        class="portal-btn"
+      >
+        WATCH TAPES
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- VEXSOUND -->
+
+  <div class="portal-card">
+
+    <video autoplay muted loop playsinline>
+
+      <source
+        src="https://cdn.coverr.co/videos/coverr-red-smoke-background-5171/1080p.mp4"
+        type="video/mp4"
+      >
+
+    </video>
+
+    <div class="portal-overlay">
+
+      <h2>VEXSOUND</h2>
+
+      <p>
+        Enter the soundscape system and hear the Everdusk frequencies.
+      </p>
+
+      <a
+        href="https://vexsound.base44.app/"
+        target="_blank"
+        class="portal-btn"
+      >
+        LISTEN NOW
+      </a>
+
+    </div>
 
   </div>
 
@@ -977,77 +1051,97 @@ body{
 
 <script>
 
-/* CURSOR */
+/* ACCESS TERMINAL */
 
-const cursor =
-document.querySelector(".cursor-glow");
+const accessConsole =
+document.getElementById("accessConsole");
 
-document.addEventListener("mousemove", e => {
+const accessInputArea =
+document.getElementById("accessInputArea");
 
-  cursor.style.left =
-  e.clientX + "px";
+const accessScreen =
+document.getElementById("access-screen");
 
-  cursor.style.top =
-  e.clientY + "px";
-
-});
-
-/* SHOW CODE INPUT */
-
-setTimeout(() => {
-
-  document
-  .getElementById("codeArea")
-  .style.display = "flex";
-
-},5000);
-
-/* ACCESS SYSTEM */
-
-const accessInput =
+const accessCodeInput =
 document.getElementById("accessCode");
 
 const unlockBtn =
 document.getElementById("unlockBtn");
 
-const accessMsg =
-document.getElementById("accessMessage");
+const bootLines = [
+
+  "> CONNECTING TO EVERDUSK NODES...",
+  "> RESTORING CORRUPTED FILES...",
+  "> SCANNING ENTITY DATABASE...",
+  "> SIGNAL DETECTED UNDER BLACK HOLLOW...",
+  "> AUTHORIZATION REQUIRED...",
+  "> ACCESS CODE NEEDED..."
+
+];
+
+let bootIndex = 0;
+
+const bootInterval = setInterval(() => {
+
+  if(bootIndex >= bootLines.length){
+
+    clearInterval(bootInterval);
+
+    accessInputArea.style.display =
+    "flex";
+
+    return;
+
+  }
+
+  accessConsole.innerHTML +=
+  bootLines[bootIndex] + "<br>";
+
+  accessConsole.scrollTop =
+  accessConsole.scrollHeight;
+
+  bootIndex++;
+
+},1200);
 
 unlockBtn.onclick = () => {
 
-  if(
-    accessInput.value === "438542"
-  ){
+  const code =
+  accessCodeInput.value.trim();
 
-    accessMsg.innerHTML =
-    "ACCESS GRANTED";
+  if(code === "438542"){
 
-    accessMsg.style.color =
-    "#00ff88";
+    accessConsole.innerHTML +=
+    "<br>> ACCESS GRANTED...<br>";
+
+    accessConsole.innerHTML +=
+    "> WELCOME BACK OPERATIVE...<br>";
 
     setTimeout(() => {
 
-      document
-      .getElementById("intro-cutscene")
-      .style.display = "none";
+      accessScreen.style.display =
+      "none";
 
-    },1200);
+    },1500);
 
   }else{
 
-    accessMsg.innerHTML =
-    "ACCESS DENIED";
+    accessConsole.innerHTML +=
+    "<br>> ACCESS DENIED...<br>";
 
-    accessMsg.style.color =
-    "#ff3b3b";
+    accessConsole.innerHTML +=
+    "> INVALID CODE DETECTED...<br>";
+
+    accessConsole.scrollTop =
+    accessConsole.scrollHeight;
+
+    accessCodeInput.value = "";
 
   }
 
 };
 
-/* ENTER KEY */
-
-accessInput.addEventListener(
+accessCodeInput.addEventListener(
 "keydown",
 e => {
 
@@ -1058,34 +1152,6 @@ e => {
   }
 
 });
-
-/* HARDER HINTS */
-
-const hints = [
-
-  "HINT: THE CODE HAS 6 DIGITS",
-  "HINT: IT STARTS WITH 43",
-  "HINT: THE THIRD NUMBER IS 8",
-  "HINT: THE LAST NUMBER IS 2"
-
-];
-
-let hintIndex = 0;
-
-setInterval(() => {
-
-  hintIndex++;
-
-  if(hintIndex < hints.length){
-
-    document
-    .getElementById("hintBox")
-    .innerHTML =
-    hints[hintIndex];
-
-  }
-
-},9000);
 
 </script>
 
