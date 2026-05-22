@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>EVERDUSK CLIENT</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -23,9 +22,9 @@ body{
     font-family:'Orbitron',sans-serif;
 }
 
-/* ================================= */
+/* ========================= */
 /* BACKGROUND */
-/* ================================= */
+/* ========================= */
 
 .bg{
     position:fixed;
@@ -42,8 +41,8 @@ body{
     background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
     background-size:cover;
     opacity:.08;
+    animation:fogMove 50s linear infinite;
     filter:blur(5px);
-    animation:fogMove 60s linear infinite;
 }
 
 @keyframes fogMove{
@@ -77,25 +76,11 @@ body{
     z-index:999;
 }
 
-/* ================================= */
-/* GLITCH FLASH */
-/* ================================= */
-
-.glitch{
-    position:fixed;
-    inset:0;
-    background:red;
-    opacity:0;
-    pointer-events:none;
-    mix-blend-mode:screen;
-    z-index:99999;
-}
-
-/* ================================= */
+/* ========================= */
 /* BOOT SCREEN */
-/* ================================= */
+/* ========================= */
 
-.boot{
+.boot-screen{
     position:fixed;
     inset:0;
     background:black;
@@ -103,51 +88,50 @@ body{
     align-items:center;
     justify-content:center;
     flex-direction:column;
-    z-index:999999;
+    z-index:99999;
     animation:fadeOut 2s forwards;
     animation-delay:6s;
 }
 
 .boot-title{
-    font-size:100px;
+    font-size:90px;
     font-weight:900;
+    color:white;
     text-shadow:
         0 0 10px red,
         0 0 40px red,
-        0 0 90px red;
-    animation:glitchText 2s infinite;
+        0 0 80px red;
+    animation:glitch 2s infinite;
 }
 
 .boot-sub{
     margin-top:20px;
     color:#ff2b2b;
-    letter-spacing:5px;
     font-family:'IBM Plex Mono',monospace;
+    letter-spacing:4px;
 }
 
-.load-bar{
+.loading-bar{
     width:400px;
     height:4px;
     background:#111;
     margin-top:40px;
     overflow:hidden;
+    position:relative;
 }
 
-.load-fill{
+.loading-fill{
+    position:absolute;
+    inset:0;
     width:0%;
-    height:100%;
     background:red;
     box-shadow:0 0 20px red;
     animation:load 5s forwards;
 }
 
 @keyframes load{
-    from{
-        width:0%;
-    }
-    to{
-        width:100%;
-    }
+    from{width:0%;}
+    to{width:100%;}
 }
 
 @keyframes fadeOut{
@@ -157,7 +141,7 @@ body{
     }
 }
 
-@keyframes glitchText{
+@keyframes glitch{
 
 0%{transform:translateX(0);}
 20%{transform:translateX(-3px);}
@@ -168,9 +152,9 @@ body{
 
 }
 
-/* ================================= */
-/* MAIN */
-/* ================================= */
+/* ========================= */
+/* MAIN MENU */
+/* ========================= */
 
 .main{
     height:100vh;
@@ -179,20 +163,17 @@ body{
     justify-content:center;
     text-align:center;
     position:relative;
-    overflow:hidden;
 }
 
 .content{
     max-width:1200px;
     padding:20px;
-    z-index:2;
 }
 
 .small{
     color:#ff2b2b;
     letter-spacing:8px;
     margin-bottom:20px;
-    animation:glitchText 2s infinite;
 }
 
 .title{
@@ -207,17 +188,13 @@ body{
 }
 
 .desc{
-    max-width:750px;
+    max-width:700px;
     margin:auto;
-    line-height:1.8;
     color:#999;
+    line-height:1.8;
     margin-bottom:50px;
     font-family:'IBM Plex Mono',monospace;
 }
-
-/* ================================= */
-/* BUTTONS */
-/* ================================= */
 
 .buttons{
     display:flex;
@@ -246,15 +223,15 @@ body{
         0 0 60px red;
 }
 
-/* ================================= */
+/* ========================= */
 /* TERMINAL */
-/* ================================= */
+/* ========================= */
 
 .terminal{
     position:absolute;
     bottom:30px;
     left:30px;
-    width:420px;
+    width:400px;
     padding:20px;
     background:rgba(0,0,0,.6);
     border:1px solid rgba(255,0,0,.2);
@@ -265,28 +242,79 @@ body{
     backdrop-filter:blur(10px);
 }
 
-/* ================================= */
-/* WARNING */
-/* ================================= */
+/* ========================= */
+/* GAME FRAME */
+/* ========================= */
 
-.warning{
+.game-frame{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:none;
+    display:none;
+    z-index:9999;
+    background:black;
+}
+
+/* ========================= */
+/* GLITCH FLASH */
+/* ========================= */
+
+.glitch{
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
+}
+
+/* ====================================================== */
+/* CUSTOM EVERDUSK CLIENT */
+/* ====================================================== */
+
+.client-overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:99999;
+}
+
+.client-topbar{
     position:absolute;
-    top:30px;
-    right:30px;
-    padding:15px 20px;
-    background:rgba(255,0,0,.08);
-    border:1px solid rgba(255,0,0,.2);
+    top:0;
+    left:0;
+    width:100%;
+    padding:18px 30px;
+    background:linear-gradient(to bottom,
+    rgba(0,0,0,.8),
+    transparent);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(10px);
+}
+
+.client-logo{
+    color:#ff2b2b;
+    letter-spacing:4px;
+    font-size:14px;
+    text-shadow:0 0 10px red;
+}
+
+.client-status{
     color:#ff4d4d;
     font-family:'IBM Plex Mono',monospace;
     font-size:12px;
-    letter-spacing:2px;
-    animation:pulse 3s infinite;
+    animation:pulseStatus 2s infinite;
 }
 
-@keyframes pulse{
+@keyframes pulseStatus{
 
 0%{
-    opacity:.5;
+    opacity:.4;
 }
 
 50%{
@@ -294,14 +322,73 @@ body{
 }
 
 100%{
-    opacity:.5;
+    opacity:.4;
 }
 
 }
 
-/* ================================= */
+.client-sidepanel{
+    position:absolute;
+    right:30px;
+    top:100px;
+    width:280px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.side-section{
+    background:rgba(0,0,0,.55);
+    border:1px solid rgba(255,0,0,.15);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    pointer-events:auto;
+}
+
+.side-title{
+    color:#ff2b2b;
+    margin-bottom:15px;
+    letter-spacing:3px;
+    font-size:13px;
+}
+
+.side-item{
+    color:#888;
+    font-size:13px;
+    margin-bottom:10px;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+.side-btn{
+    width:100%;
+    margin-bottom:12px;
+    padding:12px;
+    border:none;
+    background:rgba(255,0,0,.08);
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:2px;
+}
+
+.side-btn:hover{
+    background:red;
+    box-shadow:
+        0 0 20px red,
+        0 0 40px red;
+}
+
+.feature{
+    color:#999;
+    margin-bottom:10px;
+    font-size:13px;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+/* ========================= */
 /* MOBILE */
-/* ================================= */
+/* ========================= */
 
 @media(max-width:900px){
 
@@ -313,10 +400,6 @@ body{
     font-size:50px;
 }
 
-.buttons{
-    flex-direction:column;
-}
-
 .terminal{
     width:90%;
     left:50%;
@@ -324,7 +407,11 @@ body{
     bottom:20px;
 }
 
-.warning{
+.buttons{
+    flex-direction:column;
+}
+
+.client-sidepanel{
     display:none;
 }
 
@@ -341,7 +428,7 @@ body{
 
 <!-- BOOT -->
 
-<div class="boot">
+<div class="boot-screen">
 
 <div class="boot-title">
 EVERDUSK
@@ -351,8 +438,8 @@ EVERDUSK
 INITIALIZING VOID LINK...
 </div>
 
-<div class="load-bar">
-<div class="load-fill"></div>
+<div class="loading-bar">
+<div class="loading-fill"></div>
 </div>
 
 </div>
@@ -360,10 +447,6 @@ INITIALIZING VOID LINK...
 <!-- MAIN -->
 
 <section class="main">
-
-<div class="warning">
-SIGNAL INSTABILITY DETECTED
-</div>
 
 <div class="content">
 
@@ -376,57 +459,27 @@ EVERDUSK CLIENT
 </h1>
 
 <p class="desc">
-WARNING:
-UNKNOWN ENTITIES HAVE BEEN DETECTED INSIDE THE ARCHIVE.
+WARNING: SIGNAL INSTABILITY DETECTED.
+UNKNOWN ENTITIES HAVE BEEN TRACKED INSIDE THE ARCHIVE.
 CONTINUING MAY RESULT IN MEMORY LOSS.
-THE RED MOON IS ACTIVE.
 </p>
 
 <div class="buttons">
 
-<a
-href="https://eaglercraft.com/mc/1.8.8/"
-class="btn"
-target="_blank">
-
+<button class="btn" onclick="launchGame()">
 ENTER THE VOID
+</button>
 
-</a>
-
-<a
-href="https://www.youtube.com/@Everduskofficial"
-class="btn"
-target="_blank">
-
+<a href="https://www.youtube.com/@Everduskofficial" class="btn" target="_blank">
 WATCH ARCHIVES
-
 </a>
 
-<a
-href="https://discord.gg/5Xdkuq7h9h"
-class="btn"
-target="_blank">
-
+<a href="https://discord.gg/5Xdkuq7h9h" class="btn" target="_blank">
 JOIN EVERDUSK
-
 </a>
 
-<a
-href="https://vexsound.base44.app/"
-class="btn"
-target="_blank">
-
+<a href="https://vexsound.base44.app/" class="btn" target="_blank">
 VEXSOUND
-
-</a>
-
-<a
-href="https://discord.com/invite/dseKG8dpWv"
-class="btn"
-target="_blank">
-
-PULSE NETWORK
-
 </a>
 
 </div>
@@ -434,37 +487,120 @@ PULSE NETWORK
 </div>
 
 <div class="terminal" id="terminal">
-
 [BOOT] INITIALIZING CLIENT...<br>
-[VOID] SIGNAL FOUND...<br>
+[BOOT] SIGNAL FOUND...<br>
 [WARNING] ENTITY DETECTED BELOW BEDROCK...<br>
-[SYSTEM] CONNECTION STABLE...<br>
-
+[VOID] CONNECTION STABLE...<br>
 </div>
 
 </section>
 
+<!-- CUSTOM CLIENT -->
+
+<div class="client-overlay">
+
+<div class="client-topbar">
+
+<div class="client-logo">
+EVERDUSK VOID CLIENT
+</div>
+
+<div class="client-status">
+SIGNAL ACTIVE
+</div>
+
+</div>
+
+<div class="client-sidepanel">
+
+<div class="side-section">
+
+<div class="side-title">
+ENTITY STATUS
+</div>
+
+<div class="side-item">
+RED MOON: ACTIVE
+</div>
+
+<div class="side-item">
+DISTORTION: 97%
+</div>
+
+<div class="side-item">
+ENTITY COUNT: UNKNOWN
+</div>
+
+</div>
+
+<div class="side-section">
+
+<div class="side-title">
+QUICK CONNECT
+</div>
+
+<button class="side-btn" onclick="copyIP('everdusk.xyz')">
+COPY BEDROCK IP
+</button>
+
+<button class="side-btn" onclick="copyIP('java.everdusk.xyz')">
+COPY JAVA IP
+</button>
+
+</div>
+
+<div class="side-section">
+
+<div class="side-title">
+CLIENT FEATURES
+</div>
+
+<div class="feature">
+✓ VHS MODE
+</div>
+
+<div class="feature">
+✓ HORROR UI
+</div>
+
+<div class="feature">
+✓ VOID SCANNER
+</div>
+
+<div class="feature">
+✓ SIGNAL TRACKING
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- GAME -->
+
+<iframe
+class="game-frame"
+id="gameFrame"
+src="">
+</iframe>
+
 <script>
 
-/* ================================= */
+/* ========================= */
 /* TERMINAL EVENTS */
-/* ================================= */
+/* ========================= */
 
 const terminal = document.getElementById('terminal');
 
 const logs = [
-
 '[ERROR] UNKNOWN MOVEMENT DETECTED...',
 '[VOID] SIGNAL RETURNED...',
 '[SCAN] RED MOON APPROACHING...',
 '[WARNING] PLAYER REMOVED FROM DATABASE...',
 '[ENTITY] SOMETHING IS WATCHING...',
 '[ARCHIVE] FILES CORRUPTED...',
-'[SYSTEM] CONNECTION UNSTABLE...',
-'[VOID] DISTORTION LEVEL RISING...',
-'[ERROR] MEMORY INTEGRITY LOST...',
-'[WARNING] SIGNAL BELOW BEDROCK...'
-
+'[SYSTEM] CONNECTION UNSTABLE...'
 ];
 
 setInterval(() => {
@@ -477,50 +613,111 @@ logs[Math.floor(Math.random() * logs.length)];
 terminal.appendChild(line);
 
 if(terminal.children.length > 8){
-
-terminal.removeChild(terminal.children[0]);
-
+    terminal.removeChild(terminal.children[0]);
 }
 
 },3000);
 
-/* ================================= */
-/* RANDOM GLITCH */
-/* ================================= */
+/* ========================= */
+/* GLITCH */
+/* ========================= */
 
 const glitch = document.querySelector('.glitch');
 
 setInterval(() => {
 
-glitch.style.opacity = '.05';
+    glitch.style.opacity = '.05';
+
+    setTimeout(() => {
+
+        glitch.style.opacity = '0';
+
+    },100);
+
+},Math.random() * 7000 + 4000);
+
+/* ========================= */
+/* LAUNCH GAME */
+/* ========================= */
+
+function launchGame(){
+
+const frame = document.getElementById('gameFrame');
+
+frame.style.display = 'block';
+
+frame.src = 'https://eaglercraft.com/mc/1.8.8/';
+
+}
+
+/* ====================================================== */
+/* EVERDUSK CUSTOM CLIENT SYSTEM */
+/* ====================================================== */
+
+function copyIP(ip){
+
+navigator.clipboard.writeText(ip);
+
+const oldTitle = document.title;
+
+document.title = 'COPIED: ' + ip;
 
 setTimeout(() => {
 
-glitch.style.opacity = '0';
+document.title = oldTitle;
 
-},100);
+},1500);
 
-},Math.random() * 7000 + 3000);
+}
 
-/* ================================= */
-/* TITLE GLITCH */
-/* ================================= */
+/* ======================================= */
+/* RANDOM ENTITY WARNINGS */
+/* ======================================= */
 
-const title = document.querySelector('.title');
+const warnings = [
+
+'ENTITY MOVEMENT DETECTED',
+'SIGNAL BECOMING UNSTABLE',
+'VOID ACTIVITY INCREASING',
+'BEDROCK BREACH DETECTED',
+'UNKNOWN PLAYER WATCHING',
+'THE RED MOON IS ACTIVE'
+
+];
 
 setInterval(() => {
 
-title.style.transform = 'translateX(4px)';
+const random =
+warnings[Math.floor(Math.random() * warnings.length)];
+
+console.log(random);
+
+},5000);
+
+/* ======================================= */
+/* FAKE CLIENT VERSION */
+/* ======================================= */
+
+const version = 'EVERDUSK CLIENT v4.7.3 VOID BUILD';
+
+console.log(version);
+
+/* ======================================= */
+/* SCREEN DISTORTION */
+/* ======================================= */
+
+setInterval(() => {
+
+document.body.style.filter =
+'contrast(1.05) brightness(1.02)';
 
 setTimeout(() => {
-title.style.transform = 'translateX(-4px)';
-},70);
 
-setTimeout(() => {
-title.style.transform = 'translateX(0)';
-},140);
+document.body.style.filter = 'none';
 
-},3000);
+},120);
+
+},9000);
 
 </script>
 
