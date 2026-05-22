@@ -224,25 +224,6 @@ body{
 }
 
 /* ========================= */
-/* TERMINAL */
-/* ========================= */
-
-.terminal{
-    position:absolute;
-    bottom:30px;
-    left:30px;
-    width:400px;
-    padding:20px;
-    background:rgba(0,0,0,.6);
-    border:1px solid rgba(255,0,0,.2);
-    font-family:'IBM Plex Mono',monospace;
-    color:#ff2b2b;
-    font-size:13px;
-    line-height:1.8;
-    backdrop-filter:blur(10px);
-}
-
-/* ========================= */
 /* GAME FRAME */
 /* ========================= */
 
@@ -400,13 +381,6 @@ body{
     font-size:50px;
 }
 
-.terminal{
-    width:90%;
-    left:50%;
-    transform:translateX(-50%);
-    bottom:20px;
-}
-
 .buttons{
     flex-direction:column;
 }
@@ -484,13 +458,6 @@ VEXSOUND
 
 </div>
 
-</div>
-
-<div class="terminal" id="terminal">
-[BOOT] INITIALIZING CLIENT...<br>
-[BOOT] SIGNAL FOUND...<br>
-[WARNING] ENTITY DETECTED BELOW BEDROCK...<br>
-[VOID] CONNECTION STABLE...<br>
 </div>
 
 </section>
@@ -586,37 +553,6 @@ src="">
 </iframe>
 
 <script>
-
-/* ========================= */
-/* TERMINAL EVENTS */
-/* ========================= */
-
-const terminal = document.getElementById('terminal');
-
-const logs = [
-'[ERROR] UNKNOWN MOVEMENT DETECTED...',
-'[VOID] SIGNAL RETURNED...',
-'[SCAN] RED MOON APPROACHING...',
-'[WARNING] PLAYER REMOVED FROM DATABASE...',
-'[ENTITY] SOMETHING IS WATCHING...',
-'[ARCHIVE] FILES CORRUPTED...',
-'[SYSTEM] CONNECTION UNSTABLE...'
-];
-
-setInterval(() => {
-
-const line = document.createElement('div');
-
-line.innerHTML =
-logs[Math.floor(Math.random() * logs.length)];
-
-terminal.appendChild(line);
-
-if(terminal.children.length > 8){
-    terminal.removeChild(terminal.children[0]);
-}
-
-},3000);
 
 /* ========================= */
 /* GLITCH */
