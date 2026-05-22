@@ -701,6 +701,107 @@ setInterval(()=>{
 
 },25000);
 
+
+
+/* =========================================================
+EXTRA HORROR SYSTEMS
+========================================================= */
+
+const creepyMessages=[
+'⚠ THE WATCHER IS NEAR',
+'⚠ UNKNOWN SIGNAL DETECTED',
+'⚠ ENTITY BREACH INCOMING',
+'⚠ BLACK HOLLOW OPENED',
+'⚠ TRANSMISSION CORRUPTED'
+];
+
+setInterval(()=>{
+
+  const popup=document.createElement('div');
+
+  popup.innerHTML=
+  creepyMessages[Math.floor(Math.random()*creepyMessages.length)];
+
+  popup.style.position='fixed';
+  popup.style.top='50%';
+  popup.style.left='50%';
+  popup.style.transform='translate(-50%,-50%)';
+  popup.style.padding='20px 40px';
+  popup.style.background='rgba(0,0,0,.85)';
+  popup.style.border='1px solid red';
+  popup.style.color='red';
+  popup.style.zIndex='99999999';
+  popup.style.letterSpacing='4px';
+  popup.style.boxShadow='0 0 40px red';
+
+  document.body.appendChild(popup);
+
+  setTimeout(()=>{
+    popup.remove();
+  },2500);
+
+},45000);
+
+/* =========================================================
+SECRET KONAMI CODE
+========================================================= */
+
+let konami=[];
+
+const secretCode=[
+'ArrowUp','ArrowUp',
+'ArrowDown','ArrowDown',
+'ArrowLeft','ArrowRight',
+'ArrowLeft','ArrowRight',
+'b','a'
+];
+
+document.addEventListener('keydown',e=>{
+
+  konami.push(e.key);
+
+  if(konami.length>secretCode.length){
+    konami.shift();
+  }
+
+  if(JSON.stringify(konami)===JSON.stringify(secretCode)){
+
+    document.body.style.filter='hue-rotate(320deg)';
+
+    alert('SECRET MODE UNLOCKED: THE VOID SEES YOU');
+
+  }
+
+});
+
+/* =========================================================
+FAKE BROADCASTS
+========================================================= */
+
+setInterval(()=>{
+
+  const broadcast=document.createElement('div');
+
+  broadcast.innerHTML='LIVE BROADCAST: SIGNAL STRENGTH INCREASING';
+
+  broadcast.style.position='fixed';
+  broadcast.style.bottom='120px';
+  broadcast.style.right='20px';
+  broadcast.style.padding='14px 24px';
+  broadcast.style.background='rgba(0,0,0,.8)';
+  broadcast.style.border='1px solid rgba(255,0,0,.4)';
+  broadcast.style.color='#ff3b3b';
+  broadcast.style.zIndex='999999';
+  broadcast.style.borderRadius='14px';
+
+  document.body.appendChild(broadcast);
+
+  setTimeout(()=>{
+    broadcast.remove();
+  },5000);
+
+},30000);
+
 </script>
 </body>
 </html>
