@@ -1,156 +1,661 @@
-<!-- ====================================== -->
-<!-- REPLACE YOUR CURRENT INTRO SECTION -->
-<!-- WITH THIS -->
-<!-- ====================================== -->
-
-<div id="intro-cutscene">
-
-  <video autoplay muted loop playsinline id="introVideo">
-
-    <source
-      src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p"
-      type="video/mp4"
-    >
-
-  </video>
-
-  <!-- DARK OVERLAY -->
-
-  <div class="intro-overlay">
-
-    <img
-      src="https://cdn.corenexis.com/files/c/8547675720.png"
-      class="intro-logo"
-    >
-
-    <h1>EVERDUSK</h1>
-
-    <p>
-      RESTRICTED ACCESS TERMINAL
-    </p>
-
-    <!-- TERMINAL -->
-
-    <div class="intro-terminal">
-
-      <div class="intro-terminal-top">
-
-        EVERDUSK SECURITY
-
-      </div>
-
-      <div class="intro-terminal-body" id="introTerminal">
-
-        > CONNECTION ESTABLISHED...<br>
-        > VERIFYING USER...<br>
-        > ACCESS CODE REQUIRED...<br>
-        > ENTER CLEARANCE KEY BELOW...<br>
-
-      </div>
-
-      <!-- INPUT -->
-
-      <div class="terminal-input-wrap">
-
-        <span>>></span>
-
-        <input
-          type="password"
-          id="accessCode"
-          placeholder="ENTER ACCESS CODE"
-          autocomplete="off"
-        >
-
-      </div>
-
-      <!-- BUTTON -->
-
-      <button id="enterBtn">
-
-        UNLOCK EVERDUSK
-
-      </button>
-
-      <!-- ERROR -->
-
-      <div id="accessError">
-
-        ACCESS DENIED
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- ====================================== -->
-<!-- ADD THIS CSS -->
-<!-- ====================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everdusk</title>
 
 <style>
 
-/* ====================================== */
-/* INTRO LOGO */
-/* ====================================== */
+/* ========================= */
+/* RESET */
+/* ========================= */
 
-.intro-logo{
-
-  width:160px;
-
-  margin-bottom:25px;
-
-  filter:
-  drop-shadow(0 0 30px red);
-
-  animation:logoPulse 4s infinite;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-@keyframes logoPulse{
-
-  0%,100%{
-    transform:scale(1);
-  }
-
-  50%{
-    transform:scale(1.05);
-  }
+html{
+  scroll-behavior:smooth;
 }
 
-/* ====================================== */
-/* INTRO TERMINAL */
-/* ====================================== */
+body{
+  background:#050505;
+  color:white;
+  font-family:Arial,sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
 
-.intro-terminal{
+/* ========================= */
+/* CUSTOM SCROLLBAR */
+/* ========================= */
 
-  width:90%;
+::-webkit-scrollbar{
+  width:12px;
+}
 
-  max-width:700px;
+::-webkit-scrollbar-track{
+  background:black;
+}
 
-  margin-top:40px;
+::-webkit-scrollbar-thumb{
+  background:red;
+  border-radius:20px;
+}
+
+/* ========================= */
+/* INTRO */
+/* ========================= */
+
+#intro-cutscene{
+  position:fixed;
+  inset:0;
+  background:black;
+  z-index:9999999;
+  overflow:hidden;
+}
+
+#introVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.intro-overlay{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.55);
+}
+
+.intro-overlay h1{
+  font-size:6rem;
+  letter-spacing:14px;
+  text-shadow:0 0 40px red;
+}
+
+.intro-overlay p{
+  margin-top:20px;
+  color:#ccc;
+  letter-spacing:5px;
+}
+
+/* ========================= */
+/* ACCESS TERMINAL */
+/* ========================= */
+
+.lock-terminal{
+  margin-top:35px;
+
+  width:420px;
+
+  max-width:90%;
 
   background:
-  rgba(0,0,0,.72);
+  rgba(0,0,0,.75);
 
   border:
-  1px solid rgba(255,0,0,.25);
+  1px solid rgba(255,0,0,.3);
 
-  border-radius:22px;
+  border-radius:18px;
 
-  overflow:hidden;
+  padding:25px;
 
   backdrop-filter:blur(12px);
 
   box-shadow:
-  0 0 40px rgba(255,0,0,.2);
+  0 0 35px rgba(255,0,0,.18);
 }
 
-/* ====================================== */
-/* TOP */
-/* ====================================== */
+.lock-terminal-title{
 
-.intro-terminal-top{
+  color:#ff2a2a;
+
+  font-family:monospace;
+
+  letter-spacing:3px;
+
+  margin-bottom:18px;
+
+  text-align:center;
+}
+
+.lock-screen-output{
+
+  height:140px;
+
+  overflow-y:auto;
+
+  background:black;
+
+  border:
+  1px solid rgba(255,0,0,.18);
+
+  border-radius:14px;
+
+  padding:18px;
+
+  color:#00ff88;
+
+  font-family:monospace;
+
+  line-height:1.8;
+
+  margin-bottom:18px;
+}
+
+.lock-input-wrap{
+
+  display:flex;
+
+  gap:12px;
+
+  align-items:center;
+}
+
+.lock-input-wrap span{
+
+  color:#ff2a2a;
+
+  font-family:monospace;
+}
+
+#accessInput{
+
+  flex:1;
+
+  background:black;
+
+  border:
+  1px solid rgba(255,0,0,.2);
+
+  border-radius:12px;
+
+  padding:14px;
+
+  color:#00ff88;
+
+  font-family:monospace;
+
+  outline:none;
+}
+
+#unlockBtn{
+
+  padding:14px 20px;
+
+  background:red;
+
+  border:none;
+
+  border-radius:12px;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+#unlockBtn:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+  0 0 20px rgba(255,0,0,.35);
+}
+
+.access-denied{
+
+  animation:deniedFlash .3s 3;
+}
+
+@keyframes deniedFlash{
+
+  0%{
+    transform:translateX(0);
+  }
+
+  25%{
+    transform:translateX(-6px);
+  }
+
+  50%{
+    transform:translateX(6px);
+  }
+
+  100%{
+    transform:translateX(0);
+  }
+}
+
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
+.background{
+  position:fixed;
+  inset:0;
+
+  background:
+  linear-gradient(
+    rgba(0,0,0,.72),
+    rgba(0,0,0,.88)
+  ),
+  url('https://cdn.corenexis.com/files/c/3236352720.png');
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  z-index:-10;
+}
+
+/* ========================= */
+/* BLOOD MOON */
+/* ========================= */
+
+.bloodmoon{
+  position:fixed;
+
+  top:120px;
+  right:100px;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:
+  radial-gradient(
+    circle,
+    #ff2a2a 0%,
+    #8b0000 60%,
+    rgba(255,0,0,.08) 100%
+  );
+
+  box-shadow:
+  0 0 80px rgba(255,0,0,.45),
+  0 0 140px rgba(255,0,0,.2);
+
+  z-index:-5;
+
+  animation:moonPulse 8s infinite alternate;
+}
+
+@keyframes moonPulse{
+  from{
+    transform:scale(1);
+  }
+
+  to{
+    transform:scale(1.08);
+  }
+}
+
+/* ========================= */
+/* RAIN */
+/* ========================= */
+
+.rain{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:5;
+  overflow:hidden;
+}
+
+.rain::before{
+  content:"";
+
+  position:absolute;
+  width:100%;
+  height:100%;
+
+  background-image:
+  repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.08) 0px,
+    rgba(255,255,255,.08) 2px,
+    transparent 10px,
+    transparent 22px
+  );
+
+  background-size:2px 120px;
+
+  animation:rainMove .5s linear infinite;
+
+  opacity:.15;
+}
+
+@keyframes rainMove{
+  from{
+    transform:translateY(-120px);
+  }
+
+  to{
+    transform:translateY(120px);
+  }
+}
+
+/* ========================= */
+/* LIGHTNING */
+/* ========================= */
+
+.lightning{
+  position:fixed;
+  inset:0;
+  background:white;
+  opacity:0;
+  z-index:99999;
+  pointer-events:none;
+  animation:lightningFlash 14s infinite;
+}
+
+@keyframes lightningFlash{
+
+  0%,94%,100%{
+    opacity:0;
+  }
+
+  95%{
+    opacity:.14;
+  }
+
+  96%{
+    opacity:0;
+  }
+
+  97%{
+    opacity:.08;
+  }
+
+  98%{
+    opacity:0;
+  }
+}
+
+/* ========================= */
+/* FOG */
+/* ========================= */
+
+.floating-fog{
+  position:fixed;
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at 20% 50%,
+    rgba(255,0,0,.04),
+    transparent 30%
+  ),
+  radial-gradient(
+    circle at 80% 70%,
+    rgba(255,255,255,.03),
+    transparent 30%
+  );
+
+  animation:fogMove 18s infinite alternate;
+
+  z-index:-4;
+}
+
+@keyframes fogMove{
+
+  from{
+    transform:translateX(-20px);
+  }
+
+  to{
+    transform:translateX(20px);
+  }
+}
+
+/* ========================= */
+/* SCANLINES */
+/* ========================= */
+
+.scanlines{
+  position:fixed;
+  inset:0;
+
+  background:
+  repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.02),
+    rgba(255,255,255,.02) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+
+  pointer-events:none;
+
+  z-index:999;
+}
+
+/* ========================= */
+/* CURSOR */
+/* ========================= */
+
+.cursor-glow{
+  width:18px;
+  height:18px;
+
+  border-radius:50%;
+
+  background:red;
+
+  position:fixed;
+
+  pointer-events:none;
+
+  z-index:999999;
+
+  box-shadow:
+  0 0 20px red,
+  0 0 40px red;
+
+  transform:translate(-50%,-50%);
+}
+
+/* ========================= */
+/* TOPBAR */
+/* ========================= */
+
+.topbar{
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+
+  padding:20px 40px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  background:rgba(0,0,0,.35);
+
+  backdrop-filter:blur(12px);
+
+  border-bottom:
+  1px solid rgba(255,255,255,.06);
+
+  z-index:9999;
+}
+
+.logo-text{
+  color:#ff2a2a;
+  font-size:2rem;
+  letter-spacing:5px;
+}
+
+.server-box{
+  background:
+  rgba(255,255,255,.03);
+
+  padding:12px 20px;
+
+  border-radius:14px;
+
+  border:
+  1px solid rgba(255,255,255,.05);
+}
+
+.server-box strong{
+  color:#00ff88;
+}
+
+.links{
+  display:flex;
+  gap:20px;
+}
+
+.links a{
+  color:white;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.links a:hover{
+  color:#ff2a2a;
+}
+
+/* ========================= */
+/* HERO */
+/* ========================= */
+
+.hero{
+  min-height:100vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+
+  padding:120px 20px 80px;
+}
+
+.hero img{
+  width:190px;
+
+  filter:
+  drop-shadow(0 0 25px rgba(255,0,0,.45));
+
+  animation:logoFloat 5s infinite ease-in-out;
+}
+
+@keyframes logoFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+.hero h1{
+  font-size:5rem;
+
+  letter-spacing:12px;
+
+  margin-top:20px;
+
+  text-shadow:
+  0 0 30px rgba(255,0,0,.45);
+}
+
+.hero p{
+  margin-top:20px;
+
+  max-width:700px;
+
+  color:#bbb;
+
+  line-height:1.8;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+
+  margin-top:40px;
+}
+
+.hero-buttons a{
+  padding:15px 35px;
+
+  background:
+  rgba(120,0,0,.35);
+
+  border:
+  1px solid rgba(255,0,0,.25);
+
+  border-radius:14px;
+
+  color:white;
+
+  text-decoration:none;
+
+  transition:.35s;
+}
+
+.hero-buttons a:hover{
+  transform:
+  translateY(-5px);
+
+  background:red;
+
+  box-shadow:
+  0 0 30px rgba(255,0,0,.4);
+}
+
+/* ========================= */
+/* COMMAND TERMINAL */
+/* ========================= */
+
+.command-terminal{
+
+  width:90%;
+
+  max-width:1100px;
+
+  margin:60px auto;
+
+  background:
+  rgba(0,0,0,.65);
+
+  border:
+  1px solid rgba(255,0,0,.2);
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  backdrop-filter:blur(10px);
+
+  box-shadow:
+  0 0 40px rgba(255,0,0,.12);
+}
+
+.command-top{
 
   padding:18px 25px;
 
@@ -162,18 +667,12 @@
 
   color:#ff3b3b;
 
-  letter-spacing:3px;
-
-  font-size:.95rem;
+  letter-spacing:2px;
 }
 
-/* ====================================== */
-/* BODY */
-/* ====================================== */
+.command-output{
 
-.intro-terminal-body{
-
-  height:220px;
+  height:320px;
 
   overflow-y:auto;
 
@@ -184,21 +683,15 @@
   font-family:monospace;
 
   line-height:2;
-
-  text-align:left;
 }
 
-/* ====================================== */
-/* INPUT */
-/* ====================================== */
-
-.terminal-input-wrap{
+.command-input-wrap{
 
   display:flex;
 
   align-items:center;
 
-  gap:14px;
+  gap:12px;
 
   padding:20px;
 
@@ -206,16 +699,14 @@
   1px solid rgba(255,0,0,.12);
 }
 
-.terminal-input-wrap span{
+.command-input-wrap span{
 
   color:#ff3b3b;
 
   font-family:monospace;
-
-  font-size:1rem;
 }
 
-#accessCode{
+#commandInput{
 
   flex:1;
 
@@ -224,249 +715,758 @@
   border:
   1px solid rgba(255,0,0,.2);
 
-  border-radius:14px;
+  border-radius:12px;
 
-  padding:16px;
+  padding:14px;
 
   color:#00ff88;
 
   font-family:monospace;
 
   outline:none;
-
-  font-size:1rem;
 }
 
-#accessCode:focus{
+/* ========================= */
+/* THEORY SECTION */
+/* ========================= */
 
-  border-color:red;
+.theory-section{
 
-  box-shadow:
-  0 0 20px rgba(255,0,0,.3);
+  padding:100px 40px;
 }
 
-/* ====================================== */
-/* BUTTON */
-/* ====================================== */
+.theory-section h2{
 
-#enterBtn{
+  text-align:center;
 
-  width:calc(100% - 40px);
+  color:#ff3b3b;
 
-  margin:0 20px 20px;
+  margin-bottom:40px;
 
-  padding:18px;
+  letter-spacing:4px;
+}
+
+.theory-post-box{
+
+  width:100%;
+
+  max-width:900px;
+
+  margin:auto;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:20px;
+}
+
+#theoryTitle,
+#theoryText{
 
   background:
-  linear-gradient(
-    to right,
-    darkred,
-    red
-  );
+  rgba(0,0,0,.55);
 
-  border:none;
+  border:
+  1px solid rgba(255,0,0,.18);
 
   border-radius:16px;
 
+  padding:18px;
+
   color:white;
 
-  font-size:1rem;
+  outline:none;
+}
 
-  letter-spacing:3px;
+#theoryText{
+
+  min-height:180px;
+
+  resize:vertical;
+}
+
+#postTheoryBtn{
+
+  padding:16px;
+
+  background:red;
+
+  border:none;
+
+  border-radius:14px;
+
+  color:white;
 
   cursor:pointer;
 
-  transition:.35s;
+  transition:.3s;
 }
 
-#enterBtn:hover{
+#postTheoryBtn:hover{
 
   transform:translateY(-4px);
 
   box-shadow:
-  0 0 35px rgba(255,0,0,.45);
+  0 0 25px rgba(255,0,0,.35);
 }
 
-/* ====================================== */
-/* ERROR */
-/* ====================================== */
+.theory-feed{
 
-#accessError{
+  display:grid;
 
-  display:none;
+  grid-template-columns:
+  repeat(auto-fit,minmax(320px,1fr));
 
-  padding-bottom:20px;
+  gap:25px;
 
-  color:#ff2a2a;
+  margin-top:50px;
+}
+
+.theory-card{
+
+  background:
+  rgba(0,0,0,.45);
+
+  border:
+  1px solid rgba(255,0,0,.12);
+
+  border-radius:18px;
+
+  padding:25px;
+
+  transition:.35s;
+}
+
+.theory-card:hover{
+
+  transform:translateY(-6px);
+
+  box-shadow:
+  0 0 35px rgba(255,0,0,.15);
+}
+
+.theory-card h3{
+
+  color:#ff3b3b;
+
+  margin-bottom:14px;
+}
+
+.theory-card p{
+
+  color:#ccc;
+
+  line-height:1.7;
+}
+
+/* ========================= */
+/* ANALOG HORROR */
+/* ========================= */
+
+.analog-section{
+
+  padding:100px 40px;
+}
+
+.analog-section h2{
+
+  text-align:center;
+
+  color:#ff3b3b;
+
+  letter-spacing:4px;
+
+  margin-bottom:15px;
+}
+
+.analog-section p{
+
+  text-align:center;
+
+  color:#aaa;
+
+  margin-bottom:50px;
+}
+
+.analog-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(340px,1fr));
+
+  gap:30px;
+}
+
+.analog-card{
+
+  background:
+  rgba(0,0,0,.45);
+
+  border:
+  1px solid rgba(255,0,0,.12);
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  transition:.35s;
+}
+
+.analog-card:hover{
+
+  transform:translateY(-8px);
+
+  box-shadow:
+  0 0 40px rgba(255,0,0,.2);
+}
+
+.analog-card iframe{
+
+  width:100%;
+
+  height:240px;
+}
+
+.analog-card h3{
+
+  padding:20px;
+
+  color:#ff3b3b;
 
   letter-spacing:2px;
-
-  animation:errorFlash .5s infinite alternate;
 }
 
-@keyframes errorFlash{
-
-  from{
-    opacity:.4;
-  }
-
-  to{
-    opacity:1;
-  }
-}
-
-/* ====================================== */
+/* ========================= */
 /* MOBILE */
-/* ====================================== */
+/* ========================= */
 
-@media(max-width:700px){
+@media(max-width:900px){
 
-  .intro-overlay h1{
+  .topbar{
+    flex-direction:column;
+    gap:15px;
+  }
 
+  .hero h1{
     font-size:3rem;
   }
 
-  .intro-terminal-body{
+  .hero img{
+    width:140px;
+  }
 
-    height:180px;
+  .bloodmoon{
+    width:120px;
+    height:120px;
+    right:20px;
   }
 
 }
 
 </style>
+</head>
 
-<!-- ====================================== -->
-<!-- REPLACE YOUR OLD INTRO SCRIPT -->
-<!-- WITH THIS -->
-<!-- ====================================== -->
+<body>
+
+<!-- INTRO -->
+
+<div id="intro-cutscene">
+
+  <video autoplay muted loop playsinline id="introVideo">
+
+    <source src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p" type="video/mp4">
+
+  </video>
+
+  <div class="intro-overlay">
+
+    <h1>EVERDUSK</h1>
+
+    <p>SECURE ACCESS TERMINAL</p>
+
+    <div class="lock-terminal">
+
+      <div class="lock-terminal-title">
+
+        AUTHORIZATION REQUIRED
+
+      </div>
+
+      <div
+        class="lock-screen-output"
+        id="lockOutput"
+      >
+
+        <div>> EVERDUSK NETWORK DETECTED</div>
+
+        <div>> ACCESS LEVEL: RESTRICTED</div>
+
+        <div>> ENTER SECURITY CODE</div>
+
+        <div>> ONLY AUTHORIZED USERS MAY ENTER</div>
+
+      </div>
+
+      <div class="lock-input-wrap">
+
+        <span>>></span>
+
+        <input
+          type="password"
+          id="accessInput"
+          placeholder="ENTER ACCESS CODE..."
+          autocomplete="off"
+        >
+
+        <button id="unlockBtn">
+
+          UNLOCK
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EFFECTS -->
+
+<div class="background"></div>
+
+<div class="bloodmoon"></div>
+
+<div class="rain"></div>
+
+<div class="lightning"></div>
+
+<div class="floating-fog"></div>
+
+<div class="scanlines"></div>
+
+<div class="cursor-glow"></div>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+  <div class="logo-text">
+    EVERDUSK
+  </div>
+
+  <div class="server-box">
+
+    Eagler:
+    <strong>everdusk.xyz</strong>
+
+  </div>
+
+  <div class="links">
+
+    <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
+      Discord
+    </a>
+
+    <a href="https://www.youtube.com/@Everduskofficial" target="_blank">
+      YouTube
+    </a>
+
+  </div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+  <img
+    src="https://cdn.corenexis.com/files/c/8547675720.png"
+    alt="Everdusk Logo"
+  >
+
+  <h1>EVERDUSK</h1>
+
+  <p>
+    A cinematic Minecraft horror universe where forgotten realms consume everything.
+  </p>
+
+  <div class="hero-buttons">
+
+    <a href="#">JOIN DISCORD</a>
+
+    <a href="#">WATCH ARCHIVES</a>
+
+    <a href="#">LORE DATABASE</a>
+
+  </div>
+
+</div>
+
+<!-- COMMAND TERMINAL -->
+
+<section class="command-terminal">
+
+  <div class="command-top">
+
+    <span>LIVE COMMAND CONSOLE</span>
+
+  </div>
+
+  <div class="command-output" id="commandOutput">
+
+    <div>> SYSTEM READY...</div>
+
+    <div>> TYPE /help</div>
+
+  </div>
+
+  <div class="command-input-wrap">
+
+    <span>>></span>
+
+    <input
+      type="text"
+      id="commandInput"
+      placeholder="Enter command..."
+      autocomplete="off"
+    >
+
+  </div>
+
+</section>
+
+<!-- THEORY SECTION -->
+
+<section class="theory-section">
+
+  <h2>COMMUNITY THEORIES</h2>
+
+  <div class="theory-post-box">
+
+    <input
+      type="text"
+      id="theoryTitle"
+      placeholder="Theory title..."
+    >
+
+    <textarea
+      id="theoryText"
+      placeholder="Write your Everdusk theory..."
+    ></textarea>
+
+    <button id="postTheoryBtn">
+
+      POST THEORY
+
+    </button>
+
+  </div>
+
+  <div class="theory-feed" id="theoryFeed">
+
+    <div class="theory-card">
+
+      <h3>
+        THE WATCHERS ARE REAL
+      </h3>
+
+      <p>
+        I think the watchers are connected to the corrupted signal beneath Black Hollow...
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ANALOG HORROR -->
+
+<section class="analog-section">
+
+  <h2>MINECRAFT ANALOG HORROR ARCHIVES</h2>
+
+  <p>
+    Distorted transmissions recovered from Everdusk.
+  </p>
+
+  <div class="analog-grid">
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/7iFXyLah2oQ"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>THE SIGNAL TAPES</h3>
+
+    </div>
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/WrW5mGb7ybg"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>ENTITY SIGHTINGS</h3>
+
+    </div>
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/o_l4Ab5FRwM"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>BLACK HOLLOW ARCHIVES</h3>
+
+    </div>
+
+  </div>
+
+</section>
 
 <script>
 
-/* ====================================== */
 /* ACCESS SYSTEM */
-/* ====================================== */
-
-const correctCode = "438542";
-
-const enterBtn =
-document.getElementById("enterBtn");
 
 const accessInput =
-document.getElementById("accessCode");
+document.getElementById("accessInput");
 
-const accessError =
-document.getElementById("accessError");
+const unlockBtn =
+document.getElementById("unlockBtn");
 
-const introTerminal =
-document.getElementById("introTerminal");
+const intro =
+document.getElementById("intro-cutscene");
 
-/* ====================================== */
-/* ENTER BUTTON */
-/* ====================================== */
+const lockOutput =
+document.getElementById("lockOutput");
 
-enterBtn.onclick = () => {
+function unlockSite(){
 
-  const value =
+  const code =
   accessInput.value.trim();
 
-  if(value === correctCode){
+  const line =
+  document.createElement("div");
 
-    introTerminal.innerHTML +=
-    "<br>> ACCESS GRANTED...<br>> WELCOME TO EVERDUSK...";
+  line.innerHTML =
+  "> ACCESS CODE: " + code;
+
+  lockOutput.appendChild(line);
+
+  if(code === "438542"){
+
+    const granted =
+    document.createElement("div");
+
+    granted.innerHTML =
+    "> ACCESS GRANTED";
+
+    lockOutput.appendChild(granted);
 
     setTimeout(() => {
 
-      document
-      .getElementById("intro-cutscene")
-      .style.opacity = "0";
+      intro.style.opacity = "0";
+
+      intro.style.transition =
+      "1.2s";
 
       setTimeout(() => {
 
-        document
-        .getElementById("intro-cutscene")
-        .style.display = "none";
+        intro.style.display = "none";
 
-      },1000);
+      },1200);
 
-    },1500);
+    },900);
 
   }
 
   else{
 
-    accessError.style.display =
-    "block";
+    const denied =
+    document.createElement("div");
 
-    introTerminal.innerHTML +=
-    "<br>> ACCESS DENIED...";
+    denied.innerHTML =
+    "> ACCESS DENIED";
+
+    denied.style.color =
+    "#ff2a2a";
+
+    lockOutput.appendChild(denied);
 
     accessInput.value = "";
 
-    document.body.style.animation =
-    "shake .3s";
+    document
+    .querySelector(".lock-terminal")
+    .classList.add("access-denied");
 
     setTimeout(() => {
 
-      document.body.style.animation =
-      "";
+      document
+      .querySelector(".lock-terminal")
+      .classList.remove("access-denied");
 
-    },300);
+    },900);
 
   }
 
-};
+  lockOutput.scrollTop =
+  lockOutput.scrollHeight;
 
-/* ====================================== */
-/* ENTER KEY */
-/* ====================================== */
+}
 
-accessInput.addEventListener(
-"keydown",
-e => {
+unlockBtn.onclick =
+unlockSite;
+
+accessInput
+.addEventListener("keydown", e => {
 
   if(e.key === "Enter"){
 
-    enterBtn.click();
+    unlockSite();
 
   }
 
 });
 
-/* ====================================== */
-/* SHAKE */
-/* ====================================== */
+/* CURSOR */
 
-const style =
-document.createElement("style");
+const cursor =
+document.querySelector(".cursor-glow");
 
-style.innerHTML = `
+document.addEventListener("mousemove", e => {
 
-@keyframes shake{
+  cursor.style.left =
+  e.clientX + "px";
 
-  0%{
-    transform:translateX(0);
+  cursor.style.top =
+  e.clientY + "px";
+
+});
+
+/* COMMANDS */
+
+const commandInput =
+document.getElementById("commandInput");
+
+const commandOutput =
+document.getElementById("commandOutput");
+
+const commands = {
+
+  "/help":
+  "AVAILABLE COMMANDS: /help /entities /watchers /signal /archive /blackhollow",
+
+  "/entities":
+  "KNOWN ENTITIES: WATCHER-01, SHADOW CRAWLER, RED EYE",
+
+  "/watchers":
+  "THE WATCHERS ARE ALWAYS OBSERVING.",
+
+  "/signal":
+  "DISTORTED SIGNAL DETECTED UNDER EVERDUSK.",
+
+  "/archive":
+  "ACCESSING CORRUPTED ARCHIVES...",
+
+  "/blackhollow":
+  "WARNING: BLACK HOLLOW IS RESTRICTED."
+
+};
+
+commandInput.addEventListener("keydown", e => {
+
+  if(e.key === "Enter"){
+
+    const value =
+    commandInput.value.trim();
+
+    if(value === "") return;
+
+    const userLine =
+    document.createElement("div");
+
+    userLine.innerHTML =
+    "> " + value;
+
+    commandOutput.appendChild(userLine);
+
+    const response =
+    document.createElement("div");
+
+    response.innerHTML =
+    commands[value] ||
+    "UNKNOWN COMMAND.";
+
+    commandOutput.appendChild(response);
+
+    commandOutput.scrollTop =
+    commandOutput.scrollHeight;
+
+    commandInput.value = "";
+
   }
 
-  25%{
-    transform:translateX(-5px);
-  }
+});
 
-  50%{
-    transform:translateX(5px);
-  }
+/* THEORY POSTS */
 
-  75%{
-    transform:translateX(-5px);
-  }
+document
+.getElementById("postTheoryBtn")
+.onclick = () => {
 
-  100%{
-    transform:translateX(0);
-  }
+  const title =
+  document
+  .getElementById("theoryTitle")
+  .value;
 
-}
+  const text =
+  document
+  .getElementById("theoryText")
+  .value;
 
-`;
+  if(title === "" || text === "")
+    return;
 
-document.head.appendChild(style);
+  const card =
+  document.createElement("div");
+
+  card.className =
+  "theory-card";
+
+  card.innerHTML =
+
+  `
+  <h3>${title}</h3>
+  <p>${text}</p>
+  `;
+
+  document
+  .getElementById("theoryFeed")
+  .prepend(card);
+
+  document
+  .getElementById("theoryTitle")
+  .value = "";
+
+  document
+  .getElementById("theoryText")
+  .value = "";
+
+};
 
 </script>
+
+</body>
+</html>
