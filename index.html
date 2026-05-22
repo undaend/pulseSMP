@@ -12,7 +12,7 @@
 <style>
 
 /* =========================================================
-   RESET
+RESET
 ========================================================= */
 
 *{
@@ -27,20 +27,20 @@ html{
 }
 
 body{
-  overflow-x:hidden;
   background:black;
+  overflow-x:hidden;
   color:white;
   font-family:'Orbitron',sans-serif;
 }
 
 /* =========================================================
-   BACKGROUND
+BACKGROUND
 ========================================================= */
 
 .bg{
+
   position:fixed;
   inset:0;
-  z-index:-50;
 
   background:
   linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.95)),
@@ -48,14 +48,21 @@ body{
 
   background-size:cover;
   background-position:center;
+
+  z-index:-10;
+
   filter:brightness(.4);
+
 }
 
 .scanlines{
+
   position:fixed;
   inset:0;
-  z-index:999999;
+
   pointer-events:none;
+
+  z-index:999999;
 
   background:
   repeating-linear-gradient(
@@ -66,97 +73,140 @@ body{
     transparent 4px
   );
 
-  mix-blend-mode:overlay;
 }
 
 .bloodmoon{
+
   position:fixed;
+
   top:5%;
   right:8%;
-  width:260px;
-  height:260px;
+
+  width:250px;
+  height:250px;
+
   border-radius:50%;
 
   background:
   radial-gradient(circle,
   #ff4b4b 0%,
-  #7a0000 50%,
-  transparent 70%);
+  #5c0000 60%,
+  transparent 75%);
 
   box-shadow:
   0 0 80px rgba(255,0,0,.8),
   0 0 160px rgba(255,0,0,.3);
 
-  animation:moonPulse 7s infinite ease-in-out;
+  animation:moonPulse 6s infinite ease-in-out;
+
   z-index:-2;
+
 }
 
 @keyframes moonPulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.05);
+  }
+
 }
 
 .fog{
+
   position:fixed;
   inset:0;
-  z-index:-1;
 
   background:
-  radial-gradient(circle at 20% 50%,rgba(255,0,0,.12),transparent 40%),
+  radial-gradient(circle at 20% 50%,rgba(255,0,0,.15),transparent 40%),
   radial-gradient(circle at 80% 60%,rgba(255,0,0,.08),transparent 40%);
 
-  animation:fogMove 20s infinite alternate ease-in-out;
+  animation:fogMove 15s infinite alternate ease-in-out;
+
+  z-index:-1;
+
 }
 
 @keyframes fogMove{
-  from{transform:translateX(-2%)}
-  to{transform:translateX(2%)}
+
+  from{
+    transform:translateX(-2%);
+  }
+
+  to{
+    transform:translateX(2%);
+  }
+
 }
 
 /* =========================================================
-   RAIN
+RAIN
 ========================================================= */
 
 .rain{
+
   position:fixed;
   inset:0;
+
   z-index:-1;
+
   pointer-events:none;
+
 }
 
 .drop{
+
   position:absolute;
+
   width:1px;
   height:120px;
 
   background:
-  linear-gradient(transparent,rgba(255,255,255,.4));
+  linear-gradient(
+    transparent,
+    rgba(255,255,255,.5)
+  );
 
   animation:rain linear infinite;
+
 }
 
 @keyframes rain{
-  from{transform:translateY(-150px)}
-  to{transform:translateY(120vh)}
+
+  from{
+    transform:translateY(-150px);
+  }
+
+  to{
+    transform:translateY(120vh);
+  }
+
 }
 
 /* =========================================================
-   CURSOR
+CURSOR
 ========================================================= */
 
 .cursor{
+
   width:18px;
   height:18px;
+
   border-radius:50%;
+
   background:red;
 
   position:fixed;
+
   top:0;
   left:0;
 
-  pointer-events:none;
-
   transform:translate(-50%,-50%);
+
+  pointer-events:none;
 
   z-index:999999999;
 
@@ -165,52 +215,68 @@ body{
   0 0 40px red,
   0 0 80px rgba(255,0,0,.7);
 
-  mix-blend-mode:screen;
 }
 
 .cursorTrail{
+
   position:fixed;
+
   width:8px;
   height:8px;
+
   border-radius:50%;
+
   background:rgba(255,0,0,.5);
+
   pointer-events:none;
+
   z-index:999999;
+
 }
 
 /* =========================================================
-   INTRO
+INTRO
 ========================================================= */
 
 .intro{
+
   position:fixed;
   inset:0;
+
   background:black;
-  z-index:9999999;
 
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
 
+  z-index:99999999;
+
   transition:1.5s;
+
 }
 
 .intro.hide{
+
   opacity:0;
   pointer-events:none;
+
 }
 
 .glitch{
+
   font-size:7rem;
+
   font-weight:900;
+
   letter-spacing:10px;
 
   text-shadow:
   0 0 20px red,
   0 0 60px red;
 
-  animation:glitch 2s infinite;
+  animation:glitch 1.5s infinite;
+
 }
 
 @keyframes glitch{
@@ -238,7 +304,9 @@ body{
 }
 
 .enterBtn{
+
   margin-top:40px;
+
   padding:18px 50px;
 
   background:rgba(255,0,0,.1);
@@ -248,25 +316,120 @@ body{
   color:white;
 
   font-size:1rem;
+
   letter-spacing:4px;
 
   transition:.4s;
 
-  backdrop-filter:blur(10px);
 }
 
 .enterBtn:hover{
+
   transform:scale(1.05);
-  box-shadow:0 0 30px red;
+
+  box-shadow:0 0 25px red;
+
 }
 
 /* =========================================================
-   NAVBAR
+CUTSCENE
+========================================================= */
+
+.cutscene{
+
+  position:fixed;
+  inset:0;
+
+  background:
+  radial-gradient(circle at center,
+  rgba(120,0,0,.15),
+  black 70%);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  z-index:9999999;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:1s;
+
+}
+
+.cutscene.show{
+
+  opacity:1;
+  pointer-events:auto;
+
+}
+
+.cutsceneText{
+
+  font-size:4rem;
+
+  color:red;
+
+  text-shadow:
+  0 0 20px red,
+  0 0 60px red;
+
+  letter-spacing:8px;
+
+  animation:glitch 1s infinite;
+
+}
+
+.cutsceneSub{
+
+  margin-top:30px;
+
+  color:#ccc;
+
+  letter-spacing:4px;
+
+}
+
+.flashScreen{
+
+  position:fixed;
+  inset:0;
+
+  background:red;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  z-index:999999999;
+
+}
+
+.flashScreen.flash{
+
+  animation:screenFlash .5s;
+
+}
+
+@keyframes screenFlash{
+
+  0%{opacity:0;}
+  50%{opacity:.35;}
+  100%{opacity:0;}
+
+}
+
+/* =========================================================
+NAVBAR
 ========================================================= */
 
 nav{
+
   position:fixed;
   top:0;
+
   width:100%;
 
   padding:20px 40px;
@@ -282,43 +445,133 @@ nav{
   border-bottom:1px solid rgba(255,0,0,.15);
 
   z-index:9999;
+
 }
 
 .logo{
+
   font-size:2rem;
+
   font-weight:900;
+
   letter-spacing:6px;
+
   text-shadow:0 0 20px red;
+
 }
 
 .navLinks{
+
   display:flex;
-  gap:18px;
+  gap:16px;
+
   flex-wrap:wrap;
+
 }
 
 .navBtn{
-  padding:12px 18px;
 
-  border:1px solid rgba(255,0,0,.3);
+  padding:12px 18px;
 
   background:rgba(255,0,0,.08);
 
+  border:1px solid rgba(255,0,0,.3);
+
   color:white;
+
   text-decoration:none;
 
   transition:.3s;
 
-  backdrop-filter:blur(10px);
 }
 
 .navBtn:hover{
+
   transform:translateY(-4px);
+
   box-shadow:0 0 20px red;
+
 }
 
 /* =========================================================
-   PANEL TOGGLES
+HERO
+========================================================= */
+
+.hero{
+
+  min-height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+
+  text-align:center;
+
+  padding:150px 20px;
+
+}
+
+.hero h1{
+
+  font-size:8rem;
+
+  font-family:'Cinzel',serif;
+
+  text-shadow:
+  0 0 20px red,
+  0 0 80px red;
+
+}
+
+.hero p{
+
+  max-width:900px;
+
+  margin-top:30px;
+
+  line-height:2;
+
+  color:#ccc;
+
+}
+
+.heroButtons{
+
+  display:flex;
+
+  gap:20px;
+
+  margin-top:40px;
+
+  flex-wrap:wrap;
+
+}
+
+.heroBtn{
+
+  padding:18px 40px;
+
+  background:rgba(255,0,0,.08);
+
+  border:1px solid rgba(255,0,0,.35);
+
+  color:white;
+
+  transition:.4s;
+
+}
+
+.heroBtn:hover{
+
+  transform:scale(1.05);
+
+  box-shadow:0 0 25px red;
+
+}
+
+/* =========================================================
+PANELS
 ========================================================= */
 
 .panel-toggle{
@@ -335,91 +588,21 @@ nav{
 
   color:white;
 
-  backdrop-filter:blur(10px);
-
-  z-index:99999;
+  z-index:9999;
 
   transition:.3s;
+
 }
 
 .panel-toggle:hover{
+
   box-shadow:0 0 20px red;
-  transform:translateY(-2px);
+
 }
 
 #worldToggle{top:90px;}
 #playerToggle{top:145px;}
 #terminalToggle{top:200px;}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-  min-height:100vh;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-
-  text-align:center;
-
-  padding:150px 20px;
-}
-
-.hero h1{
-  font-size:8rem;
-  font-family:'Cinzel',serif;
-
-  text-shadow:
-  0 0 20px red,
-  0 0 80px red;
-
-  animation:float 5s infinite ease-in-out;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-}
-
-.hero p{
-  margin-top:30px;
-  max-width:900px;
-  line-height:2;
-  color:#ccc;
-}
-
-.heroButtons{
-  display:flex;
-  gap:20px;
-  margin-top:40px;
-  flex-wrap:wrap;
-}
-
-.heroBtn{
-  padding:18px 40px;
-
-  border:1px solid rgba(255,0,0,.35);
-
-  background:rgba(255,0,0,.08);
-
-  color:white;
-
-  transition:.4s;
-
-  backdrop-filter:blur(10px);
-}
-
-.heroBtn:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 25px red;
-}
-
-/* =========================================================
-   PANELS
-========================================================= */
 
 .world-feed,
 .player-feed,
@@ -436,17 +619,21 @@ nav{
 .terminal.closed{
 
   transform:translateX(120%);
+
   opacity:0;
+
   pointer-events:none;
 
 }
 
 /* =========================================================
-   WORLD FEED
+FEEDS
 ========================================================= */
 
 .world-feed{
+
   position:fixed;
+
   top:140px;
   right:20px;
 
@@ -462,11 +649,12 @@ nav{
 
   z-index:999;
 
-  backdrop-filter:blur(10px);
 }
 
 .player-feed{
+
   position:fixed;
+
   top:420px;
   right:20px;
 
@@ -482,19 +670,18 @@ nav{
 
   z-index:999;
 
-  backdrop-filter:blur(10px);
 }
 
 .feed-header{
+
   padding:14px 18px;
 
   background:rgba(255,0,0,.08);
 
-  border-bottom:1px solid rgba(255,0,0,.15);
-
   color:#ff3b3b;
 
   letter-spacing:2px;
+
 }
 
 .feed-messages,
@@ -512,14 +699,17 @@ nav{
   gap:12px;
 
   color:#ccc;
+
 }
 
 /* =========================================================
-   CORRUPTION
+CORRUPTION
 ========================================================= */
 
 .corruption-wrap{
+
   position:fixed;
+
   top:100px;
   left:20px;
 
@@ -533,43 +723,52 @@ nav{
 
   padding:20px;
 
-  z-index:999;
 }
 
 .corruption-title{
+
   color:#ff3b3b;
+
   margin-bottom:15px;
-  letter-spacing:2px;
+
 }
 
 .corruption-bar{
+
   height:16px;
+
   background:#111;
+
   border-radius:20px;
+
   overflow:hidden;
+
 }
 
 .corruption-fill{
+
   width:72%;
   height:100%;
 
   background:
   linear-gradient(to right,darkred,red);
 
-  box-shadow:0 0 20px red;
 }
 
 #corruptionText{
+
   display:block;
+
   margin-top:12px;
-  color:#ccc;
+
 }
 
 /* =========================================================
-   WEATHER
+WEATHER
 ========================================================= */
 
 .weather-status{
+
   position:fixed;
 
   bottom:30px;
@@ -585,18 +784,69 @@ nav{
 
   padding:14px 28px;
 
-  z-index:999;
-
   color:#ff3b3b;
 
-  letter-spacing:2px;
+  z-index:999;
+
 }
 
 /* =========================================================
-   TERMINAL
+SECTION
+========================================================= */
+
+.section{
+
+  padding:120px 8%;
+
+}
+
+.sectionTitle{
+
+  font-size:3rem;
+
+  margin-bottom:60px;
+
+  text-shadow:0 0 20px red;
+
+}
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(300px,1fr));
+
+  gap:30px;
+
+}
+
+.card{
+
+  background:rgba(0,0,0,.45);
+
+  border:1px solid rgba(255,0,0,.2);
+
+  padding:30px;
+
+  transition:.4s;
+
+}
+
+.card:hover{
+
+  transform:translateY(-8px);
+
+  box-shadow:0 0 25px rgba(255,0,0,.4);
+
+}
+
+/* =========================================================
+TERMINAL
 ========================================================= */
 
 .terminal{
+
   position:fixed;
 
   bottom:20px;
@@ -609,157 +859,42 @@ nav{
 
   border:1px solid red;
 
-  box-shadow:0 0 30px rgba(255,0,0,.5);
+  overflow:hidden;
 
   z-index:9999;
 
-  overflow:hidden;
-
-  resize:both;
 }
 
 .terminalHeader{
-  background:#120000;
+
   padding:12px;
+
+  background:#120000;
+
   border-bottom:1px solid red;
+
 }
 
 .terminalBody{
+
   height:calc(100% - 40px);
 
   overflow-y:auto;
 
   padding:15px;
 
+  color:#00ff66;
+
   font-family:monospace;
 
-  color:#00ff66;
 }
 
 /* =========================================================
-   SECTIONS
-========================================================= */
-
-.section{
-  padding:120px 8%;
-}
-
-.sectionTitle{
-  font-size:3rem;
-  margin-bottom:60px;
-  text-shadow:0 0 20px red;
-}
-
-.grid{
-  display:grid;
-
-  grid-template-columns:
-  repeat(auto-fit,minmax(300px,1fr));
-
-  gap:30px;
-}
-
-.card{
-  background:rgba(0,0,0,.45);
-
-  border:1px solid rgba(255,0,0,.2);
-
-  padding:30px;
-
-  backdrop-filter:blur(10px);
-
-  transition:.4s;
-}
-
-.card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 0 30px rgba(255,0,0,.3);
-}
-
-.card h3{
-  margin-bottom:20px;
-  color:#ff4040;
-}
-
-/* =========================================================
-   POPUPS
-========================================================= */
-
-.systemBroadcast{
-  position:fixed;
-
-  top:50%;
-  left:50%;
-
-  transform:translate(-50%,-50%) scale(.8);
-
-  width:500px;
-  max-width:90%;
-
-  padding:40px;
-
-  background:rgba(0,0,0,.92);
-
-  border:1px solid rgba(255,0,0,.5);
-
-  box-shadow:0 0 40px rgba(255,0,0,.5);
-
-  backdrop-filter:blur(20px);
-
-  z-index:99999;
-
-  opacity:0;
-
-  transition:.5s;
-
-  text-align:center;
-}
-
-.systemBroadcast.show{
-  opacity:1;
-  transform:translate(-50%,-50%) scale(1);
-}
-
-.systemBroadcast h2{
-  color:red;
-  margin-bottom:20px;
-}
-
-.achievementPopup{
-  position:fixed;
-
-  bottom:30px;
-  left:30px;
-
-  width:320px;
-
-  background:rgba(0,0,0,.95);
-
-  border-left:4px solid red;
-
-  padding:20px;
-
-  z-index:99999;
-
-  transform:translateX(-120%);
-
-  transition:.5s;
-}
-
-.achievementPopup.show{
-  transform:translateX(0);
-}
-
-.achievementPopup h3{
-  color:red;
-  margin-bottom:10px;
-}
-
-/* =========================================================
-   ENTITY FLASH
+ENTITY FLASH
 ========================================================= */
 
 .entity-flash{
+
   position:fixed;
   inset:0;
 
@@ -776,38 +911,15 @@ nav{
   z-index:999999;
 
   transition:.15s;
+
 }
 
 .entity-flash img{
+
   width:100%;
   height:100%;
+
   object-fit:cover;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:900px){
-
-  nav{
-    flex-direction:column;
-    gap:20px;
-  }
-
-  .hero h1{
-    font-size:4rem;
-  }
-
-  .world-feed,
-  .player-feed{
-    display:none;
-  }
-
-  .terminal{
-    width:90%;
-    right:5%;
-  }
 
 }
 
@@ -833,25 +945,38 @@ nav{
     EVERDUSK
   </div>
 
-  <button class="enterBtn" onclick="enterSite()">
+  <button class="enterBtn"
+  onclick="enterSite()">
+
     ENTER THE WORLD
+
   </button>
 
 </div>
 
-<!-- TOGGLES -->
+<!-- CUTSCENE -->
 
-<button class="panel-toggle" id="worldToggle">
-WORLD
-</button>
+<div class="cutscene"
+id="cutscene">
 
-<button class="panel-toggle" id="playerToggle">
-PLAYERS
-</button>
+<div class="cutsceneText"
+id="cutsceneText">
 
-<button class="panel-toggle" id="terminalToggle">
-TERMINAL
-</button>
+SIGNAL FOUND
+
+</div>
+
+<div class="cutsceneSub"
+id="cutsceneSub">
+
+CONNECTING...
+
+</div>
+
+</div>
+
+<div class="flashScreen"
+id="flashScreen"></div>
 
 <!-- NAV -->
 
@@ -863,28 +988,24 @@ EVERDUSK
 
 <div class="navLinks">
 
-<a class="navBtn" href="#">
-Eagler: everdusk.xyz
+<a class="navBtn"
+onclick="joinServer()">
+JOIN
 </a>
 
-<a class="navBtn" href="#">
-Java: java.everdusk.xyz
+<a class="navBtn"
+onclick="openSignals()">
+SIGNALS
 </a>
 
-<a class="navBtn" href="#">
-Discord
+<a class="navBtn"
+onclick="openLore()">
+ARCHIVE
 </a>
 
-<a class="navBtn" href="#">
-Pulse
-</a>
-
-<a class="navBtn" href="#">
-VexSound
-</a>
-
-<a class="navBtn" href="#">
-YouTube
+<a class="navBtn"
+onclick="openDiscord()">
+DISCORD
 </a>
 
 </div>
@@ -901,29 +1022,59 @@ EVERDUSK
 
 <p>
 
-A corrupted cinematic Minecraft horror universe.
-Signals are spreading through the forest.
-Reality distortion levels are rising.
+A corrupted cinematic Minecraft horror universe where signals spread through the forest and entities watch from the dark.
 
 </p>
 
 <div class="heroButtons">
 
-<button class="heroBtn" onclick="joinServer()">
+<button class="heroBtn"
+onclick="joinServer()">
+
 ENTER SERVER
+
 </button>
 
-<button class="heroBtn" onclick="openSignals()">
+<button class="heroBtn"
+onclick="openSignals()">
+
 WATCH SIGNALS
+
 </button>
 
-<button class="heroBtn" onclick="openLore()">
+<button class="heroBtn"
+onclick="openLore()">
+
 LORE ARCHIVE
+
 </button>
 
 </div>
 
 </section>
+
+<!-- PANEL TOGGLES -->
+
+<button class="panel-toggle"
+id="worldToggle">
+
+WORLD
+
+</button>
+
+<button class="panel-toggle"
+id="playerToggle">
+
+PLAYERS
+
+</button>
+
+<button class="panel-toggle"
+id="terminalToggle">
+
+TERMINAL
+
+</button>
 
 <!-- WORLD FEED -->
 
@@ -933,7 +1084,8 @@ LORE ARCHIVE
 LIVE WORLD EVENTS
 </div>
 
-<div class="feed-messages" id="feedMessages">
+<div class="feed-messages"
+id="feedMessages">
 
 <div>
 ⚠ ENTITY DETECTED NEAR BLACK HOLLOW
@@ -951,7 +1103,8 @@ LIVE WORLD EVENTS
 PLAYER ACTIVITY
 </div>
 
-<div class="player-messages" id="playerMessages">
+<div class="player-messages"
+id="playerMessages">
 
 <div>
 ShadowFox joined Everdusk...
@@ -1000,7 +1153,7 @@ id="entityFlash">
 
 </div>
 
-<!-- LORE -->
+<!-- SECTION -->
 
 <section class="section">
 
@@ -1064,54 +1217,46 @@ id="terminalBody">
 
 </div>
 
-<!-- AUDIO -->
-
-<audio id="rainAudio" loop>
-
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c6a6fbd0f.mp3?filename=rain-ambient-110397.mp3">
-
-</audio>
-
 <script>
 
 /* =========================================================
-   INTRO
+ENTER SITE
 ========================================================= */
 
 function enterSite(){
 
   document
-  .getElementById('intro')
-  .classList.add('hide');
-
-  document
-  .getElementById('rainAudio')
-  .play();
+  .getElementById("intro")
+  .classList.add("hide");
 
 }
 
 /* =========================================================
-   CURSOR
+CURSOR
 ========================================================= */
 
 const cursor =
-document.getElementById('cursor');
+document.getElementById("cursor");
 
-document.addEventListener('mousemove',e=>{
+document.addEventListener("mousemove",e=>{
 
   cursor.style.left =
-  e.clientX+'px';
+  e.clientX+"px";
 
   cursor.style.top =
-  e.clientY+'px';
+  e.clientY+"px";
 
   const trail =
-  document.createElement('div');
+  document.createElement("div");
 
-  trail.className='cursorTrail';
+  trail.className =
+  "cursorTrail";
 
-  trail.style.left=e.clientX+'px';
-  trail.style.top=e.clientY+'px';
+  trail.style.left =
+  e.clientX+"px";
+
+  trail.style.top =
+  e.clientY+"px";
 
   document.body.appendChild(trail);
 
@@ -1124,24 +1269,24 @@ document.addEventListener('mousemove',e=>{
 });
 
 /* =========================================================
-   RAIN
+RAIN
 ========================================================= */
 
 const rain =
-document.getElementById('rain');
+document.getElementById("rain");
 
 for(let i=0;i<250;i++){
 
   const drop =
-  document.createElement('div');
+  document.createElement("div");
 
-  drop.classList.add('drop');
+  drop.classList.add("drop");
 
   drop.style.left =
-  Math.random()*100+'vw';
+  Math.random()*100+"vw";
 
   drop.style.animationDuration =
-  (Math.random()*1+.5)+'s';
+  (Math.random()*1+.5)+"s";
 
   drop.style.opacity =
   Math.random();
@@ -1151,158 +1296,145 @@ for(let i=0;i<250;i++){
 }
 
 /* =========================================================
-   TERMINAL
+CUTSCENE SYSTEM
 ========================================================= */
 
-const terminal =
-document.getElementById('terminalBody');
+const cutscene =
+document.getElementById("cutscene");
 
-const logs = [
+const cutsceneText =
+document.getElementById("cutsceneText");
 
-'> signal intercepted...',
-'> corruption increasing...',
-'> entity radar active...',
-'> archive unlocked...',
-'> whisper frequency detected...',
-'> emergency lockdown initiated...'
+const cutsceneSub =
+document.getElementById("cutsceneSub");
 
-];
+const flashScreen =
+document.getElementById("flashScreen");
 
-setInterval(()=>{
+function playCutscene(title,sub,callback){
 
-  const line =
-  document.createElement('div');
+  cutsceneText.innerHTML = title;
+  cutsceneSub.innerHTML = sub;
 
-  line.innerHTML =
-  logs[Math.floor(Math.random()*logs.length)];
+  cutscene.classList.add("show");
 
-  terminal.appendChild(line);
+  flashScreen.classList.add("flash");
 
-  terminal.scrollTop =
-  terminal.scrollHeight;
+  setTimeout(()=>{
 
-},2000);
+    flashScreen.classList.remove("flash");
+
+  },500);
+
+  setTimeout(()=>{
+
+    cutscene.classList.remove("show");
+
+    if(callback){
+
+      callback();
+
+    }
+
+  },3200);
+
+}
 
 /* =========================================================
-   BUTTONS
+BUTTON FUNCTIONS
 ========================================================= */
-
-function createBroadcast(text){
-
-  const box =
-  document.createElement('div');
-
-  box.className =
-  'systemBroadcast';
-
-  box.innerHTML = `
-    <h2>SYSTEM MESSAGE</h2>
-    <p>${text}</p>
-  `;
-
-  document.body.appendChild(box);
-
-  setTimeout(()=>{
-
-    box.classList.add('show');
-
-  },50);
-
-  setTimeout(()=>{
-
-    box.classList.remove('show');
-
-    setTimeout(()=>{
-
-      box.remove();
-
-    },1000);
-
-  },3500);
-
-}
-
-function createAchievement(text){
-
-  const achievement =
-  document.createElement('div');
-
-  achievement.className =
-  'achievementPopup';
-
-  achievement.innerHTML = `
-    <h3>ACHIEVEMENT UNLOCKED</h3>
-    <p>${text}</p>
-  `;
-
-  document.body.appendChild(achievement);
-
-  setTimeout(()=>{
-
-    achievement.classList.add('show');
-
-  },100);
-
-  setTimeout(()=>{
-
-    achievement.classList.remove('show');
-
-    setTimeout(()=>{
-
-      achievement.remove();
-
-    },1000);
-
-  },4000);
-
-}
 
 function joinServer(){
 
-  createBroadcast(
-    "CONNECTING TO EVERDUSK NETWORK..."
+  playCutscene(
+
+    "ACCESSING SERVER",
+
+    "OPENING EVERDUSK GATEWAY...",
+
+    ()=>{
+
+      navigator.clipboard.writeText(
+        "java.everdusk.xyz"
+      );
+
+      alert(
+        "SERVER IP COPIED: java.everdusk.xyz"
+      );
+
+    }
+
   );
-
-  setTimeout(()=>{
-
-    navigator.clipboard.writeText(
-      "java.everdusk.xyz"
-    );
-
-    createAchievement(
-      "SERVER IP COPIED"
-    );
-
-  },1500);
 
 }
 
 function openSignals(){
 
-  createBroadcast(
-    "SCANNING SIGNAL FREQUENCIES..."
+  playCutscene(
+
+    "SIGNAL DETECTED",
+
+    "INTERCEPTING UNKNOWN TRANSMISSIONS...",
+
+    ()=>{
+
+      document
+      .querySelector(".world-feed")
+      .classList.remove("closed");
+
+    }
+
   );
 
 }
 
 function openLore(){
 
-  document
-  .querySelector('.section')
-  .scrollIntoView({
+  playCutscene(
 
-    behavior:'smooth'
+    "ARCHIVE OPENING",
 
-  });
+    "DECRYPTING FORBIDDEN FILES...",
 
-  createBroadcast(
-    "OPENING ARCHIVE DATABASE..."
+    ()=>{
+
+      document
+      .querySelector(".section")
+      .scrollIntoView({
+
+        behavior:"smooth"
+
+      });
+
+    }
+
+  );
+
+}
+
+function openDiscord(){
+
+  playCutscene(
+
+    "LINK ESTABLISHED",
+
+    "CONNECTING TO DISCORD RELAY...",
+
+    ()=>{
+
+      window.open(
+        "https://discord.com",
+        "_blank"
+      );
+
+    }
+
   );
 
 }
 
 /* =========================================================
-   FEEDS
+FEEDS
 ========================================================= */
 
 const feed =
@@ -1359,7 +1491,7 @@ setInterval(()=>{
 },4000);
 
 /* =========================================================
-   CORRUPTION
+CORRUPTION
 ========================================================= */
 
 const corruptionFill =
@@ -1390,7 +1522,7 @@ setInterval(()=>{
 },6000);
 
 /* =========================================================
-   WEATHER
+WEATHER
 ========================================================= */
 
 const weatherText =
@@ -1415,7 +1547,7 @@ setInterval(()=>{
 },12000);
 
 /* =========================================================
-   ENTITY FLASH
+ENTITY FLASH
 ========================================================= */
 
 setInterval(()=>{
@@ -1434,84 +1566,73 @@ setInterval(()=>{
 },45000);
 
 /* =========================================================
-   TOGGLES
+TOGGLES
 ========================================================= */
 
 const worldFeed =
-document.querySelector('.world-feed');
+document.querySelector(".world-feed");
 
 const playerPanel =
-document.querySelector('.player-feed');
+document.querySelector(".player-feed");
 
 const terminalPanel =
-document.querySelector('.terminal');
+document.querySelector(".terminal");
 
 document
-.getElementById('worldToggle')
+.getElementById("worldToggle")
 .onclick = ()=>{
 
-  worldFeed.classList.toggle('closed');
+  worldFeed.classList.toggle("closed");
 
 };
 
 document
-.getElementById('playerToggle')
+.getElementById("playerToggle")
 .onclick = ()=>{
 
-  playerPanel.classList.toggle('closed');
+  playerPanel.classList.toggle("closed");
 
 };
 
 document
-.getElementById('terminalToggle')
+.getElementById("terminalToggle")
 .onclick = ()=>{
 
-  terminalPanel.classList.toggle('closed');
+  terminalPanel.classList.toggle("closed");
 
 };
 
 /* =========================================================
-   TERMINAL DRAG
+TERMINAL
 ========================================================= */
 
-const terminalWindow =
-document.getElementById("terminal");
+const terminal =
+document.getElementById("terminalBody");
 
-let isDragging = false;
+const logs = [
 
-let offsetX, offsetY;
+"> signal intercepted...",
+"> corruption increasing...",
+"> entity radar active...",
+"> archive unlocked...",
+"> whisper frequency detected..."
 
-terminalWindow
-.querySelector(".terminalHeader")
-.addEventListener("mousedown",(e)=>{
+];
 
-  isDragging = true;
+setInterval(()=>{
 
-  offsetX =
-  e.clientX - terminalWindow.offsetLeft;
+  const line =
+  document.createElement("div");
 
-  offsetY =
-  e.clientY - terminalWindow.offsetTop;
+  line.innerHTML =
+  logs[Math.floor(Math.random()*logs.length)];
 
-});
+  terminal.appendChild(line);
 
-document.addEventListener("mousemove",(e)=>{
+  terminal.scrollTop =
+  terminal.scrollHeight;
 
-  if(!isDragging) return;
-
-  terminalWindow.style.left =
-  (e.clientX-offsetX)+"px";
-
-  terminalWindow.style.top =
-  (e.clientY-offsetY)+"px";
-
-});
-
-document.addEventListener("mouseup",()=>{
-
-  isDragging = false;
-
-});
+},2000);
 
 </script>
 
