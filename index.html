@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>EVERDUSK</title>
+<title>Everdusk</title>
 
 <style>
 
-/* ====================================================== */
+/* ========================= */
 /* RESET */
-/* ====================================================== */
+/* ========================= */
 
 *{
   margin:0;
@@ -30,12 +29,12 @@ body{
   cursor:none;
 }
 
-/* ====================================================== */
-/* SCROLLBAR */
-/* ====================================================== */
+/* ========================= */
+/* CUSTOM SCROLLBAR */
+/* ========================= */
 
 ::-webkit-scrollbar{
-  width:10px;
+  width:12px;
 }
 
 ::-webkit-scrollbar-track{
@@ -47,9 +46,69 @@ body{
   border-radius:20px;
 }
 
-/* ====================================================== */
+/* ========================= */
+/* INTRO */
+/* ========================= */
+
+#intro-cutscene{
+  position:fixed;
+  inset:0;
+  background:black;
+  z-index:9999999;
+  overflow:hidden;
+}
+
+#introVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.intro-overlay{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.55);
+}
+
+.intro-overlay h1{
+  font-size:6rem;
+  letter-spacing:14px;
+  text-shadow:0 0 40px red;
+}
+
+.intro-overlay p{
+  margin-top:20px;
+  color:#ccc;
+  letter-spacing:5px;
+}
+
+#enterBtn{
+  margin-top:40px;
+  padding:18px 45px;
+  background:red;
+  border:none;
+  border-radius:16px;
+  color:white;
+  font-size:1rem;
+  cursor:pointer;
+  transition:.3s;
+}
+
+#enterBtn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 40px red;
+}
+
+/* ========================= */
 /* BACKGROUND */
-/* ====================================================== */
+/* ========================= */
 
 .background{
   position:fixed;
@@ -57,8 +116,8 @@ body{
 
   background:
   linear-gradient(
-    rgba(0,0,0,.75),
-    rgba(0,0,0,.9)
+    rgba(0,0,0,.72),
+    rgba(0,0,0,.88)
   ),
   url('https://cdn.corenexis.com/files/c/3236352720.png');
 
@@ -66,17 +125,17 @@ body{
   background-position:center;
   background-repeat:no-repeat;
 
-  z-index:-20;
+  z-index:-10;
 }
 
-/* ====================================================== */
+/* ========================= */
 /* BLOOD MOON */
-/* ====================================================== */
+/* ========================= */
 
 .bloodmoon{
   position:fixed;
 
-  top:100px;
+  top:120px;
   right:100px;
 
   width:180px;
@@ -102,7 +161,6 @@ body{
 }
 
 @keyframes moonPulse{
-
   from{
     transform:scale(1);
   }
@@ -112,61 +170,22 @@ body{
   }
 }
 
-/* ====================================================== */
-/* FOG */
-/* ====================================================== */
-
-.floating-fog{
-  position:fixed;
-  inset:0;
-
-  background:
-  radial-gradient(
-    circle at 20% 50%,
-    rgba(255,0,0,.05),
-    transparent 30%
-  ),
-  radial-gradient(
-    circle at 80% 70%,
-    rgba(255,255,255,.03),
-    transparent 30%
-  );
-
-  animation:fogMove 18s infinite alternate;
-
-  z-index:-4;
-}
-
-@keyframes fogMove{
-
-  from{
-    transform:translateX(-20px);
-  }
-
-  to{
-    transform:translateX(20px);
-  }
-}
-
-/* ====================================================== */
+/* ========================= */
 /* RAIN */
-/* ====================================================== */
+/* ========================= */
 
 .rain{
   position:fixed;
   inset:0;
-
   pointer-events:none;
-
   z-index:5;
+  overflow:hidden;
 }
 
 .rain::before{
-
   content:"";
 
   position:absolute;
-
   width:100%;
   height:100%;
 
@@ -187,7 +206,6 @@ body{
 }
 
 @keyframes rainMove{
-
   from{
     transform:translateY(-120px);
   }
@@ -197,22 +215,17 @@ body{
   }
 }
 
-/* ====================================================== */
+/* ========================= */
 /* LIGHTNING */
-/* ====================================================== */
+/* ========================= */
 
 .lightning{
   position:fixed;
   inset:0;
-
   background:white;
-
   opacity:0;
-
   z-index:99999;
-
   pointer-events:none;
-
   animation:lightningFlash 14s infinite;
 }
 
@@ -239,9 +252,45 @@ body{
   }
 }
 
-/* ====================================================== */
+/* ========================= */
+/* FOG */
+/* ========================= */
+
+.floating-fog{
+  position:fixed;
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at 20% 50%,
+    rgba(255,0,0,.04),
+    transparent 30%
+  ),
+  radial-gradient(
+    circle at 80% 70%,
+    rgba(255,255,255,.03),
+    transparent 30%
+  );
+
+  animation:fogMove 18s infinite alternate;
+
+  z-index:-4;
+}
+
+@keyframes fogMove{
+
+  from{
+    transform:translateX(-20px);
+  }
+
+  to{
+    transform:translateX(20px);
+  }
+}
+
+/* ========================= */
 /* SCANLINES */
-/* ====================================================== */
+/* ========================= */
 
 .scanlines{
   position:fixed;
@@ -261,9 +310,9 @@ body{
   z-index:999;
 }
 
-/* ====================================================== */
+/* ========================= */
 /* CURSOR */
-/* ====================================================== */
+/* ========================= */
 
 .cursor-glow{
   width:18px;
@@ -286,9 +335,9 @@ body{
   transform:translate(-50%,-50%);
 }
 
-/* ====================================================== */
+/* ========================= */
 /* TOPBAR */
-/* ====================================================== */
+/* ========================= */
 
 .topbar{
   position:fixed;
@@ -351,9 +400,9 @@ body{
   color:#ff2a2a;
 }
 
-/* ====================================================== */
+/* ========================= */
 /* HERO */
-/* ====================================================== */
+/* ========================= */
 
 .hero{
   min-height:100vh;
@@ -446,15 +495,15 @@ body{
   0 0 30px rgba(255,0,0,.4);
 }
 
-/* ====================================================== */
-/* TERMINAL */
-/* ====================================================== */
+/* ========================= */
+/* COMMAND TERMINAL */
+/* ========================= */
 
-.terminal-window{
+.command-terminal{
+
   width:90%;
-  max-width:1100px;
 
-  height:450px;
+  max-width:1100px;
 
   margin:60px auto;
 
@@ -468,17 +517,15 @@ body{
 
   overflow:hidden;
 
-  display:flex;
-  flex-direction:column;
-
   backdrop-filter:blur(10px);
 
   box-shadow:
   0 0 40px rgba(255,0,0,.12);
 }
 
-.terminal-top{
-  height:60px;
+.command-top{
+
+  padding:18px 25px;
 
   background:
   rgba(255,0,0,.08);
@@ -486,35 +533,18 @@ body{
   border-bottom:
   1px solid rgba(255,0,0,.15);
 
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  padding:0 25px;
-
   color:#ff3b3b;
+
+  letter-spacing:2px;
 }
 
-.terminal-dots{
-  display:flex;
-  gap:10px;
-}
+.command-output{
 
-.terminal-dots div{
-  width:12px;
-  height:12px;
-
-  border-radius:50%;
-
-  background:red;
-}
-
-.terminal-scroll{
-  flex:1;
+  height:320px;
 
   overflow-y:auto;
 
-  padding:30px;
+  padding:25px;
 
   color:#00ff88;
 
@@ -523,156 +553,262 @@ body{
   line-height:2;
 }
 
-/* ====================================================== */
-/* WORLD FEED */
-/* ====================================================== */
+.command-input-wrap{
 
-.world-feed{
-  position:fixed;
+  display:flex;
 
-  top:120px;
-  right:20px;
+  align-items:center;
 
-  width:320px;
+  gap:12px;
 
-  background:
-  rgba(0,0,0,.55);
+  padding:20px;
+
+  border-top:
+  1px solid rgba(255,0,0,.12);
+}
+
+.command-input-wrap span{
+
+  color:#ff3b3b;
+
+  font-family:monospace;
+}
+
+#commandInput{
+
+  flex:1;
+
+  background:black;
 
   border:
   1px solid rgba(255,0,0,.2);
 
-  border-radius:18px;
+  border-radius:12px;
 
-  overflow:hidden;
+  padding:14px;
 
-  z-index:9999;
+  color:#00ff88;
 
-  backdrop-filter:blur(10px);
+  font-family:monospace;
+
+  outline:none;
 }
 
-.feed-header{
-  padding:14px 18px;
+/* ========================= */
+/* THEORY SECTION */
+/* ========================= */
 
-  background:
-  rgba(255,0,0,.08);
-
-  color:#ff3b3b;
-}
-
-.feed-messages{
-  height:200px;
-
-  overflow-y:auto;
-
-  padding:16px;
-
-  display:flex;
-  flex-direction:column;
-
-  gap:12px;
-
-  color:#ccc;
-}
-
-/* ====================================================== */
-/* CORRUPTION */
-/* ====================================================== */
-
-.corruption-wrap{
-  position:fixed;
-
-  top:120px;
-  left:20px;
-
-  width:280px;
-
-  background:
-  rgba(0,0,0,.55);
-
-  border:
-  1px solid rgba(255,0,0,.15);
-
-  border-radius:16px;
-
-  padding:20px;
-
-  z-index:999;
-}
-
-.corruption-title{
-  color:#ff3b3b;
-  margin-bottom:15px;
-}
-
-.corruption-bar{
-  height:16px;
-  background:#111;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.corruption-fill{
-  width:72%;
-  height:100%;
-
-  background:
-  linear-gradient(
-    to right,
-    darkred,
-    red
-  );
-}
-
-/* ====================================================== */
-/* LORE */
-/* ====================================================== */
-
-.lore-books{
-  display:grid;
-
-  grid-template-columns:
-  repeat(auto-fit,minmax(280px,1fr));
-
-  gap:30px;
+.theory-section{
 
   padding:100px 40px;
 }
 
-.lore-book{
+.theory-section h2{
+
+  text-align:center;
+
+  color:#ff3b3b;
+
+  margin-bottom:40px;
+
+  letter-spacing:4px;
+}
+
+.theory-post-box{
+
+  width:100%;
+
+  max-width:900px;
+
+  margin:auto;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:20px;
+}
+
+#theoryTitle,
+#theoryText{
+
   background:
   rgba(0,0,0,.55);
 
   border:
-  1px solid rgba(255,0,0,.15);
+  1px solid rgba(255,0,0,.18);
 
-  border-radius:20px;
+  border-radius:16px;
 
-  padding:30px;
+  padding:18px;
+
+  color:white;
+
+  outline:none;
+}
+
+#theoryText{
+
+  min-height:180px;
+
+  resize:vertical;
+}
+
+#postTheoryBtn{
+
+  padding:16px;
+
+  background:red;
+
+  border:none;
+
+  border-radius:14px;
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+#postTheoryBtn:hover{
+
+  transform:translateY(-4px);
+
+  box-shadow:
+  0 0 25px rgba(255,0,0,.35);
+}
+
+.theory-feed{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(320px,1fr));
+
+  gap:25px;
+
+  margin-top:50px;
+}
+
+.theory-card{
+
+  background:
+  rgba(0,0,0,.45);
+
+  border:
+  1px solid rgba(255,0,0,.12);
+
+  border-radius:18px;
+
+  padding:25px;
 
   transition:.35s;
 }
 
-.lore-book:hover{
-  transform:
-  translateY(-8px);
+.theory-card:hover{
+
+  transform:translateY(-6px);
 
   box-shadow:
-  0 0 35px rgba(255,0,0,.2);
+  0 0 35px rgba(255,0,0,.15);
 }
 
-.lore-book h2{
+.theory-card h3{
+
   color:#ff3b3b;
-  margin-bottom:15px;
+
+  margin-bottom:14px;
 }
 
-.lore-book p{
+.theory-card p{
+
   color:#ccc;
+
   line-height:1.7;
 }
 
-/* ====================================================== */
+/* ========================= */
+/* ANALOG HORROR */
+/* ========================= */
+
+.analog-section{
+
+  padding:100px 40px;
+}
+
+.analog-section h2{
+
+  text-align:center;
+
+  color:#ff3b3b;
+
+  letter-spacing:4px;
+
+  margin-bottom:15px;
+}
+
+.analog-section p{
+
+  text-align:center;
+
+  color:#aaa;
+
+  margin-bottom:50px;
+}
+
+.analog-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(340px,1fr));
+
+  gap:30px;
+}
+
+.analog-card{
+
+  background:
+  rgba(0,0,0,.45);
+
+  border:
+  1px solid rgba(255,0,0,.12);
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  transition:.35s;
+}
+
+.analog-card:hover{
+
+  transform:translateY(-8px);
+
+  box-shadow:
+  0 0 40px rgba(255,0,0,.2);
+}
+
+.analog-card iframe{
+
+  width:100%;
+
+  height:240px;
+}
+
+.analog-card h3{
+
+  padding:20px;
+
+  color:#ff3b3b;
+
+  letter-spacing:2px;
+}
+
+/* ========================= */
 /* MOBILE */
-/* ====================================================== */
+/* ========================= */
 
 @media(max-width:900px){
 
@@ -695,10 +831,6 @@ body{
     right:20px;
   }
 
-  .world-feed{
-    display:none;
-  }
-
 }
 
 </style>
@@ -706,59 +838,47 @@ body{
 
 <body>
 
+<!-- INTRO -->
+
+<div id="intro-cutscene">
+
+  <video autoplay muted loop playsinline id="introVideo">
+
+    <source src="https://cdn.coverr.co/videos/coverr-dark-clouds-1560084474706?download=1080p" type="video/mp4">
+
+  </video>
+
+  <div class="intro-overlay">
+
+    <h1>EVERDUSK</h1>
+
+    <p>ENTER THE DARKNESS</p>
+
+    <button id="enterBtn">
+      ENTER
+    </button>
+
+  </div>
+
+</div>
+
+<!-- EFFECTS -->
+
 <div class="background"></div>
 
 <div class="bloodmoon"></div>
-
-<div class="floating-fog"></div>
 
 <div class="rain"></div>
 
 <div class="lightning"></div>
 
+<div class="floating-fog"></div>
+
 <div class="scanlines"></div>
 
 <div class="cursor-glow"></div>
 
-<!-- ====================================================== -->
-<!-- WORLD FEED -->
-<!-- ====================================================== -->
-
-<div class="world-feed">
-
-  <div class="feed-header">
-    LIVE WORLD EVENTS
-  </div>
-
-  <div class="feed-messages" id="feedMessages">
-
-    <div>⚠ ENTITY DETECTED NEAR BLACK HOLLOW</div>
-
-  </div>
-
-</div>
-
-<!-- ====================================================== -->
-<!-- CORRUPTION -->
-<!-- ====================================================== -->
-
-<div class="corruption-wrap">
-
-  <div class="corruption-title">
-    GLOBAL CORRUPTION
-  </div>
-
-  <div class="corruption-bar">
-
-    <div class="corruption-fill"></div>
-
-  </div>
-
-</div>
-
-<!-- ====================================================== -->
 <!-- TOPBAR -->
-<!-- ====================================================== -->
 
 <div class="topbar">
 
@@ -771,25 +891,12 @@ body{
     Eagler:
     <strong>everdusk.xyz</strong>
 
-    &nbsp;&nbsp;&nbsp;
-
-    Java:
-    <strong>java.everdusk.xyz</strong>
-
   </div>
 
   <div class="links">
 
     <a href="https://discord.gg/ryvdWa7SEG" target="_blank">
       Discord
-    </a>
-
-    <a href="https://discord.gg/dseKG8dpWv" target="_blank">
-      Pulse
-    </a>
-
-    <a href="https://vexsound.base44.app/" target="_blank">
-      VexSound
     </a>
 
     <a href="https://www.youtube.com/@Everduskofficial" target="_blank">
@@ -800,106 +907,158 @@ body{
 
 </div>
 
-<!-- ====================================================== -->
 <!-- HERO -->
-<!-- ====================================================== -->
 
 <div class="hero">
 
   <img
     src="https://cdn.corenexis.com/files/c/8547675720.png"
+    alt="Everdusk Logo"
   >
 
   <h1>EVERDUSK</h1>
 
   <p>
-    A cinematic Minecraft horror universe where
-    forgotten realms, corrupted entities, and endless
-    night consume everything.
+    A cinematic Minecraft horror universe where forgotten realms consume everything.
   </p>
 
   <div class="hero-buttons">
 
-    <a href="https://discord.gg/ryvdWa7SEG">
-      JOIN DISCORD
-    </a>
+    <a href="#">JOIN DISCORD</a>
 
-    <a href="https://discord.gg/dseKG8dpWv">
-      PULSE
-    </a>
+    <a href="#">WATCH ARCHIVES</a>
 
-    <a href="https://vexsound.base44.app/">
-      VEXSOUND
-    </a>
+    <a href="#">LORE DATABASE</a>
 
   </div>
 
 </div>
 
-<!-- ====================================================== -->
-<!-- TERMINAL -->
-<!-- ====================================================== -->
+<!-- COMMAND TERMINAL -->
 
-<section class="terminal-window">
+<section class="command-terminal">
 
-  <div class="terminal-top">
+  <div class="command-top">
 
-    <span>EVERDUSK TERMINAL</span>
-
-    <div class="terminal-dots">
-
-      <div></div>
-      <div></div>
-      <div></div>
-
-    </div>
+    <span>LIVE COMMAND CONSOLE</span>
 
   </div>
 
-  <div class="terminal-scroll" id="terminal">
+  <div class="command-output" id="commandOutput">
 
-    <div>> CONNECTING TO EVERDUSK...</div>
-    <div>> ACCESSING CORRUPTED ARCHIVES...</div>
-    <div>> WARNING: ENTITY SIGNAL DETECTED...</div>
-    <div>> SYSTEM ONLINE...</div>
+    <div>> SYSTEM READY...</div>
+
+    <div>> TYPE /help</div>
+
+  </div>
+
+  <div class="command-input-wrap">
+
+    <span>>></span>
+
+    <input
+      type="text"
+      id="commandInput"
+      placeholder="Enter command..."
+      autocomplete="off"
+    >
 
   </div>
 
 </section>
 
-<!-- ====================================================== -->
-<!-- LORE -->
-<!-- ====================================================== -->
+<!-- THEORY SECTION -->
 
-<section class="lore-books">
+<section class="theory-section">
 
-  <div class="lore-book">
+  <h2>COMMUNITY THEORIES</h2>
 
-    <h2>BLACK HOLLOW</h2>
+  <div class="theory-post-box">
 
-    <p>
-      A cursed realm where players vanish after midnight.
-    </p>
+    <input
+      type="text"
+      id="theoryTitle"
+      placeholder="Theory title..."
+    >
+
+    <textarea
+      id="theoryText"
+      placeholder="Write your Everdusk theory..."
+    ></textarea>
+
+    <button id="postTheoryBtn">
+
+      POST THEORY
+
+    </button>
 
   </div>
 
-  <div class="lore-book">
+  <div class="theory-feed" id="theoryFeed">
 
-    <h2>THE WATCHERS</h2>
+    <div class="theory-card">
 
-    <p>
-      Unknown eyes seen within corrupted forests.
-    </p>
+      <h3>
+        THE WATCHERS ARE REAL
+      </h3>
+
+      <p>
+        I think the watchers are connected to the corrupted signal beneath Black Hollow...
+      </p>
+
+    </div>
 
   </div>
 
-  <div class="lore-book">
+</section>
 
-    <h2>THE SIGNAL</h2>
+<!-- ANALOG HORROR -->
 
-    <p>
-      A mysterious transmission from beneath Everdusk.
-    </p>
+<section class="analog-section">
+
+  <h2>MINECRAFT ANALOG HORROR ARCHIVES</h2>
+
+  <p>
+    Distorted transmissions recovered from Everdusk.
+  </p>
+
+  <div class="analog-grid">
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/7iFXyLah2oQ"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>THE SIGNAL TAPES</h3>
+
+    </div>
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/WrW5mGb7ybg"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>ENTITY SIGHTINGS</h3>
+
+    </div>
+
+    <div class="analog-card">
+
+      <iframe
+        src="https://www.youtube.com/embed/o_l4Ab5FRwM"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+
+      <h3>BLACK HOLLOW ARCHIVES</h3>
+
+    </div>
 
   </div>
 
@@ -907,9 +1066,19 @@ body{
 
 <script>
 
-/* ====================================================== */
+/* INTRO */
+
+document
+.getElementById("enterBtn")
+.onclick = () => {
+
+  document
+  .getElementById("intro-cutscene")
+  .style.display = "none";
+
+};
+
 /* CURSOR */
-/* ====================================================== */
 
 const cursor =
 document.querySelector(".cursor-glow");
@@ -924,83 +1093,116 @@ document.addEventListener("mousemove", e => {
 
 });
 
-/* ====================================================== */
-/* TERMINAL */
-/* ====================================================== */
+/* COMMANDS */
 
-const terminal =
-document.getElementById("terminal");
+const commandInput =
+document.getElementById("commandInput");
 
-const lines = [
+const commandOutput =
+document.getElementById("commandOutput");
 
-  "> Connecting to Everdusk nodes...",
-  "> Searching corrupted archives...",
-  "> Unknown signal detected...",
-  "> Entity movement confirmed...",
-  "> Pulse systems online...",
-  "> Accessing forbidden files...",
-  "> Distorted whispers detected...",
-  "> Network corruption spreading...",
-  "> Black Hollow gateway opened...",
-  "> VexSound synchronization complete..."
+const commands = {
 
-];
+  "/help":
+  "AVAILABLE COMMANDS: /help /entities /watchers /signal /archive /blackhollow",
 
-setInterval(() => {
+  "/entities":
+  "KNOWN ENTITIES: WATCHER-01, SHADOW CRAWLER, RED EYE",
 
-  const line =
-  document.createElement("div");
+  "/watchers":
+  "THE WATCHERS ARE ALWAYS OBSERVING.",
 
-  line.innerHTML =
-  lines[
-    Math.floor(Math.random()*lines.length)
-  ];
+  "/signal":
+  "DISTORTED SIGNAL DETECTED UNDER EVERDUSK.",
 
-  terminal.appendChild(line);
+  "/archive":
+  "ACCESSING CORRUPTED ARCHIVES...",
 
-  terminal.scrollTop =
-  terminal.scrollHeight;
+  "/blackhollow":
+  "WARNING: BLACK HOLLOW IS RESTRICTED."
 
-},2000);
+};
 
-/* ====================================================== */
-/* WORLD FEED */
-/* ====================================================== */
+commandInput.addEventListener("keydown", e => {
 
-const feed =
-document.getElementById("feedMessages");
+  if(e.key === "Enter"){
 
-const events = [
+    const value =
+    commandInput.value.trim();
 
-  "⚠ Entity movement detected",
-  "⚠ Black Hollow corruption rising",
-  "⚠ Unknown whispers recorded",
-  "⚠ Eclipse storm approaching",
-  "⚠ Emergency lockdown initiated",
-  "⚠ Watchers detected in forests",
-  "⚠ Reality distortion increasing"
+    if(value === "") return;
 
-];
+    const userLine =
+    document.createElement("div");
 
-setInterval(() => {
+    userLine.innerHTML =
+    "> " + value;
 
-  const item =
-  document.createElement("div");
+    commandOutput.appendChild(userLine);
 
-  item.innerHTML =
-  events[
-    Math.floor(Math.random()*events.length)
-  ];
+    const response =
+    document.createElement("div");
 
-  feed.prepend(item);
+    response.innerHTML =
+    commands[value] ||
+    "UNKNOWN COMMAND.";
 
-  if(feed.children.length > 10){
+    commandOutput.appendChild(response);
 
-    feed.removeChild(feed.lastChild);
+    commandOutput.scrollTop =
+    commandOutput.scrollHeight;
+
+    commandInput.value = "";
 
   }
 
-},4000);
+});
+
+/* THEORY POSTS */
+
+document
+.getElementById("postTheoryBtn")
+.onclick = () => {
+
+  const title =
+  document
+  .getElementById("theoryTitle")
+  .value;
+
+  const text =
+  document
+  .getElementById("theoryText")
+  .value;
+
+  if(title === "" || text === "")
+    return;
+
+  const card =
+  document.createElement("div");
+
+  card.className =
+  "theory-card";
+
+  card.innerHTML =
+
+  `
+  <h3>${title}</h3>
+  <p>${text}</p>
+  `;
+
+  document
+  .getElementById("theoryFeed")
+  .prepend(card);
+
+  document
+  .getElementById("theoryTitle")
+  .value = "";
+
+  document
+  .getElementById("theoryText")
+  .value = "";
+
+};
 
 </script>
 
