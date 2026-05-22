@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EVERDUSK — THE WORLD NEVER SLEEPS</title>
+<title>EVERDUSK CLIENT</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -16,77 +16,55 @@
     box-sizing:border-box;
 }
 
-html{
-    scroll-behavior:smooth;
-}
-
 body{
-    background:#000;
+    background:black;
+    overflow:hidden;
     color:white;
-    overflow-x:hidden;
     font-family:'Orbitron',sans-serif;
-    cursor:none;
 }
 
-/* ========================= */
-/* CUSTOM CURSOR */
-/* ========================= */
-
-.cursor{
-    width:20px;
-    height:20px;
-    border:2px solid red;
-    border-radius:50%;
-    position:fixed;
-    pointer-events:none;
-    z-index:999999;
-    transform:translate(-50%,-50%);
-    box-shadow:
-        0 0 10px red,
-        0 0 20px red,
-        0 0 40px red;
-}
-
-/* ========================= */
+/* ================================= */
 /* BACKGROUND */
-/* ========================= */
+/* ================================= */
 
 .bg{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at center, rgba(255,0,0,.15), transparent 60%),
-        linear-gradient(to bottom,#050505,#000);
+    radial-gradient(circle at center, rgba(255,0,0,.2), transparent 60%),
+    linear-gradient(to bottom, #050505, #000);
     z-index:-10;
 }
 
 .fog{
     position:fixed;
     inset:0;
-    background:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1974&auto=format&fit=crop');
+    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
     background-size:cover;
     opacity:.08;
-    filter:blur(6px);
-    animation:fog 60s linear infinite;
-    z-index:-9;
+    filter:blur(5px);
+    animation:fogMove 60s linear infinite;
 }
 
-@keyframes fog{
-    0%{
-        transform:scale(1.1) translateX(0);
-    }
-    50%{
-        transform:scale(1.2) translateX(-50px);
-    }
-    100%{
-        transform:scale(1.1) translateX(0);
-    }
+@keyframes fogMove{
+
+0%{
+    transform:scale(1.1) translateX(0);
+}
+
+50%{
+    transform:scale(1.2) translateX(-60px);
+}
+
+100%{
+    transform:scale(1.1) translateX(0);
+}
+
 }
 
 .scanlines{
     position:fixed;
     inset:0;
-    pointer-events:none;
     background:
     repeating-linear-gradient(
         to bottom,
@@ -95,261 +73,13 @@ body{
         transparent 1px,
         transparent 3px
     );
+    pointer-events:none;
     z-index:999;
 }
 
-/* ========================= */
-/* HERO */
-/* ========================= */
-
-.hero{
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-}
-
-.hero::before{
-    content:'';
-    position:absolute;
-    width:900px;
-    height:900px;
-    background:radial-gradient(circle, rgba(255,0,0,.15), transparent 70%);
-    border-radius:50%;
-    filter:blur(80px);
-    animation:pulse 8s infinite;
-}
-
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.15);}
-    100%{transform:scale(1);}
-}
-
-.hero-content{
-    position:relative;
-    z-index:2;
-    padding:20px;
-    max-width:1200px;
-}
-
-.small{
-    color:#ff2b2b;
-    letter-spacing:8px;
-    font-size:14px;
-    margin-bottom:20px;
-    animation:glitch 2s infinite;
-}
-
-.title{
-    font-size:120px;
-    font-weight:900;
-    line-height:1;
-    margin-bottom:30px;
-    text-shadow:
-        0 0 10px red,
-        0 0 40px red,
-        0 0 90px red;
-}
-
-@keyframes glitch{
-    0%{transform:translateX(0);}
-    20%{transform:translateX(-2px);}
-    40%{transform:translateX(2px);}
-    60%{transform:translateX(-1px);}
-    80%{transform:translateX(1px);}
-    100%{transform:translateX(0);}
-}
-
-.desc{
-    max-width:750px;
-    margin:auto;
-    line-height:1.8;
-    color:#999;
-    font-family:'IBM Plex Mono',monospace;
-    margin-bottom:40px;
-}
-
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
-
-.buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    justify-content:center;
-}
-
-.btn{
-    padding:18px 35px;
-    text-decoration:none;
-    color:white;
-    border:1px solid rgba(255,0,0,.3);
-    background:rgba(255,0,0,.08);
-    backdrop-filter:blur(10px);
-    transition:.4s;
-    letter-spacing:2px;
-    position:relative;
-    overflow:hidden;
-}
-
-.btn:hover{
-    transform:translateY(-4px);
-    background:red;
-    box-shadow:
-        0 0 20px red,
-        0 0 60px red;
-}
-
-/* ========================= */
-/* IP BOX */
-/* ========================= */
-
-.ip-box{
-    margin-top:50px;
-    display:inline-block;
-    padding:20px 35px;
-    border:1px solid rgba(255,0,0,.25);
-    background:rgba(0,0,0,.5);
-    backdrop-filter:blur(10px);
-    font-family:'IBM Plex Mono',monospace;
-    color:#ff4d4d;
-    line-height:2;
-}
-
-.ip-box span{
-    cursor:pointer;
-    transition:.3s;
-}
-
-.ip-box span:hover{
-    color:white;
-    text-shadow:
-        0 0 10px red,
-        0 0 20px red;
-}
-
-/* ========================= */
-/* FEED */
-/* ========================= */
-
-.feed{
-    width:90%;
-    max-width:1200px;
-    margin:100px auto;
-    padding:30px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,0,0,.15);
-    backdrop-filter:blur(15px);
-}
-
-.feed h2{
-    color:#ff2b2b;
-    margin-bottom:20px;
-    letter-spacing:4px;
-}
-
-.feed-item{
-    padding:14px 0;
-    border-bottom:1px solid rgba(255,255,255,.05);
-    font-family:'IBM Plex Mono',monospace;
-    color:#999;
-}
-
-/* ========================= */
-/* LORE */
-/* ========================= */
-
-.section{
-    width:90%;
-    max-width:1200px;
-    margin:140px auto;
-}
-
-.section-title{
-    font-size:50px;
-    margin-bottom:50px;
-    text-shadow:0 0 20px red;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
-}
-
-.card{
-    padding:40px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,0,0,.12);
-    backdrop-filter:blur(10px);
-    transition:.4s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-    border-color:red;
-    box-shadow:0 0 40px rgba(255,0,0,.2);
-}
-
-.card h3{
-    margin-bottom:20px;
-    color:#ff2b2b;
-}
-
-.card p{
-    color:#999;
-    line-height:1.8;
-    font-family:'IBM Plex Mono',monospace;
-}
-
-/* ========================= */
-/* STATS */
-/* ========================= */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
-}
-
-.stat{
-    padding:40px;
-    text-align:center;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,0,0,.15);
-}
-
-.stat h2{
-    font-size:55px;
-    color:red;
-    margin-bottom:10px;
-}
-
-.stat p{
-    color:#666;
-    letter-spacing:3px;
-}
-
-/* ========================= */
-/* FOOTER */
-/* ========================= */
-
-footer{
-    padding:80px 20px;
-    text-align:center;
-    color:#555;
-    border-top:1px solid rgba(255,255,255,.05);
-    margin-top:100px;
-}
-
-/* ========================= */
+/* ================================= */
 /* GLITCH FLASH */
-/* ========================= */
+/* ================================= */
 
 .glitch{
     position:fixed;
@@ -361,9 +91,217 @@ footer{
     z-index:99999;
 }
 
-/* ========================= */
+/* ================================= */
+/* BOOT SCREEN */
+/* ================================= */
+
+.boot{
+    position:fixed;
+    inset:0;
+    background:black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:999999;
+    animation:fadeOut 2s forwards;
+    animation-delay:6s;
+}
+
+.boot-title{
+    font-size:100px;
+    font-weight:900;
+    text-shadow:
+        0 0 10px red,
+        0 0 40px red,
+        0 0 90px red;
+    animation:glitchText 2s infinite;
+}
+
+.boot-sub{
+    margin-top:20px;
+    color:#ff2b2b;
+    letter-spacing:5px;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+.load-bar{
+    width:400px;
+    height:4px;
+    background:#111;
+    margin-top:40px;
+    overflow:hidden;
+}
+
+.load-fill{
+    width:0%;
+    height:100%;
+    background:red;
+    box-shadow:0 0 20px red;
+    animation:load 5s forwards;
+}
+
+@keyframes load{
+    from{
+        width:0%;
+    }
+    to{
+        width:100%;
+    }
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        pointer-events:none;
+    }
+}
+
+@keyframes glitchText{
+
+0%{transform:translateX(0);}
+20%{transform:translateX(-3px);}
+40%{transform:translateX(3px);}
+60%{transform:translateX(-2px);}
+80%{transform:translateX(2px);}
+100%{transform:translateX(0);}
+
+}
+
+/* ================================= */
+/* MAIN */
+/* ================================= */
+
+.main{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.content{
+    max-width:1200px;
+    padding:20px;
+    z-index:2;
+}
+
+.small{
+    color:#ff2b2b;
+    letter-spacing:8px;
+    margin-bottom:20px;
+    animation:glitchText 2s infinite;
+}
+
+.title{
+    font-size:120px;
+    font-weight:900;
+    line-height:1;
+    margin-bottom:30px;
+    text-shadow:
+        0 0 10px red,
+        0 0 40px red,
+        0 0 100px red;
+}
+
+.desc{
+    max-width:750px;
+    margin:auto;
+    line-height:1.8;
+    color:#999;
+    margin-bottom:50px;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+/* ================================= */
+/* BUTTONS */
+/* ================================= */
+
+.buttons{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:18px 40px;
+    text-decoration:none;
+    color:white;
+    border:1px solid rgba(255,0,0,.3);
+    background:rgba(255,0,0,.08);
+    backdrop-filter:blur(10px);
+    transition:.4s;
+    letter-spacing:2px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+    background:red;
+    box-shadow:
+        0 0 20px red,
+        0 0 60px red;
+}
+
+/* ================================= */
+/* TERMINAL */
+/* ================================= */
+
+.terminal{
+    position:absolute;
+    bottom:30px;
+    left:30px;
+    width:420px;
+    padding:20px;
+    background:rgba(0,0,0,.6);
+    border:1px solid rgba(255,0,0,.2);
+    font-family:'IBM Plex Mono',monospace;
+    color:#ff2b2b;
+    font-size:13px;
+    line-height:1.8;
+    backdrop-filter:blur(10px);
+}
+
+/* ================================= */
+/* WARNING */
+/* ================================= */
+
+.warning{
+    position:absolute;
+    top:30px;
+    right:30px;
+    padding:15px 20px;
+    background:rgba(255,0,0,.08);
+    border:1px solid rgba(255,0,0,.2);
+    color:#ff4d4d;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:2px;
+    animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+    opacity:.5;
+}
+
+50%{
+    opacity:1;
+}
+
+100%{
+    opacity:.5;
+}
+
+}
+
+/* ================================= */
 /* MOBILE */
-/* ========================= */
+/* ================================= */
 
 @media(max-width:900px){
 
@@ -371,16 +309,23 @@ footer{
     font-size:70px;
 }
 
-.grid{
-    grid-template-columns:1fr;
-}
-
-.section-title{
-    font-size:38px;
+.boot-title{
+    font-size:50px;
 }
 
 .buttons{
     flex-direction:column;
+}
+
+.terminal{
+    width:90%;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:20px;
+}
+
+.warning{
+    display:none;
 }
 
 }
@@ -389,295 +334,165 @@ footer{
 </head>
 <body>
 
-<div class="cursor"></div>
-
 <div class="bg"></div>
 <div class="fog"></div>
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<!-- HERO -->
+<!-- BOOT -->
 
-<section class="hero">
+<div class="boot">
 
-<div class="hero-content">
+<div class="boot-title">
+EVERDUSK
+</div>
+
+<div class="boot-sub">
+INITIALIZING VOID LINK...
+</div>
+
+<div class="load-bar">
+<div class="load-fill"></div>
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<section class="main">
+
+<div class="warning">
+SIGNAL INSTABILITY DETECTED
+</div>
+
+<div class="content">
 
 <div class="small">
 THE WORLD NEVER SLEEPS
 </div>
 
 <h1 class="title">
-EVERDUSK
+EVERDUSK CLIENT
 </h1>
 
 <p class="desc">
-Beneath the frozen ruins of Everdusk,
-something ancient still watches.
-Structures shift overnight.
-Signals disappear below bedrock.
-Nobody remembers when the red moon arrived.
+WARNING:
+UNKNOWN ENTITIES HAVE BEEN DETECTED INSIDE THE ARCHIVE.
+CONTINUING MAY RESULT IN MEMORY LOSS.
+THE RED MOON IS ACTIVE.
 </p>
 
 <div class="buttons">
 
-<a href="https://everdusk.xyz" class="btn" target="_blank">
+<a
+href="https://eaglercraft.com/mc/1.8.8/"
+class="btn"
+target="_blank">
+
 ENTER THE VOID
+
 </a>
 
-<a href="https://www.youtube.com/@Everduskofficial" class="btn" target="_blank">
+<a
+href="https://www.youtube.com/@Everduskofficial"
+class="btn"
+target="_blank">
+
 WATCH ARCHIVES
+
 </a>
 
-<a href="https://discord.gg/5Xdkuq7h9h" class="btn" target="_blank">
+<a
+href="https://discord.gg/5Xdkuq7h9h"
+class="btn"
+target="_blank">
+
 JOIN EVERDUSK
+
 </a>
 
-<a href="https://vexsound.base44.app/" class="btn" target="_blank">
+<a
+href="https://vexsound.base44.app/"
+class="btn"
+target="_blank">
+
 VEXSOUND
+
 </a>
 
-<a href="https://discord.com/invite/dseKG8dpWv" class="btn" target="_blank">
+<a
+href="https://discord.com/invite/dseKG8dpWv"
+class="btn"
+target="_blank">
+
 PULSE NETWORK
+
 </a>
 
 </div>
 
-<div class="ip-box">
-
-SERVER IP:<br>
-
-<span onclick="copyIP('everdusk.xyz')">
-everdusk.xyz
-</span>
-
-<br><br>
-
-JAVA IP:<br>
-
-<span onclick="copyIP('java.everdusk.xyz')">
-java.everdusk.xyz
-</span>
-
 </div>
+
+<div class="terminal" id="terminal">
+
+[BOOT] INITIALIZING CLIENT...<br>
+[VOID] SIGNAL FOUND...<br>
+[WARNING] ENTITY DETECTED BELOW BEDROCK...<br>
+[SYSTEM] CONNECTION STABLE...<br>
 
 </div>
 
 </section>
-
-<!-- FEED -->
-
-<section class="feed">
-
-<h2>LIVE WORLD EVENTS</h2>
-
-<div id="feed">
-
-<div class="feed-item">
-[03:12] SOMETHING MOVED IN SECTOR-7
-</div>
-
-<div class="feed-item">
-[03:17] SIGNAL LOST
-</div>
-
-<div class="feed-item">
-[03:22] UNKNOWN PLAYER JOINED
-</div>
-
-<div class="feed-item">
-[03:29] ENTITY DETECTED BELOW BEDROCK
-</div>
-
-</div>
-
-</section>
-
-<!-- LORE -->
-
-<section class="section">
-
-<h2 class="section-title">
-THE LORE
-</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>THE BELOW</h3>
-<p>
-Deep beneath the world,
-tunnels continue endlessly.
-Nobody reaches the end.
-Players report whispers from empty caves.
-</p>
-</div>
-
-<div class="card">
-<h3>THE RED MOON</h3>
-<p>
-Every seventh night,
-the sky changes.
-Creatures become hostile.
-Some players never return.
-</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section class="section">
-
-<h2 class="section-title">
-WORLD STATUS
-</h2>
-
-<div class="stats">
-
-<div class="stat">
-<h2 id="s1">0</h2>
-<p>PLAYERS LOST</p>
-</div>
-
-<div class="stat">
-<h2 id="s2">0</h2>
-<p>SIGNALS RECEIVED</p>
-</div>
-
-<div class="stat">
-<h2 id="s3">0</h2>
-<p>ACTIVE ENTITIES</p>
-</div>
-
-</div>
-
-</section>
-
-<footer>
-© EVERDUSK — THE SIGNAL CONTINUES
-</footer>
 
 <script>
 
-/* ========================= */
-/* CURSOR */
-/* ========================= */
+/* ================================= */
+/* TERMINAL EVENTS */
+/* ================================= */
 
-const cursor = document.querySelector('.cursor');
+const terminal = document.getElementById('terminal');
 
-document.addEventListener('mousemove', e => {
+const logs = [
 
-cursor.style.left = e.clientX + 'px';
-cursor.style.top = e.clientY + 'px';
-
-});
-
-/* ========================= */
-/* COPY IP */
-/* ========================= */
-
-function copyIP(ip){
-
-navigator.clipboard.writeText(ip);
-
-const oldTitle = document.title;
-
-document.title = 'COPIED: ' + ip;
-
-setTimeout(() => {
-
-document.title = oldTitle;
-
-},1500);
-
-}
-
-/* ========================= */
-/* FEED EVENTS */
-/* ========================= */
-
-const feed = document.getElementById('feed');
-
-const messages = [
-
-'[04:01] UNKNOWN FOOTSTEPS DETECTED',
-'[04:11] SIGNAL RETURNED',
-'[04:18] PLAYER REMOVED FROM DATABASE',
-'[04:24] MOVEMENT BELOW VOID LAYER',
-'[04:31] ENTITY WATCHING SPAWN',
-'[04:44] STRUCTURE CHANGED OVERNIGHT',
-'[04:52] RED MOON APPROACHING'
+'[ERROR] UNKNOWN MOVEMENT DETECTED...',
+'[VOID] SIGNAL RETURNED...',
+'[SCAN] RED MOON APPROACHING...',
+'[WARNING] PLAYER REMOVED FROM DATABASE...',
+'[ENTITY] SOMETHING IS WATCHING...',
+'[ARCHIVE] FILES CORRUPTED...',
+'[SYSTEM] CONNECTION UNSTABLE...',
+'[VOID] DISTORTION LEVEL RISING...',
+'[ERROR] MEMORY INTEGRITY LOST...',
+'[WARNING] SIGNAL BELOW BEDROCK...'
 
 ];
 
 setInterval(() => {
 
-const div = document.createElement('div');
+const line = document.createElement('div');
 
-div.className = 'feed-item';
+line.innerHTML =
+logs[Math.floor(Math.random() * logs.length)];
 
-div.innerText =
-messages[Math.floor(Math.random() * messages.length)];
+terminal.appendChild(line);
 
-feed.prepend(div);
+if(terminal.children.length > 8){
 
-if(feed.children.length > 8){
-
-feed.removeChild(feed.lastChild);
+terminal.removeChild(terminal.children[0]);
 
 }
 
-},4000);
+},3000);
 
-/* ========================= */
-/* COUNTERS */
-/* ========================= */
-
-function counter(id,target){
-
-let count = 0;
-
-const el = document.getElementById(id);
-
-const speed = target / 100;
-
-function update(){
-
-count += speed;
-
-if(count < target){
-
-el.innerText = Math.floor(count);
-
-requestAnimationFrame(update);
-
-}else{
-
-el.innerText = target.toLocaleString();
-
-}
-
-}
-
-update();
-
-}
-
-counter('s1',4291);
-counter('s2',98221);
-counter('s3',7);
-
-/* ========================= */
+/* ================================= */
 /* RANDOM GLITCH */
-/* ========================= */
+/* ================================= */
 
 const glitch = document.querySelector('.glitch');
 
 setInterval(() => {
 
-glitch.style.opacity = '.06';
+glitch.style.opacity = '.05';
 
 setTimeout(() => {
 
@@ -685,11 +500,11 @@ glitch.style.opacity = '0';
 
 },100);
 
-},Math.random()*8000+4000);
+},Math.random() * 7000 + 3000);
 
-/* ========================= */
+/* ================================= */
 /* TITLE GLITCH */
-/* ========================= */
+/* ================================= */
 
 const title = document.querySelector('.title');
 
