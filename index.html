@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import IntroScreen from '../components/IntroScreen';
 import BackgroundEffects from '../components/BackgroundEffects';
 import CustomCursor from '../components/CustomCursor';
@@ -19,53 +20,234 @@ import WorldMap from '../components/WorldMap';
 import VideoSection from '../components/VideoSection';
 import AmbientSound from '../components/AmbientSound';
 
-const HERO_IMG = 'https://media.base44.com/images/public/6a0f21ff6377b22ff0b8fe64/640ae8a47_generated_704452e2.png';
-const LORE_IMG = 'https://media.base44.com/images/public/6a0f21ff6377b22ff0b8fe64/aad0e6d16_generated_b3951680.png';
+/* ========================= */
+/* NEW IMPORTS */
+/* ========================= */
+
+import AnalogHorror from '../components/AnalogHorror';
+import CommunityTheories from '../components/CommunityTheories';
+import FakePlayerFeed from '../components/FakePlayerFeed';
+import CorruptedRadar from '../components/CorruptedRadar';
+import AchievementPopup from '../components/AchievementPopup';
+import XPSystem from '../components/XPSystem';
+import LiveCommandTerminal from '../components/LiveCommandTerminal';
+import JumpScareSystem from '../components/JumpScareSystem';
+import BloodMoon from '../components/BloodMoon';
+import LightningFlashes from '../components/LightningFlashes';
+import FloatingFog from '../components/FloatingFog';
+import EntityWhispers from '../components/EntityWhispers';
+import HorrorQuotes from '../components/HorrorQuotes';
+import SecretAreas from '../components/SecretAreas';
+import HoverRavens from '../components/HoverRavens';
+import GlitchOverlay from '../components/GlitchOverlay';
+import MusicVisualizer from '../components/MusicVisualizer';
+import ArchiveViewer from '../components/ArchiveViewer';
+import LoreTerminal from '../components/LoreTerminal';
+import ServerMapSection from '../components/ServerMapSection';
+import CountdownEvent from '../components/CountdownEvent';
+import CommunityGallery from '../components/CommunityGallery';
+import CorruptedEye from '../components/CorruptedEye';
+import DistortionLayer from '../components/DistortionLayer';
+import ScreenShake from '../components/ScreenShake';
+import WeatherSystem from '../components/WeatherSystem';
+
+const HERO_IMG =
+'https://media.base44.com/images/public/6a0f21ff6377b22ff0b8fe64/640ae8a47_generated_704452e2.png';
+
+const LORE_IMG =
+'https://media.base44.com/images/public/6a0f21ff6377b22ff0b8fe64/aad0e6d16_generated_b3951680.png';
 
 export default function Home() {
+
   const [entered, setEntered] = useState(false);
+
   const [motionEnabled, setMotionEnabled] = useState(true);
 
   if (!entered) {
+
     return (
+
       <>
         <CustomCursor />
-        <IntroScreen onEnter={() => setEntered(true)} />
+
+        <IntroScreen
+          onEnter={() => setEntered(true)}
+        />
+
+        <BloodMoon />
+
+        <LightningFlashes />
+
+        <FloatingFog />
+
       </>
+
     );
+
   }
 
   return (
+
     <>
+
+      {/* ========================= */}
+      {/* CORE EFFECTS */}
+      {/* ========================= */}
+
       <CustomCursor />
-      <BackgroundEffects heroImg={HERO_IMG} />
-      <HorrorEffects enabled={motionEnabled} />
+
+      <BackgroundEffects
+        heroImg={HERO_IMG}
+      />
+
+      <HorrorEffects
+        enabled={motionEnabled}
+      />
+
+      <BloodMoon />
+
+      <LightningFlashes />
+
+      <FloatingFog />
+
+      <GlitchOverlay />
+
+      <DistortionLayer />
+
+      <WeatherSystem />
+
+      <ScreenShake />
+
+      <EntityWhispers />
+
+      <HoverRavens />
+
+      <CorruptedEye />
+
+      <JumpScareSystem />
+
+      <SecretAreas />
+
+      {/* ========================= */}
+      {/* OVERLAYS */}
+      {/* ========================= */}
+
+      <FakePlayerFeed />
+
+      <CorruptedRadar />
+
+      <AchievementPopup />
+
+      <XPSystem />
+
+      <HorrorQuotes />
+
+      <MusicVisualizer />
+
+      {/* ========================= */}
+      {/* MAIN PAGE */}
+      {/* ========================= */}
 
       <AnimatePresence>
+
         <motion.div
+
           initial={{ opacity: 0 }}
+
           animate={{ opacity: 1 }}
+
           transition={{ duration: 1.5 }}
+
           className="relative z-10"
         >
-          <Navbar motionEnabled={motionEnabled} setMotionEnabled={setMotionEnabled} />
+
+          {/* NAVBAR */}
+
+          <Navbar
+            motionEnabled={motionEnabled}
+            setMotionEnabled={setMotionEnabled}
+          />
+
+          {/* HERO */}
+
           <HeroSection />
+
+          {/* LIVE */}
+
           <LiveSystems />
+
           <ServerStatus />
+
+          {/* VIDEOS */}
+
           <VideoSection />
+
+          <AnalogHorror />
+
+          {/* TERMINALS */}
+
+          <Terminal />
+
+          <LiveCommandTerminal />
+
+          <LoreTerminal />
+
+          {/* ENTITIES */}
+
           <EntityDatabase />
-          <LoreArchive loreImg={LORE_IMG} />
+
+          {/* LORE */}
+
+          <LoreArchive
+            loreImg={LORE_IMG}
+          />
+
+          <ArchiveViewer />
+
+          {/* WORLD */}
+
           <WorldMap />
+
+          <ServerMapSection />
+
+          {/* COMMUNITY */}
+
           <DiscordWidget />
-          <div id="theories"><TheoryForm /></div>
+
+          <CommunityGallery />
+
+          <div id="theories">
+
+            <TheoryForm />
+
+          </div>
+
+          <CommunityTheories />
+
+          {/* EVENTS */}
+
+          <CountdownEvent />
+
+          {/* STAFF */}
+
           <StaffSection />
+
+          {/* FOOTER */}
+
           <Footer />
+
         </motion.div>
+
       </AnimatePresence>
 
-      <Terminal />
+      {/* ========================= */}
+      {/* AUDIO */}
+      {/* ========================= */}
+
       <AmbientSound />
+
     </>
+
   );
+
 }
-        
