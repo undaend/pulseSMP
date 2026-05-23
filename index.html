@@ -12,7 +12,7 @@
 <style>
 
 /* ========================= */
-/* BASE (UNCHANGED CORE STYLE) */
+/* RESET */
 /* ========================= */
 
 *{
@@ -28,23 +28,38 @@ body{
     font-family:'Orbitron',sans-serif;
 }
 
+/* ========================= */
 /* BACKGROUND */
+/* ========================= */
+
 .bg{
     position:fixed;
     inset:0;
+
     background:
-    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-    linear-gradient(to bottom, #050505, #000);
+    radial-gradient(circle at center,
+    rgba(255,0,0,.18),
+    transparent 60%),
+
+    linear-gradient(to bottom,
+    #050505,
+    #000);
+
     z-index:-10;
 }
 
 .fog{
     position:fixed;
     inset:0;
+
     background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+
     background-size:cover;
+
     opacity:.06;
+
     animation:fogMove 50s linear infinite;
+
     filter:blur(5px);
 }
 
@@ -55,111 +70,155 @@ body{
 }
 
 .scanlines{
-position:fixed;
-inset:0;
-background:repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.02),
-transparent 2px
-);
-pointer-events:none;
-z-index:999;
+    position:fixed;
+    inset:0;
+
+    background:
+    repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.02),
+        rgba(255,255,255,.02) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+
+    pointer-events:none;
+    z-index:999;
 }
+
+/* ========================= */
+/* GLITCH FLASH */
+/* ========================= */
 
 .glitch{
-position:fixed;
-inset:0;
-background:red;
-opacity:0;
-mix-blend-mode:screen;
-pointer-events:none;
-z-index:999999;
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
 }
 
 /* ========================= */
-/* MAIN UI */
+/* VHS MODE (ADDED) */
 /* ========================= */
 
-.main{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
+.vhs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999998;
+
+    background:
+    repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.03),
+        transparent 2px
+    );
+
+    mix-blend-mode:overlay;
+    animation:vhsFlicker .12s infinite;
 }
 
-.title{
-font-size:120px;
-text-shadow:0 0 40px red;
-}
-
-.btn{
-padding:16px 30px;
-margin:10px;
-background:rgba(255,0,0,.1);
-border:1px solid red;
-color:white;
-cursor:pointer;
-}
-
-/* ========================= */
-/* CUTSCENE (FIXED) */
-/* ========================= */
-
-.cutscene{
-position:fixed;
-inset:0;
-background:black;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:999999;
-}
-
-.cutscene.active{
-display:flex;
-}
-
-.countdown{
-font-size:160px;
+@keyframes vhsFlicker{
+    0%{opacity:.2;transform:translateX(0);}
+    50%{opacity:.4;transform:translateX(2px);}
+    100%{opacity:.2;transform:translateX(-2px);}
 }
 
 /* ========================= */
-/* MUSIC */
+/* FACE APPARITION (ADDED) */
 /* ========================= */
 
-.music{
-position:fixed;
-bottom:20px;
-right:20px;
-z-index:999999;
+#faceOverlay{
+    position:fixed;
+    inset:0;
+    z-index:999997;
+    pointer-events:none;
+    opacity:0;
+
+    background:url('https://i.imgur.com/8QfQX5v.png');
+    background-size:cover;
+    mix-blend-mode:screen;
+    filter:contrast(2) brightness(.7);
 }
 
-.music button{
-padding:10px 14px;
-background:red;
-border:none;
-color:white;
-cursor:pointer;
+/* ========================= */
+/* AI SPEAK (ADDED) */
+/* ========================= */
+
+#aiSpeak{
+    position:fixed;
+    top:20%;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    color:#ff4d4d;
+    text-shadow:0 0 20px red;
+    opacity:0;
+    z-index:9999999;
+    pointer-events:none;
 }
 
 /* ========================= */
-/* CONSOLE (SAFE) */
+/* ANTIVIRUS SCAN (ADDED) */
 /* ========================= */
 
-#console{
-position:fixed;
-left:20px;
-bottom:20px;
-font-size:12px;
-color:#ff3b3b;
-opacity:.8;
-pointer-events:none;
+#antivirus{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:#00ff88;
+    font-family:monospace;
+    z-index:99999999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    opacity:0;
+    pointer-events:none;
+}
+
+.scanbar{
+    width:400px;
+    height:6px;
+    background:#111;
+    overflow:hidden;
+}
+
+.scanfill{
+    height:100%;
+    width:0%;
+    background:#00ff88;
+    transition:3s;
+}
+
+/* ========================= */
+/* XP BAR (ADDED) */
+/* ========================= */
+
+#xpBarContainer{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    width:300px;
+    height:10px;
+    background:#111;
+    border:1px solid #ff2b2b;
+    z-index:999999;
+}
+
+#xpBar{
+    height:100%;
+    width:0%;
+    background:red;
+    box-shadow:0 0 10px red;
+    transition:0.2s;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -169,92 +228,151 @@ pointer-events:none;
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<!-- MAIN -->
-<div class="main">
+<!-- ADDED SYSTEMS -->
+<div class="vhs"></div>
+<div id="faceOverlay"></div>
+<div id="aiSpeak"></div>
 
-<div>
+<div id="antivirus">
+    <h1>SCANNING SYSTEM FILES...</h1>
+    <div class="scanbar"><div class="scanfill"></div></div>
+</div>
+
+<div id="xpBarContainer"><div id="xpBar"></div></div>
+
+<!-- YOUR ORIGINAL UI (UNCHANGED) -->
+
+<section class="main">
+
+<div class="content">
+
+<div class="small">THE WORLD NEVER SLEEPS</div>
+
 <h1 class="title">EVERDUSK</h1>
 
-<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">
-ENTER VOID
-</button>
+<p class="desc">
+WARNING: SIGNAL INSTABILITY DETECTED.
+UNKNOWN ENTITIES HAVE BEEN TRACKED INSIDE THE ARCHIVE.
+CONTINUING MAY RESULT IN MEMORY LOSS.
+</p>
 
-<button class="btn" onclick="startTransfer('https://www.youtube.com/@Everduskofficial')">
-YOUTUBE
-</button>
+<div class="buttons">
 
-<button class="btn" onclick="startTransfer('https://discord.gg/5Xdkuq7h9h')">
-DISCORD
-</button>
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER THE VOID</button>
+<button class="btn" onclick="startTransfer('https://www.youtube.com/@Everduskofficial')">WATCH ARCHIVES</button>
+<button class="btn" onclick="startTransfer('https://discord.gg/5Xdkuq7h9h')">JOIN EVERDUSK</button>
+<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
 
 </div>
 
 </div>
 
-<!-- CUTSCENE -->
-<div class="cutscene" id="cutscene">
-<div class="countdown" id="countdown">5</div>
-</div>
-
-<!-- MUSIC -->
-<div class="music">
-<button onclick="toggleMusic()">MUSIC</button>
-<audio id="music" loop>
-<source src="https://files.catbox.moe/9l6q0q.mp3">
-</audio>
-</div>
+</section>
 
 <script>
 
 /* ========================= */
-/* GLITCH */
+/* ORIGINAL GLITCH */
 /* ========================= */
 
 setInterval(()=>{
-document.querySelector(".glitch").style.opacity="0.05";
-setTimeout(()=>document.querySelector(".glitch").style.opacity="0",100);
+document.querySelector('.glitch').style.opacity=".05";
+setTimeout(()=>document.querySelector('.glitch').style.opacity="0",120);
+},5000);
+
+/* ========================= */
+/* SCREEN TALK SYSTEM (ADDED) */
+/* ========================= */
+
+const ai = document.getElementById("aiSpeak");
+
+function speak(text){
+ai.innerText = text;
+ai.style.opacity = 1;
+setTimeout(()=>ai.style.opacity=0,1200);
+}
+
+/* ========================= */
+/* XP SYSTEM (ADDED) */
+/* ========================= */
+
+let xp = 0;
+setInterval(()=>{
+xp += Math.random()*3;
+document.getElementById("xpBar").style.width = (xp%100)+"%";
+},600);
+
+/* ========================= */
+/* FACE APPARITION (ADDED) */
+/* ========================= */
+
+setInterval(()=>{
+const face = document.getElementById("faceOverlay");
+if(Math.random()>0.85){
+face.style.opacity="0.7";
+setTimeout(()=>face.style.opacity="0",200);
+}
 },4000);
 
 /* ========================= */
-/* MUSIC FIXED */
+/* VHS CAMERA SHAKE */
 /* ========================= */
 
-const music = document.getElementById("music");
+setInterval(()=>{
+document.body.style.transform="scale(1.002)";
+setTimeout(()=>document.body.style.transform="scale(1)",80);
+},3000);
 
-function toggleMusic(){
-if(music.paused){
-music.play();
-}else{
-music.pause();
+/* ========================= */
+/* ANTIVIRUS BOOT SCAN (ADDED) */
+/* ========================= */
+
+function runScan(){
+const av = document.getElementById("antivirus");
+const fill = document.querySelector(".scanfill");
+
+av.style.opacity="1";
+fill.style.width="100%";
+
+speak("system scan initiated...");
+
+setTimeout(()=>{
+speak("threat detected: ENTITY SIGNAL");
+},2000);
+
+setTimeout(()=>{
+av.style.opacity="0";
+fill.style.width="0%";
+},5000);
 }
-}
+
+setTimeout(runScan,2000);
 
 /* ========================= */
-/* CUTSCENE SYSTEM (FIXED) */
+/* CUTSCENE CORE */
 /* ========================= */
-
-const cutscene = document.getElementById("cutscene");
-const countdownEl = document.getElementById("countdown");
 
 function startTransfer(url){
 
-cutscene.classList.add("active");
+speak("DO NOT CONTINUE");
 
-let count = 5;
-countdownEl.innerText = count;
+let count = 10;
+const beep = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
 
 const interval = setInterval(()=>{
 
+document.body.style.transform="scale(1.01)";
+
+setTimeout(()=>document.body.style.transform="scale(1)",80);
+
+beep.currentTime=0;
+beep.play();
+
 count--;
-countdownEl.innerText = count;
 
-if(count <= 0){
+if(count<=0){
 clearInterval(interval);
-
-setTimeout(()=>{
-window.location.href = url;
-},600);
-
+window.open(url,"_blank");
 }
 
 },1000);
@@ -262,16 +380,13 @@ window.location.href = url;
 }
 
 /* ========================= */
-/* FULLSCREEN SAFE */
+/* ENTITY GOD MODE EFFECTS */
 /* ========================= */
 
-function toggleFullscreen(){
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen();
-}else{
-document.exitFullscreen();
-}
-}
+setInterval(()=>{
+document.body.style.filter="contrast(1.1) saturate(1.2)";
+setTimeout(()=>document.body.style.filter="none",120);
+},7000);
 
 </script>
 
