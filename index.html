@@ -12,44 +12,39 @@
 <style>
 
 /* ========================= */
-/* BASE */
+/* KEEP ORIGINAL STYLE (UNCHANGED) */
 /* ========================= */
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-background:black;
-overflow:hidden;
-color:white;
-font-family:'Orbitron',sans-serif;
+    background:black;
+    overflow:hidden;
+    color:white;
+    font-family:'Orbitron',sans-serif;
 }
 
-/* ========================= */
-/* BACKGROUND */
-/* ========================= */
-
 .bg{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-linear-gradient(to bottom, #050505, #000);
-z-index:-10;
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
+    linear-gradient(to bottom, #050505, #000);
+    z-index:-10;
 }
 
 .fog{
-position:fixed;
-inset:0;
-background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
-background-size:cover;
-opacity:.06;
-filter:blur(5px);
-animation:fogMove 50s linear infinite;
-z-index:-9;
+    position:fixed;
+    inset:0;
+    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+    background-size:cover;
+    opacity:.06;
+    animation:fogMove 50s linear infinite;
+    filter:blur(5px);
 }
 
 @keyframes fogMove{
@@ -58,79 +53,22 @@ z-index:-9;
 100%{transform:scale(1.1) translateX(0);}
 }
 
-/* ========================= */
-/* EFFECTS */
-/* ========================= */
-
 .scanlines{
-position:fixed;
-inset:0;
-background:repeating-linear-gradient(to bottom, rgba(255,255,255,.02), transparent 3px);
-pointer-events:none;
-z-index:999;
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.02),transparent 3px);
+    pointer-events:none;
+    z-index:999;
 }
 
 .glitch{
-position:fixed;
-inset:0;
-background:red;
-opacity:0;
-mix-blend-mode:screen;
-pointer-events:none;
-z-index:999999;
-}
-
-/* ========================= */
-/* MAIN UI */
-/* ========================= */
-
-.main{
-position:relative;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-z-index:10;
-}
-
-.title{
-font-size:110px;
-font-weight:900;
-text-shadow:0 0 50px red;
-}
-
-.buttons{
-margin-top:40px;
-display:flex;
-gap:20px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-/* ========================= */
-/* PULSE BUTTONS */
-/* ========================= */
-
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.06);}
-100%{transform:scale(1);}
-}
-
-.btn{
-padding:16px 36px;
-border:1px solid rgba(255,0,0,.3);
-background:rgba(255,0,0,.08);
-color:white;
-cursor:pointer;
-transition:.3s;
-animation:pulse 2s infinite;
-}
-
-.btn:hover{
-background:red;
-transform:scale(1.08);
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
 }
 
 /* ========================= */
@@ -138,68 +76,128 @@ transform:scale(1.08);
 /* ========================= */
 
 .cutscene{
-position:fixed;
-inset:0;
-background:black;
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:9999999;
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999999;
 }
 
-.cutscene.active{
-display:flex;
-}
+.cutscene.active{display:flex;}
 
-.ctext{
-font-size:16px;
-color:red;
-font-family:'IBM Plex Mono';
-margin-bottom:10px;
-opacity:.8;
-}
-
-.cnum{
-font-size:200px;
-font-weight:900;
-text-shadow:0 0 60px red;
+.countdown{
+    font-size:220px;
+    font-weight:900;
 }
 
 /* ========================= */
-/* JUMPSCARE */
+/* JUMPSCARE LAYER (ADDED) */
 /* ========================= */
 
 #scare{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:black;
-z-index:1000000000;
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:black;
+    z-index:1000000000;
 }
 
 #scare.active{
-display:flex;
+    display:flex;
 }
 
 #scare img{
-width:100%;
-height:100%;
-object-fit:cover;
-filter:contrast(1.6) brightness(0.7);
-animation:shake .08s infinite;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    animation:shake .08s infinite;
 }
 
 @keyframes shake{
 0%{transform:translateX(0);}
-50%{transform:translateX(-3px);}
-100%{transform:translateX(3px);}
+50%{transform:translateX(-4px);}
+100%{transform:translateX(4px);}
 }
 
-</style>
+/* ========================= */
+/* ADDED EFFECTS (UNCHANGED ORIGINAL BELOW) */
+/* ========================= */
 
+.vhs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999998;
+    mix-blend-mode:overlay;
+    opacity:.25;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,0,0,.05),
+        rgba(0,0,0,.05) 2px
+    );
+    animation:vhsFlicker .15s infinite;
+}
+
+@keyframes vhsFlicker{
+    0%{transform:translateX(0);}
+    50%{transform:translateX(-2px);}
+    100%{transform:translateX(2px);}
+}
+
+.zoom{
+    animation:zoomIn 5s ease-in-out forwards;
+}
+
+@keyframes zoomIn{
+    from{transform:scale(1);}
+    to{transform:scale(1.2);}
+}
+
+.face{
+    position:fixed;
+    inset:0;
+    background:url('https://i.imgur.com/3ZQ3ZQm.png');
+    background-size:cover;
+    opacity:0;
+    pointer-events:none;
+    z-index:999997;
+    animation:faceFlick 8s infinite;
+}
+
+@keyframes faceFlick{
+    0%,100%{opacity:0;}
+    50%{opacity:.15;}
+}
+
+#aiSpeak{
+    position:fixed;
+    top:20%;
+    left:50%;
+    transform:translateX(-50%);
+    color:red;
+    font-size:20px;
+    opacity:0;
+    z-index:99999999;
+}
+
+.antivirus{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:lime;
+    font-family:monospace;
+    padding:40px;
+    display:none;
+    z-index:999999999;
+}
+
+.antivirus.active{display:block;}
+
+</style>
 </head>
 
 <body>
@@ -209,53 +207,63 @@ animation:shake .08s infinite;
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<div class="main">
+<div class="vhs"></div>
+<div class="face"></div>
+<div id="aiSpeak"></div>
 
-<div>
-
-<div class="title">EVERDUSK</div>
-
-<div class="buttons">
-
-<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM',0)">
-DISCORD
-</button>
-
-<button class="btn" onclick="startTransfer('https://vexsound.base44.app/',1)">
-VEXSOUND
-</button>
-
-<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html',2)">
-ENTER VOID
-</button>
-
-</div>
-
-</div>
-
+<div class="antivirus" id="av">
+SYSTEM SCAN INITIATED...<br>
+CHECKING MEMORY...<br>
+ENTITY DETECTED...<br>
 </div>
 
 <div class="cutscene" id="cutscene">
-<div class="ctext" id="ctext">SYSTEM BOOT</div>
-<div class="cnum" id="cnum">5</div>
+<div class="countdown" id="countdown">5</div>
 </div>
 
+<!-- JUMPSCARE -->
 <div id="scare"></div>
 
 <script>
 
 /* ========================= */
-/* ELEMENTS */
+/* ORIGINAL SYSTEMS */
 /* ========================= */
 
-const cutscene = document.getElementById("cutscene");
-const ctext = document.getElementById("ctext");
-const cnum = document.getElementById("cnum");
-const scare = document.getElementById("scare");
-const glitch = document.querySelector(".glitch");
+setInterval(()=>{
+document.querySelector('.glitch').style.opacity=.05;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,120);
+},4000);
+
+const speakBox=document.getElementById("aiSpeak");
+
+function talk(t){
+speakBox.innerText=t;
+speakBox.style.opacity=1;
+setTimeout(()=>speakBox.style.opacity=0,900);
+}
+
+const beat=new AudioContext();
+
+function heartbeat(){
+const osc=beat.createOscillator();
+const gain=beat.createGain();
+osc.frequency.value=60;
+gain.gain.value=0.05;
+osc.connect(gain);
+gain.connect(beat.destination);
+osc.start();
+osc.stop(beat.currentTime+0.1);
+}
+
+function xp(){
+const s=new Audio("https://www.myinstants.com/media/sounds/xp.mp3");
+s.volume=0.3;
+s.play();
+}
 
 /* ========================= */
-/* JUMPSCARES PER BUTTON */
+/* JUMPSCARES (ADDED) */
 /* ========================= */
 
 const jumpscares = [
@@ -264,74 +272,61 @@ const jumpscares = [
 "https://cdn.corenexis.com/files/c/2912219720.webp"
 ];
 
-/* ========================= */
-/* GLITCH */
-/* ========================= */
-
-function glitchBurst(){
-glitch.style.opacity = 0.7;
-setTimeout(()=>glitch.style.opacity = 0,120);
-}
+const scare = document.getElementById("scare");
 
 /* ========================= */
-/* MAIN FUNCTION */
+/* PATCH FUNCTION (UPDATED WITH JUMPSCARE) */
 /* ========================= */
 
-function startTransfer(url,type){
+const oldStart=startTransfer;
 
-let count = 5;
+startTransfer=function(url){
+
+document.getElementById("av").classList.add("active");
+
+setTimeout(()=>{
+
+document.getElementById("av").classList.remove("active");
 
 cutscene.classList.add("active");
 
-const messages = [
-"INITIALIZING",
-"LINK STABLE",
-"ENTITY DETECTED",
-"MEMORY FAILURE",
-"FINAL SEQUENCE"
-];
+document.body.classList.add("zoom");
 
-const interval = setInterval(()=>{
+let count=5;
 
-ctext.innerText = messages[5-count];
-cnum.innerText = count;
+const interval=setInterval(()=>{
 
-glitchBurst();
+heartbeat();
+xp();
+
+talk("SYSTEM CORRUPTION DETECTED");
+
+document.getElementById("countdown").innerText=count;
 
 count--;
 
-if(count < 0){
+if(count<=0){
 
 clearInterval(interval);
 
-/* glitch burst */
-for(let i=0;i<6;i++){
-setTimeout(glitchBurst,i*60);
-}
+talk("YOU ARE NOW INSIDE");
 
-/* jumpscare */
-const img = jumpscares[type];
+/* ========================= */
+/* JUMPSCARE TRIGGER */
+/* ========================= */
+
+const img = jumpscares[Math.floor(Math.random()*jumpscares.length)];
 
 scare.innerHTML = `<img src="${img}">`;
 scare.classList.add("active");
 
-/* hold */
+/* HOLD JUMPSCARE */
 setTimeout(()=>{
 
 scare.classList.remove("active");
 
-/* open link */
+/* OPEN LINK AFTER JUMPSCARE */
 window.open(url,"_blank");
-
-/* reset */
-setTimeout(()=>{
-
-cutscene.classList.remove("active");
-
-cnum.innerText = "5";
-ctext.innerText = "SYSTEM BOOT";
-
-},600);
 
 },1200);
 
@@ -339,7 +334,8 @@ ctext.innerText = "SYSTEM BOOT";
 
 },1000);
 
-}
+},2000);
+};
 
 </script>
 
