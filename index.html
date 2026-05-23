@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -35,7 +36,7 @@ body{
     position:fixed;
     inset:0;
     background:
-    radial-gradient(circle at center, rgba(255,0,0,.2), transparent 60%),
+    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
     linear-gradient(to bottom, #050505, #000);
     z-index:-10;
 }
@@ -45,7 +46,7 @@ body{
     inset:0;
     background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
     background-size:cover;
-    opacity:.08;
+    opacity:.06;
     animation:fogMove 50s linear infinite;
     filter:blur(5px);
 }
@@ -95,13 +96,12 @@ body{
     flex-direction:column;
     z-index:99999;
     animation:fadeOut 2s forwards;
-    animation-delay:6s;
+    animation-delay:5s;
 }
 
 .boot-title{
     font-size:90px;
     font-weight:900;
-    color:white;
     text-shadow:
         0 0 10px red,
         0 0 40px red,
@@ -131,7 +131,7 @@ body{
     width:0%;
     background:red;
     box-shadow:0 0 20px red;
-    animation:load 5s forwards;
+    animation:load 4s forwards;
 }
 
 @keyframes load{
@@ -167,7 +167,6 @@ body{
     align-items:center;
     justify-content:center;
     text-align:center;
-    position:relative;
 }
 
 .content{
@@ -201,6 +200,10 @@ body{
     font-family:'IBM Plex Mono',monospace;
 }
 
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
+
 .buttons{
     display:flex;
     gap:20px;
@@ -215,7 +218,7 @@ body{
     border:1px solid rgba(255,0,0,.3);
     background:rgba(255,0,0,.08);
     backdrop-filter:blur(10px);
-    transition:.4s;
+    transition:.35s;
     letter-spacing:2px;
     cursor:pointer;
     font-family:'Orbitron',sans-serif;
@@ -230,7 +233,7 @@ body{
 }
 
 /* ========================= */
-/* GAME FRAME */
+/* GAME */
 /* ========================= */
 
 .game-frame{
@@ -240,49 +243,35 @@ body{
     height:100%;
     border:none;
     display:none;
-    z-index:9999;
+    z-index:9000;
     background:black;
 }
 
 /* ========================= */
-/* GLITCH FLASH */
-/* ========================= */
-
-.glitch{
-    position:fixed;
-    inset:0;
-    background:red;
-    opacity:0;
-    pointer-events:none;
-    mix-blend-mode:screen;
-    z-index:999999;
-}
-
-/* ========================= */
-/* CLIENT TOP BAR */
+/* TOP BAR */
 /* ========================= */
 
 .client-overlay{
     position:fixed;
-    inset:0;
+    top:0;
+    left:0;
+    width:100%;
+    height:80px;
     pointer-events:none;
     z-index:100000;
 }
 
 .client-topbar{
-    position:absolute;
-    top:0;
-    left:0;
     width:100%;
     padding:18px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     background:linear-gradient(
         to bottom,
         rgba(0,0,0,.85),
         transparent
     );
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
     backdrop-filter:blur(10px);
 }
 
@@ -302,17 +291,9 @@ body{
 
 @keyframes pulseStatus{
 
-0%{
-    opacity:.4;
-}
-
-50%{
-    opacity:1;
-}
-
-100%{
-    opacity:.4;
-}
+0%{opacity:.4;}
+50%{opacity:1;}
+100%{opacity:.4;}
 
 }
 
@@ -349,13 +330,27 @@ body{
 }
 
 /* ========================= */
+/* GLITCH */
+/* ========================= */
+
+.glitch{
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
+}
+
+/* ========================= */
 /* MOBILE */
 /* ========================= */
 
 @media(max-width:900px){
 
 .title{
-    font-size:70px;
+    font-size:60px;
 }
 
 .boot-title{
@@ -368,7 +363,7 @@ body{
 
 .client-topbar{
     flex-direction:column;
-    gap:15px;
+    gap:12px;
 }
 
 .top-buttons{
@@ -381,6 +376,10 @@ body{
 </style>
 </head>
 <body>
+
+<!-- ========================= -->
+<!-- BACKGROUND -->
+<!-- ========================= -->
 
 <div class="bg"></div>
 <div class="fog"></div>
@@ -408,7 +407,7 @@ INITIALIZING VOID LINK...
 </div>
 
 <!-- ========================= -->
-<!-- CLIENT TOP BAR -->
+<!-- TOP BAR -->
 <!-- ========================= -->
 
 <div class="client-overlay">
@@ -448,7 +447,7 @@ SIGNAL ACTIVE
 </div>
 
 <!-- ========================= -->
-<!-- MAIN MENU -->
+<!-- MAIN -->
 <!-- ========================= -->
 
 <section class="main">
@@ -494,13 +493,16 @@ VEXSOUND
 </section>
 
 <!-- ========================= -->
-<!-- GAME -->
+<!-- GAME IFRAME -->
 <!-- ========================= -->
 
 <iframe
 class="game-frame"
 id="gameFrame"
-src="">
+src=""
+allowfullscreen
+allow="fullscreen; autoplay; clipboard-read; clipboard-write; pointer-lock; gamepad *;"
+referrerpolicy="strict-origin-when-cross-origin">
 </iframe>
 
 <script>
@@ -516,12 +518,10 @@ setInterval(() => {
     glitch.style.opacity = '.05';
 
     setTimeout(() => {
-
         glitch.style.opacity = '0';
-
     },100);
 
-},Math.random() * 7000 + 4000);
+},5000);
 
 /* ========================= */
 /* LAUNCH GAME */
@@ -534,7 +534,7 @@ function launchGame(){
     frame.style.display = 'block';
 
     if(frame.src === ''){
-        frame.src = 'https://eagler-zphy.onrender.com';
+        frame.src = 'https://play.everdusk.xyz/wasm.html';
     }
 
 }
@@ -551,19 +551,21 @@ function toggleFullscreen(){
         launchGame();
     }
 
-    if (!document.fullscreenElement) {
+    if(!document.fullscreenElement){
 
-        if (frame.requestFullscreen) {
+        if(frame.requestFullscreen){
             frame.requestFullscreen();
-        } else if (frame.webkitRequestFullscreen) {
+        }
+        else if(frame.webkitRequestFullscreen){
             frame.webkitRequestFullscreen();
-        } else if (frame.msRequestFullscreen) {
+        }
+        else if(frame.msRequestFullscreen){
             frame.msRequestFullscreen();
         }
 
-    } else {
+    }else{
 
-        if (document.exitFullscreen) {
+        if(document.exitFullscreen){
             document.exitFullscreen();
         }
 
@@ -584,19 +586,17 @@ function closeGame(){
 }
 
 /* ========================= */
-/* SCREEN DISTORTION */
+/* SCREEN FX */
 /* ========================= */
 
 setInterval(() => {
 
-document.body.style.filter =
-'contrast(1.05) brightness(1.02)';
+    document.body.style.filter =
+    'contrast(1.05) brightness(1.02)';
 
-setTimeout(() => {
-
-document.body.style.filter = 'none';
-
-},120);
+    setTimeout(() => {
+        document.body.style.filter = 'none';
+    },120);
 
 },9000);
 
