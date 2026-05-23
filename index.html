@@ -12,7 +12,7 @@
 <style>
 
 /* ========================= */
-/* KEEP ORIGINAL STYLE (UNCHANGED) */
+/* BASE RESET */
 /* ========================= */
 
 *{
@@ -27,6 +27,10 @@ body{
     color:white;
     font-family:'Orbitron',sans-serif;
 }
+
+/* ========================= */
+/* BACKGROUND SYSTEM */
+/* ========================= */
 
 .bg{
     position:fixed;
@@ -61,6 +65,10 @@ body{
     z-index:999;
 }
 
+/* ========================= */
+/* GLITCH SYSTEM */
+/* ========================= */
+
 .glitch{
     position:fixed;
     inset:0;
@@ -72,7 +80,7 @@ body{
 }
 
 /* ========================= */
-/* ORIGINAL CUTSCENE */
+/* CUTSCENE */
 /* ========================= */
 
 .cutscene{
@@ -82,95 +90,62 @@ body{
     display:none;
     align-items:center;
     justify-content:center;
+    flex-direction:column;
     z-index:9999999;
 }
 
-.cutscene.active{display:flex;}
+.cutscene.active{
+    display:flex;
+}
+
+.smallText{
+    font-size:14px;
+    color:#ff3b3b;
+    letter-spacing:3px;
+    margin-bottom:10px;
+    font-family:'IBM Plex Mono', monospace;
+    opacity:.8;
+}
 
 .countdown{
     font-size:220px;
     font-weight:900;
+    text-shadow:0 0 30px red;
 }
 
 /* ========================= */
-/* ADDED: VHS + CAMERA + DISTORTION */
+/* JUMPSCARE LAYER */
 /* ========================= */
 
-.vhs{
+#scare{
     position:fixed;
     inset:0;
-    pointer-events:none;
-    z-index:999998;
-    mix-blend-mode:overlay;
-    opacity:.25;
-    background:repeating-linear-gradient(
-        to bottom,
-        rgba(255,0,0,.05),
-        rgba(0,0,0,.05) 2px
-    );
-    animation:vhsFlicker .15s infinite;
-}
-
-@keyframes vhsFlicker{
-    0%{transform:translateX(0);}
-    50%{transform:translateX(-2px);}
-    100%{transform:translateX(2px);}
-}
-
-/* CAMERA ZOOM */
-.zoom{
-    animation:zoomIn 5s ease-in-out forwards;
-}
-
-@keyframes zoomIn{
-    from{transform:scale(1);}
-    to{transform:scale(1.2);}
-}
-
-/* FACE APPARITION */
-.face{
-    position:fixed;
-    inset:0;
-    background:url('https://i.imgur.com/3ZQ3ZQm.png');
-    background-size:cover;
-    opacity:0;
-    pointer-events:none;
-    z-index:999997;
-    animation:faceFlick 8s infinite;
-}
-
-@keyframes faceFlick{
-    0%,100%{opacity:0;}
-    50%{opacity:.15;}
-}
-
-/* AI SPEAK */
-#aiSpeak{
-    position:fixed;
-    top:20%;
-    left:50%;
-    transform:translateX(-50%);
-    color:red;
-    font-size:20px;
-    opacity:0;
-    z-index:99999999;
-}
-
-/* ANTIVIRUS FAKE SCAN */
-.antivirus{
-    position:fixed;
-    inset:0;
-    background:black;
-    color:lime;
-    font-family:monospace;
-    padding:40px;
     display:none;
-    z-index:999999999;
+    align-items:center;
+    justify-content:center;
+    background:black;
+    z-index:1000000000;
 }
 
-.antivirus.active{display:block;}
+#scare.active{
+    display:flex;
+}
+
+#scare img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    animation:shake .06s infinite;
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+50%{transform:translateX(-5px);}
+100%{transform:translateX(5px);}
+}
 
 </style>
+
 </head>
 
 <body>
@@ -180,119 +155,118 @@ body{
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<!-- ADDED LAYERS -->
-<div class="vhs"></div>
-<div class="face"></div>
-<div id="aiSpeak"></div>
-
-<!-- ANTIVIRUS -->
-<div class="antivirus" id="av">
-SYSTEM SCAN INITIATED...<br>
-CHECKING MEMORY...<br>
-ENTITY DETECTED...<br>
-</div>
-
-<!-- CUTSCENE -->
 <div class="cutscene" id="cutscene">
-<div class="countdown" id="countdown">5</div>
+
+    <div class="smallText" id="status">SYSTEM INITIALIZING</div>
+    <div class="countdown" id="countdown">5</div>
+
 </div>
+
+<div id="scare"></div>
 
 <script>
 
 /* ========================= */
-/* ORIGINAL GLITCH */
+/* GLITCH LOOP */
 /* ========================= */
 
 setInterval(()=>{
-document.querySelector('.glitch').style.opacity=.05;
-setTimeout(()=>document.querySelector('.glitch').style.opacity=0,120);
-},4000);
+document.querySelector('.glitch').style.opacity=.06;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,100);
+},3500);
 
 /* ========================= */
-/* SCREEN TALK SYSTEM */
+/* JUMPSCARES */
 /* ========================= */
 
-const speakBox=document.getElementById("aiSpeak");
-
-function talk(t){
-speakBox.innerText=t;
-speakBox.style.opacity=1;
-setTimeout(()=>speakBox.style.opacity=0,900);
-}
+const jumpscares = [
+"https://cdn.corenexis.com/files/c/1164486720.webp",
+"https://cdn.corenexis.com/files/c/9536946720.jpg",
+"https://cdn.corenexis.com/files/c/2912219720.webp"
+];
 
 /* ========================= */
-/* HEARTBEAT AUDIO (synthetic) */
+/* AI STATUS PHRASES */
 /* ========================= */
 
-const beat=new AudioContext();
-function heartbeat(){
-const osc=beat.createOscillator();
-const gain=beat.createGain();
-osc.frequency.value=60;
-gain.gain.value=0.05;
-osc.connect(gain);
-gain.connect(beat.destination);
-osc.start();
-osc.stop(beat.currentTime+0.1);
-}
+const phases = [
+"LINK STABILIZING",
+"SIGNAL INTERFERENCE",
+"UNKNOWN ENTITY DETECTED",
+"MEMORY FRAGMENTING",
+"FINALIZATION SEQUENCE"
+];
 
 /* ========================= */
-/* XP SOUND */
+/* MAIN FUNCTION */
 /* ========================= */
 
-function xp(){
-const s=new Audio("https://www.myinstants.com/media/sounds/xp.mp3");
-s.volume=0.3;
-s.play();
-}
+function startTransfer(url){
 
-/* ========================= */
-/* PATCH ORIGINAL FUNCTION (NO EDIT) */
-/* ========================= */
+let count = 5;
 
-const oldStart=startTransfer;
-
-startTransfer=function(url){
-
-/* fake antivirus */
-document.getElementById("av").classList.add("active");
-
-setTimeout(()=>{
-
-document.getElementById("av").classList.remove("active");
+const cutscene = document.getElementById("cutscene");
+const countdown = document.getElementById("countdown");
+const status = document.getElementById("status");
+const scare = document.getElementById("scare");
 
 cutscene.classList.add("active");
 
-/* CAMERA ZOOM */
-document.body.classList.add("zoom");
+const interval = setInterval(()=>{
 
-let count=5;
+/* update text */
+status.innerText = phases[5 - count] || "SYSTEM ERROR";
+countdown.innerText = count;
 
-const interval=setInterval(()=>{
-
-heartbeat();
-xp();
-
-talk("SYSTEM CORRUPTION DETECTED");
-
-countdown.innerText=count;
-
-if(count<=0){
-clearInterval(interval);
-
-talk("YOU ARE NOW INSIDE");
-
-setTimeout(()=>{
-window.open(url,"_blank");
-},600);
+/* glitch burst */
+if(count <= 3){
+document.querySelector('.glitch').style.opacity = 0.1;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,80);
 }
 
+/* decrement */
 count--;
+
+if(count < 0){
+
+clearInterval(interval);
+
+/* FINAL GLITCH EXPLOSION */
+for(let i=0;i<8;i++){
+setTimeout(()=>{
+document.querySelector('.glitch').style.opacity = 0.8;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,60);
+},i*50);
+}
+
+/* JUMPSCARE */
+const img = jumpscares[Math.floor(Math.random()*jumpscares.length)];
+
+scare.innerHTML = `<img src="${img}">`;
+scare.classList.add("active");
+
+/* HOLD SCENE */
+setTimeout(()=>{
+
+scare.classList.remove("active");
+
+/* OPEN LINK */
+window.open(url,"_blank");
+
+/* RESET */
+setTimeout(()=>{
+cutscene.classList.remove("active");
+countdown.innerText="5";
+status.innerText="SYSTEM INITIALIZING";
+},600);
+
+},1400);
+
+}
 
 },1000);
 
-},2000);
-};
+}
 
 </script>
 
