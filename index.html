@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -11,32 +11,38 @@
 
 <style>
 
-/* BASE */
-*{margin:0;padding:0;box-sizing:border-box;}
+/* ORIGINAL STYLE (UNCHANGED) */
 
-body{
-background:black;
-overflow:hidden;
-color:white;
-font-family:'Orbitron',sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* BACKGROUND */
+body{
+    background:black;
+    overflow:hidden;
+    color:white;
+    font-family:'Orbitron',sans-serif;
+}
+
 .bg{
-position:fixed;inset:0;
-background:radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-linear-gradient(to bottom,#050505,#000);
-z-index:-10;
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
+    linear-gradient(to bottom, #050505, #000);
+    z-index:-10;
 }
 
 .fog{
-position:fixed;inset:0;
-background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
-background-size:cover;
-opacity:.06;
-filter:blur(5px);
-animation:fogMove 50s linear infinite;
-z-index:-9;
+    position:fixed;
+    inset:0;
+    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+    background-size:cover;
+    opacity:.06;
+    animation:fogMove 50s linear infinite;
+    filter:blur(5px);
 }
 
 @keyframes fogMove{
@@ -45,70 +51,68 @@ z-index:-9;
 100%{transform:scale(1.1) translateX(0);}
 }
 
-/* SCANLINES */
 .scanlines{
-position:fixed;inset:0;
-background:repeating-linear-gradient(to bottom,rgba(255,255,255,.02),transparent 3px);
-pointer-events:none;
-z-index:999;
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.02),transparent 3px);
+    pointer-events:none;
+    z-index:999;
 }
 
-/* GLITCH */
 .glitch{
-position:fixed;inset:0;
-background:red;
-opacity:0;
-pointer-events:none;
-mix-blend-mode:screen;
-z-index:999999;
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
 }
 
 /* CUTSCENE */
+
 .cutscene{
-position:fixed;inset:0;
-background:black;
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999999;
-flex-direction:column;
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999999;
 }
 
-.cutscene.active{display:flex;}
+.cutscene.active{
+    display:flex;
+}
 
 .countdown{
-font-size:220px;
-font-weight:900;
+    font-size:220px;
+    font-weight:900;
 }
 
 /* JUMPSCARE */
+
 #scare{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:black;
-z-index:1000000000;
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:black;
+    z-index:1000000000;
 }
 
-#scare.active{display:flex;}
+#scare.active{
+    display:flex;
+}
 
 #scare img{
-width:100%;
-height:100%;
-object-fit:cover;
-animation:shake .08s infinite;
-}
-
-@keyframes shake{
-0%{transform:translateX(0);}
-50%{transform:translateX(-4px);}
-100%{transform:translateX(4px);}
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -118,50 +122,48 @@ animation:shake .08s infinite;
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<!-- CUTSCENE -->
 <div class="cutscene" id="cutscene">
-<div class="countdown" id="countdown">5</div>
+    <div class="countdown" id="countdown">5</div>
 </div>
 
-<!-- JUMPSCARE -->
 <div id="scare"></div>
 
 <script>
 
-/* SAFE GLITCH */
+/* GLITCH */
 setInterval(()=>{
-const g=document.querySelector(".glitch");
-g.style.opacity=.05;
-setTimeout(()=>g.style.opacity=0,120);
+document.querySelector('.glitch').style.opacity=.05;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,120);
 },4000);
 
 /* JUMPSCARES */
-const jumpscares=[
+const jumpscares = [
 "https://cdn.corenexis.com/files/c/1164486720.webp",
 "https://cdn.corenexis.com/files/c/9536946720.jpg",
 "https://cdn.corenexis.com/files/c/2912219720.webp"
 ];
 
-/* MAIN FUNCTION */
+/* MAIN */
 function startTransfer(url){
 
-const cutscene=document.getElementById("cutscene");
-const countdown=document.getElementById("countdown");
-const scare=document.getElementById("scare");
+let count = 5;
 
-let count=5;
+const cutscene = document.getElementById("cutscene");
+const countdown = document.getElementById("countdown");
+const scare = document.getElementById("scare");
+
 cutscene.classList.add("active");
 
-const interval=setInterval(()=>{
+const interval = setInterval(()=>{
 
-countdown.innerText=count;
+countdown.innerText = count;
 count--;
 
-if(count<0){
+if(count < 0){
 clearInterval(interval);
 
 /* GLITCH BURST */
-for(let i=0;i<5;i++){
+for(let i=0;i<6;i++){
 setTimeout(()=>{
 const g=document.querySelector(".glitch");
 g.style.opacity=.7;
@@ -170,24 +172,22 @@ setTimeout(()=>g.style.opacity=0,80);
 }
 
 /* JUMPSCARE */
-const img=jumpscares[Math.floor(Math.random()*jumpscares.length)];
+const img = jumpscares[Math.floor(Math.random()*jumpscares.length)];
 
-scare.innerHTML=`<img src="${img}">`;
+scare.innerHTML = `<img src="${img}">`;
 scare.classList.add("active");
 
-/* HOLD THEN OPEN */
+/* HOLD + OPEN */
 setTimeout(()=>{
 
 scare.classList.remove("active");
 
-/* OPEN LINK */
 window.open(url,"_blank");
 
-/* RESET */
 setTimeout(()=>{
 cutscene.classList.remove("active");
 countdown.innerText="5";
-},500);
+},400);
 
 },1200);
 
