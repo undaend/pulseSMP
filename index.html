@@ -59,7 +59,7 @@ body{
 }
 
 /* ========================= */
-/* EFFECT LAYERS */
+/* EFFECTS */
 /* ========================= */
 
 .scanlines{
@@ -98,13 +98,6 @@ body{
         rgba(255,0,0,.05),
         rgba(0,0,0,.05) 2px
     );
-    animation:vhsShake .12s infinite;
-}
-
-@keyframes vhsShake{
-0%{transform:translateX(0);}
-50%{transform:translateX(-2px);}
-100%{transform:translateX(2px);}
 }
 
 /* ========================= */
@@ -122,6 +115,26 @@ body{
     opacity:0;
     z-index:99999999;
     text-shadow:0 0 10px red;
+}
+
+/* ========================= */
+/* JUMPSCARE */
+/* ========================= */
+
+#entityScare{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:red;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:80px;
+    font-weight:900;
+    opacity:0;
+    pointer-events:none;
+    z-index:999999999;
+    text-shadow:0 0 40px red;
 }
 
 /* ========================= */
@@ -144,14 +157,13 @@ body{
 .boot-title{
     font-size:90px;
     font-weight:900;
-    text-shadow:0 0 10px red,0 0 40px red,0 0 80px red;
+    text-shadow:0 0 10px red,0 0 40px red;
 }
 
 .boot-sub{
     margin-top:20px;
     color:#ff2b2b;
     font-family:'IBM Plex Mono',monospace;
-    letter-spacing:4px;
 }
 
 .loading-bar{
@@ -171,6 +183,72 @@ body{
 
 @keyframes load{from{width:0%;}to{width:100%;}}
 @keyframes fadeOut{to{opacity:0;pointer-events:none;}}
+
+/* ========================= */
+/* CUTSCENE */
+/* ========================= */
+
+.cutscene{
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999999;
+}
+
+.cutscene.active{display:flex;}
+
+.countdown{
+    font-size:220px;
+    font-weight:900;
+    text-shadow:0 0 60px red;
+}
+
+/* ========================= */
+/* SYSTEM REBOOT */
+/* ========================= */
+
+.reboot{
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:10000000;
+    color:lime;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+.reboot.active{display:flex;}
+
+.reboot-text{
+    font-size:26px;
+    letter-spacing:3px;
+}
+
+.reboot-bar{
+    width:420px;
+    height:4px;
+    background:#111;
+    margin-top:30px;
+    overflow:hidden;
+}
+
+.reboot-fill{
+    width:0%;
+    height:100%;
+    background:lime;
+    animation:rebootLoad 2s forwards;
+}
+
+@keyframes rebootLoad{
+from{width:0%;}
+to{width:100%;}
+}
 
 /* ========================= */
 /* MAIN */
@@ -193,21 +271,16 @@ body{
 .title{
     font-size:120px;
     font-weight:900;
-    text-shadow:0 0 10px red,0 0 40px red,0 0 100px red;
+    text-shadow:0 0 10px red,0 0 100px red;
 }
 
 .desc{
     max-width:700px;
     margin:auto;
     color:#999;
-    line-height:1.8;
-    margin-bottom:50px;
     font-family:'IBM Plex Mono',monospace;
+    margin-bottom:40px;
 }
-
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
 
 .buttons{
     display:flex;
@@ -218,42 +291,16 @@ body{
 
 .btn{
     padding:18px 40px;
-    color:white;
     border:1px solid rgba(255,0,0,.3);
     background:rgba(255,0,0,.08);
-    backdrop-filter:blur(10px);
+    color:white;
     cursor:pointer;
-    transition:.35s;
-    font-family:'Orbitron',sans-serif;
+    transition:.3s;
 }
 
 .btn:hover{
-    transform:translateY(-4px);
     background:red;
-    box-shadow:0 0 20px red,0 0 60px red;
-}
-
-/* ========================= */
-/* CUTSCENE */
-/* ========================= */
-
-.cutscene{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:9999999;
-}
-
-.cutscene.active{display:flex;}
-
-.countdown{
-    font-size:220px;
-    font-weight:900;
-    color:white;
-    text-shadow:0 0 20px red,0 0 50px red,0 0 120px red;
+    box-shadow:0 0 20px red;
 }
 
 </style>
@@ -268,6 +315,7 @@ body{
 <div class="vhs"></div>
 
 <div id="aiSpeak"></div>
+<div id="entityScare"></div>
 
 <div class="boot-screen">
     <div class="boot-title">EVERDUSK</div>
@@ -276,24 +324,20 @@ body{
 </div>
 
 <section class="main">
-<div class="content">
+<div>
 
 <div class="small">THE WORLD NEVER SLEEPS</div>
-
 <h1 class="title">EVERDUSK</h1>
 
 <p class="desc">
-WARNING: SIGNAL INSTABILITY DETECTED.
-UNKNOWN ENTITIES HAVE BEEN TRACKED INSIDE THE ARCHIVE.
-CONTINUING MAY RESULT IN MEMORY LOSS.
+WARNING: SYSTEM INSTABILITY DETECTED.
 </p>
 
 <div class="buttons">
 
-<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER THE VOID</button>
-<button class="btn" onclick="startTransfer('https://www.youtube.com/@Everduskofficial')">WATCH ARCHIVES</button>
-<button class="btn" onclick="startTransfer('https://discord.gg/5Xdkuq7h9h')">JOIN EVERDUSK</button>
-<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
+<button class="btn" onclick="startTransfer('https://www.youtube.com/@Everduskofficial')">ARCHIVES</button>
+<button class="btn" onclick="startTransfer('https://discord.gg/5Xdkuq7h9h')">JOIN</button>
 
 </div>
 
@@ -304,100 +348,129 @@ CONTINUING MAY RESULT IN MEMORY LOSS.
     <div class="countdown" id="countdown">5</div>
 </div>
 
+<div class="reboot" id="reboot">
+    <div class="reboot-text">SYSTEM REBOOTING...</div>
+    <div class="reboot-bar"><div class="reboot-fill"></div></div>
+</div>
+
 <script>
 
 /* ========================= */
 /* ELEMENTS */
 /* ========================= */
 
-const glitch = document.querySelector(".glitch");
-const speakBox = document.getElementById("aiSpeak");
 const cutscene = document.getElementById("cutscene");
 const countdown = document.getElementById("countdown");
+const reboot = document.getElementById("reboot");
+const scare = document.getElementById("entityScare");
+const glitch = document.querySelector(".glitch");
 
 /* ========================= */
-/* GLITCH LOOP */
+/* AI VOICE */
 /* ========================= */
 
-setInterval(() => {
-    glitch.style.opacity = ".06";
-    setTimeout(() => glitch.style.opacity = "0", 120);
-}, 4000);
-
-/* ========================= */
-/* AI TEXT */
-/* ========================= */
-
-function talk(text){
-    speakBox.innerText = text;
-    speakBox.style.opacity = 1;
-    setTimeout(() => speakBox.style.opacity = 0, 900);
+function voice(text){
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.rate = 0.9;
+    msg.pitch = 0.2;
+    speechSynthesis.speak(msg);
 }
 
 /* ========================= */
-/* AUDIO SYSTEM */
+/* TEXT + VOICE */
 /* ========================= */
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function heartbeat(){
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = 55;
-    gain.gain.value = 0.08;
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.12);
+function talk(t){
+    voice(t);
 }
 
-/* unlock audio */
-document.addEventListener("click", () => {
-    if(audioCtx.state === "suspended") audioCtx.resume();
-}, { once:true });
+/* ========================= */
+/* JUMPSCARE */
+/* ========================= */
+
+const entities = ["ENTITY-07","NULL","BREACH","IT SEES YOU"];
+
+function jump(){
+    scare.innerText = entities[Math.floor(Math.random()*entities.length)];
+    scare.style.opacity = 1;
+    glitch.style.opacity = 0.3;
+
+    setTimeout(()=>{
+        scare.style.opacity = 0;
+        glitch.style.opacity = 0;
+    },150);
+}
 
 /* ========================= */
-/* TRANSFER SYSTEM */
+/* HEARTBEAT */
+/* ========================= */
+
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beat(){
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+
+    o.frequency.value = 55;
+    g.gain.value = 0.08;
+
+    o.connect(g);
+    g.connect(ctx.destination);
+
+    o.start();
+    o.stop(ctx.currentTime + 0.1);
+}
+
+document.addEventListener("click",()=>ctx.resume(),{once:true});
+
+/* ========================= */
+/* MAIN FUNCTION */
 /* ========================= */
 
 function startTransfer(url){
 
     let count = 5;
-
     cutscene.classList.add("active");
 
-    talk("SIGNAL LINK ESTABLISHED");
+    const i = setInterval(()=>{
 
-    const interval = setInterval(() => {
+        beat();
 
-        heartbeat();
-
-        glitch.style.opacity = ".12";
-        setTimeout(() => glitch.style.opacity = "0", 80);
-
-        if(count === 3) talk("ENTITY DETECTED");
-        if(count === 2) talk("MEMORY BREACH ACTIVE");
-        if(count === 1) talk("TRANSFER IMMINENT");
+        if(Math.random() > 0.6) jump();
 
         countdown.innerText = count;
+
+        if(count === 3) talk("ENTITY APPROACHING");
+        if(count === 2) talk("MEMORY COLLAPSE");
+        if(count === 1) talk("FINAL SEQUENCE");
 
         count--;
 
         if(count < 0){
-            clearInterval(interval);
+            clearInterval(i);
 
-            talk("YOU ARE INSIDE");
+            talk("REBOOT INITIATED");
 
-            setTimeout(() => {
-                window.open(url, "_blank");
-            }, 500);
+            // open link
+            window.open(url,"_blank");
+
+            // show reboot screen
+            reboot.classList.add("active");
+
+            setTimeout(()=>{
+
+                reboot.classList.remove("active");
+                cutscene.classList.remove("active");
+
+                countdown.innerText = "5";
+
+                scare.style.opacity = 0;
+                glitch.style.opacity = 0;
+
+            }, 2200);
         }
 
-    }, 1000);
+    },1000);
 }
 
 </script>
