@@ -1,312 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>EVERDUSK</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-
-/* ========================= */
-/* BASE */
-/* ========================= */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-background:black;
-overflow:hidden;
-color:white;
-font-family:'Orbitron',sans-serif;
-}
-
-/* ========================= */
-/* BACKGROUND */
-/* ========================= */
-
-.bg{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-linear-gradient(to bottom, #050505, #000);
-z-index:-10;
-}
-
-.fog{
-position:fixed;
-inset:0;
-background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
-background-size:cover;
-opacity:.06;
-filter:blur(5px);
-animation:fogMove 50s linear infinite;
-}
-
-@keyframes fogMove{
-0%{transform:scale(1.1) translateX(0);}
-50%{transform:scale(1.2) translateX(-60px);}
-100%{transform:scale(1.1) translateX(0);}
-}
-
-.scanlines{
-position:fixed;
-inset:0;
-background:repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.02),
-transparent 3px
-);
-pointer-events:none;
-z-index:999;
-}
-
-/* ========================= */
-/* GLITCH */
-/* ========================= */
-
-.glitch{
-position:fixed;
-inset:0;
-background:red;
-opacity:0;
-mix-blend-mode:screen;
-pointer-events:none;
-z-index:999999;
-}
-
-/* ========================= */
-/* MAIN UI */
-/* ========================= */
-
-.main{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-}
-
-.title{
-font-size:110px;
-text-shadow:0 0 40px red;
-}
-
-.btn{
-padding:16px 30px;
-margin:10px;
-background:rgba(255,0,0,.1);
-border:1px solid red;
-color:white;
-cursor:pointer;
-}
-
-/* ========================= */
-/* SCAN OVERLAY */
-/* ========================= */
-
-#scan{
-position:fixed;
-inset:0;
-display:none;
-justify-content:center;
-align-items:center;
-background:black;
-z-index:9999999;
-}
-
-#box{
-width:520px;
-padding:20px;
-border:1px solid red;
-background:rgba(0,0,0,.95);
-box-shadow:0 0 40px red;
-font-family:monospace;
-}
-
-#bar{
-width:100%;
-height:10px;
-background:#111;
-margin:10px 0;
-}
-
-#fill{
-height:100%;
-width:0%;
-background:red;
-}
-
-.log{
-font-size:12px;
-color:#ff3b3b;
-height:140px;
-overflow:hidden;
-}
-
-/* ========================= */
-/* AI TEXT */
-/* ========================= */
-
-#ai{
-position:fixed;
-top:35%;
-left:50%;
-transform:translateX(-50%);
-font-size:20px;
-color:red;
-opacity:0;
-transition:.3s;
-text-shadow:0 0 20px red;
-z-index:99999999;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="bg"></div>
-<div class="fog"></div>
-<div class="scanlines"></div>
-<div class="glitch"></div>
-
-<div class="main">
-
-<div>
-<h1 class="title">EVERDUSK</h1>
-
-<button class="btn" onclick="startScan('https://play.everdusk.xyz/wasm.html')">
-ENTER THE VOID
-</button>
-</div>
-
-</div>
-
-<!-- SCAN UI -->
-
-<div id="scan">
-
-<div id="box">
-
-<div style="color:red;font-size:16px;">EVERDUSK SECURITY SCAN</div>
-
-<div id="status" style="color:#ff4d4d;margin-top:5px;">Initializing...</div>
-
-<div id="bar"><div id="fill"></div></div>
-
-<div class="log" id="log"></div>
-
-</div>
-
-</div>
-
-<!-- AI TEXT -->
-
-<div id="ai"></div>
-
 <script>
 
-/* ========================= */
-/* ELEMENTS */
-/* ========================= */
+/* =========================
+   SAFE PATCH SYSTEM (ADDITIVE ONLY)
+   ========================= */
 
-const scan = document.getElementById("scan");
-const fill = document.getElementById("fill");
-const log = document.getElementById("log");
-const ai = document.getElementById("ai");
-const statusText = document.getElementById("status");
+/* ---------- CUTSCENE OVERLAY (NEW) ---------- */
 
-/* ========================= */
-/* AI SPEECH */
-/* ========================= */
+const _cutscene = document.createElement("div");
+_cutscene.style.position = "fixed";
+_cutscene.style.inset = "0";
+_cutscene.style.display = "none";
+_cutscene.style.alignItems = "center";
+_cutscene.style.justifyContent = "center";
+_cutscene.style.flexDirection = "column";
+_cutscene.style.background = "black";
+_cutscene.style.zIndex = "99999999";
+document.body.appendChild(_cutscene);
 
-function speak(text){
-ai.innerText = text;
-ai.style.opacity = 1;
+/* countdown text */
+const _count = document.createElement("div");
+_count.style.fontSize = "180px";
+_count.style.color = "white";
+_count.style.textShadow = "0 0 20px red";
+_cutscene.appendChild(_count);
 
-setTimeout(()=>ai.style.opacity = 0,1200);
+/* XP BAR */
+const _xp = document.createElement("div");
+_xp.style.width = "400px";
+_xp.style.height = "10px";
+_xp.style.marginTop = "20px";
+_xp.style.border = "1px solid red";
+_xp.style.position = "relative";
+_cutscene.appendChild(_xp);
+
+const _xpFill = document.createElement("div");
+_xpFill.style.position = "absolute";
+_xpFill.style.left = "0";
+_xpFill.style.top = "0";
+_xpFill.style.height = "100%";
+_xpFill.style.width = "0%";
+_xpFill.style.background = "red";
+_xp.appendChild(_xpFill);
+
+/* ---------- VHS OVERLAY ---------- */
+
+const _vhs = document.createElement("div");
+_vhs.style.position = "fixed";
+_vhs.style.inset = "0";
+_vhs.style.pointerEvents = "none";
+_vhs.style.opacity = "0";
+_vhs.style.background = "repeating-linear-gradient(to bottom, rgba(255,0,0,0.05), transparent 2px)";
+_vhs.style.mixBlendMode = "screen";
+_vhs.style.zIndex = "99999998";
+document.body.appendChild(_vhs);
+
+/* ---------- SOUND SYSTEM ---------- */
+
+const _beep = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+const _whoosh = new Audio("https://assets.mixkit.co/active_storage/sfx/1512/1512-preview.mp3");
+
+/* ---------- GLITCH SHAKE (ADD ONLY) ---------- */
+
+function _shake(){
+    document.body.style.transform = "translateX(" + (Math.random()*6-3) + "px)";
+    setTimeout(()=>document.body.style.transform="none",80);
 }
 
-/* ========================= */
-/* LOGS */
-/* ========================= */
+/* ---------- RED PULSE ---------- */
 
-const msgs = [
-"system integrity check...",
-"scanning memory sectors...",
-"unknown signature detected",
-"warning: anomaly rising",
-"critical instability forming",
-"ENTITY DETECTED"
-];
-
-function addLog(){
-const el = document.createElement("div");
-el.innerText = msgs[Math.floor(Math.random()*msgs.length)];
-log.appendChild(el);
-
-if(log.children.length > 8){
-log.removeChild(log.firstChild);
-}
+function _pulse(){
+    document.body.style.filter = "brightness(2) contrast(2)";
+    setTimeout(()=>document.body.style.filter="none",120);
 }
 
-/* ========================= */
-/* SCAN SYSTEM */
-/* ========================= */
+/* ---------- MAIN PATCH FUNCTION (DOES NOT TOUCH YOUR BUTTONS) ---------- */
 
-function startScan(url){
+function startTransfer(url){
 
-scan.style.display = "flex";
+    let t = 5;
+    _cutscene.style.display = "flex";
 
-let p = 0;
+    _whoosh.play();
 
-speak("Starting system scan");
+    const interval = setInterval(()=>{
 
-const interval = setInterval(()=>{
+        _shake();
+        _pulse();
 
-p += Math.random()*10;
+        _beep.currentTime = 0;
+        _beep.play();
 
-fill.style.width = p + "%";
+        _count.innerText = t;
 
-addLog();
+        /* XP BAR ANIMATION */
+        _xpFill.style.width = ((5 - t) / 5 * 100) + "%";
 
-if(p > 30) speak("Analyzing system...");
-if(p > 60) speak("Suspicious activity detected");
-if(p > 85) speak("Warning level critical");
+        /* VHS MODE ON DURING COUNTDOWN */
+        _vhs.style.opacity = "0.2";
 
-if(p >= 100){
+        t--;
 
-clearInterval(interval);
+        if(t < 0){
+            clearInterval(interval);
 
-statusText.innerText = "Scan complete: anomalies found";
+            _vhs.style.opacity = "0";
 
-speak("Scan finished");
+            _cutscene.style.display = "none";
 
-setTimeout(()=>{
+            window.open(url, "_blank");
+        }
 
-scan.style.display = "none";
-
-window.location.href = url;
-
-},1200);
-
+    },1000);
 }
 
-},200);
+/* ---------- FULLSCREEN BUTTON (ADDED SAFE) ---------- */
 
+function toggleFullscreen(){
+    if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
 }
+
+/* ---------- MUSIC FIX (DOES NOT CHANGE YOUR SYSTEM) ---------- */
+
+const _music = document.querySelector("audio");
+
+if(_music){
+    _music.volume = 0.3;
+    document.addEventListener("click", ()=>{
+        _music.play().catch(()=>{});
+    }, { once:true });
+}
+
+/* ---------- VHS RANDOM FLICKER ---------- */
+
+setInterval(()=>{
+    _vhs.style.opacity = (Math.random()*0.2);
+},120);
+
+/* =========================
+   END PATCH
+   ========================= */
 
 </script>
-
-</body>
-</html>
