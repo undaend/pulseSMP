@@ -35,11 +35,9 @@ body{
 .bg{
     position:fixed;
     inset:0;
-
     background:
     radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
     linear-gradient(to bottom, #050505, #000);
-
     z-index:-10;
 }
 
@@ -51,6 +49,7 @@ body{
     opacity:.06;
     animation:fogMove 50s linear infinite;
     filter:blur(5px);
+    z-index:-9;
 }
 
 @keyframes fogMove{
@@ -59,11 +58,14 @@ body{
 100%{transform:scale(1.1) translateX(0);}
 }
 
+/* ========================= */
+/* EFFECT LAYERS */
+/* ========================= */
+
 .scanlines{
     position:fixed;
     inset:0;
-    background:
-    repeating-linear-gradient(
+    background:repeating-linear-gradient(
         to bottom,
         rgba(255,255,255,.02),
         rgba(255,255,255,.02) 1px,
@@ -82,6 +84,44 @@ body{
     pointer-events:none;
     mix-blend-mode:screen;
     z-index:999999;
+}
+
+.vhs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999998;
+    mix-blend-mode:overlay;
+    opacity:.18;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,0,0,.05),
+        rgba(0,0,0,.05) 2px
+    );
+    animation:vhsShake .12s infinite;
+}
+
+@keyframes vhsShake{
+0%{transform:translateX(0);}
+50%{transform:translateX(-2px);}
+100%{transform:translateX(2px);}
+}
+
+/* ========================= */
+/* AI SPEAK */
+/* ========================= */
+
+#aiSpeak{
+    position:fixed;
+    top:18%;
+    left:50%;
+    transform:translateX(-50%);
+    color:red;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:18px;
+    opacity:0;
+    z-index:99999999;
+    text-shadow:0 0 10px red;
 }
 
 /* ========================= */
@@ -105,7 +145,6 @@ body{
     font-size:90px;
     font-weight:900;
     text-shadow:0 0 10px red,0 0 40px red,0 0 80px red;
-    animation:glitchText 2s infinite;
 }
 
 .boot-sub{
@@ -131,17 +170,7 @@ body{
 }
 
 @keyframes load{from{width:0%;}to{width:100%;}}
-
 @keyframes fadeOut{to{opacity:0;pointer-events:none;}}
-
-@keyframes glitchText{
-0%{transform:translateX(0);}
-20%{transform:translateX(-3px);}
-40%{transform:translateX(3px);}
-60%{transform:translateX(-2px);}
-80%{transform:translateX(2px);}
-100%{transform:translateX(0);}
-}
 
 /* ========================= */
 /* MAIN */
@@ -153,10 +182,6 @@ body{
     align-items:center;
     justify-content:center;
     text-align:center;
-}
-
-.content{
-    max-width:1200px;
 }
 
 .small{
@@ -198,8 +223,8 @@ body{
     background:rgba(255,0,0,.08);
     backdrop-filter:blur(10px);
     cursor:pointer;
-    font-family:'Orbitron',sans-serif;
     transition:.35s;
+    font-family:'Orbitron',sans-serif;
 }
 
 .btn:hover{
@@ -240,6 +265,9 @@ body{
 <div class="fog"></div>
 <div class="scanlines"></div>
 <div class="glitch"></div>
+<div class="vhs"></div>
+
+<div id="aiSpeak"></div>
 
 <div class="boot-screen">
     <div class="boot-title">EVERDUSK</div>
@@ -278,39 +306,98 @@ CONTINUING MAY RESULT IN MEMORY LOSS.
 
 <script>
 
-const glitch=document.querySelector(".glitch");
+/* ========================= */
+/* ELEMENTS */
+/* ========================= */
 
-setInterval(()=>{
-glitch.style.opacity=".05";
-setTimeout(()=>glitch.style.opacity="0",100);
-},5000);
+const glitch = document.querySelector(".glitch");
+const speakBox = document.getElementById("aiSpeak");
+const cutscene = document.getElementById("cutscene");
+const countdown = document.getElementById("countdown");
+
+/* ========================= */
+/* GLITCH LOOP */
+/* ========================= */
+
+setInterval(() => {
+    glitch.style.opacity = ".06";
+    setTimeout(() => glitch.style.opacity = "0", 120);
+}, 4000);
+
+/* ========================= */
+/* AI TEXT */
+/* ========================= */
+
+function talk(text){
+    speakBox.innerText = text;
+    speakBox.style.opacity = 1;
+    setTimeout(() => speakBox.style.opacity = 0, 900);
+}
+
+/* ========================= */
+/* AUDIO SYSTEM */
+/* ========================= */
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function heartbeat(){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.value = 55;
+    gain.gain.value = 0.08;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.12);
+}
+
+/* unlock audio */
+document.addEventListener("click", () => {
+    if(audioCtx.state === "suspended") audioCtx.resume();
+}, { once:true });
+
+/* ========================= */
+/* TRANSFER SYSTEM */
+/* ========================= */
 
 function startTransfer(url){
 
-const cutscene=document.getElementById("cutscene");
-const countdown=document.getElementById("countdown");
+    let count = 5;
 
-let count=5; // ✅ ONLY CHANGE
+    cutscene.classList.add("active");
 
-cutscene.classList.add("active");
+    talk("SIGNAL LINK ESTABLISHED");
 
-const beep=new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+    const interval = setInterval(() => {
 
-const interval=setInterval(()=>{
+        heartbeat();
 
-beep.currentTime=0;
-beep.play();
+        glitch.style.opacity = ".12";
+        setTimeout(() => glitch.style.opacity = "0", 80);
 
-count--;
-countdown.innerText=count;
+        if(count === 3) talk("ENTITY DETECTED");
+        if(count === 2) talk("MEMORY BREACH ACTIVE");
+        if(count === 1) talk("TRANSFER IMMINENT");
 
-if(count<=0){
-clearInterval(interval);
-window.open(url,"_blank");
-}
+        countdown.innerText = count;
 
-},1000);
+        count--;
 
+        if(count < 0){
+            clearInterval(interval);
+
+            talk("YOU ARE INSIDE");
+
+            setTimeout(() => {
+                window.open(url, "_blank");
+            }, 500);
+        }
+
+    }, 1000);
 }
 
 </script>
