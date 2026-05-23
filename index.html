@@ -35,9 +35,7 @@ body{
 .bg{
     position:fixed;
     inset:0;
-    background:
-    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-    linear-gradient(to bottom, #050505, #000);
+    background:radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%), #000;
     z-index:-10;
 }
 
@@ -57,41 +55,31 @@ body{
 100%{transform:scale(1.1) translateX(0);}
 }
 
+/* ========================= */
+/* SCANLINES */
+/* ========================= */
+
 .scanlines{
     position:fixed;
     inset:0;
     background:repeating-linear-gradient(
         to bottom,
         rgba(255,255,255,.02),
-        rgba(255,255,255,.02) 1px,
-        transparent 1px,
         transparent 3px
     );
     pointer-events:none;
 }
 
 /* ========================= */
-/* TEXT */
+/* MAIN */
 /* ========================= */
 
 .title{
-    font-size:110px;
+    font-size:120px;
     text-align:center;
     margin-top:120px;
     text-shadow:0 0 30px red;
 }
-
-.desc{
-    text-align:center;
-    color:#aaa;
-    max-width:700px;
-    margin:20px auto;
-    line-height:1.6;
-}
-
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
 
 .buttons{
     display:flex;
@@ -102,9 +90,9 @@ body{
 }
 
 .btn{
-    padding:15px 30px;
+    padding:18px 40px;
+    background:rgba(255,0,0,.1);
     border:1px solid rgba(255,0,0,.3);
-    background:rgba(255,0,0,.08);
     color:white;
     cursor:pointer;
     transition:.3s;
@@ -112,7 +100,6 @@ body{
 
 .btn:hover{
     background:red;
-    box-shadow:0 0 20px red;
 }
 
 /* ========================= */
@@ -123,10 +110,7 @@ body{
     position:fixed;
     bottom:20px;
     right:20px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    z-index:99999;
+    z-index:9999;
 }
 
 #musicToggle{
@@ -134,7 +118,6 @@ body{
     background:black;
     border:1px solid red;
     color:white;
-    cursor:pointer;
 }
 
 /* ========================= */
@@ -156,15 +139,47 @@ body{
     display:flex;
 }
 
-.countdown{
-    font-size:200px;
-    color:white;
-    text-shadow:0 0 40px red;
+/* SHAKE */
+@keyframes shake{
+0%{transform:translate(0,0);}
+25%{transform:translate(-2px,2px);}
+50%{transform:translate(2px,-2px);}
+75%{transform:translate(-2px,1px);}
+100%{transform:translate(0,0);}
 }
 
-.text{
+.cutscene.shake{
+    animation:shake .15s;
+}
+
+/* FLASH */
+#flash{
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    z-index:9999999;
+}
+
+/* COUNTDOWN */
+.countdown{
+    font-size:180px;
+}
+
+/* MINECRAFT BAR */
+.bar{
+    width:320px;
+    height:10px;
+    border:2px solid white;
     margin-top:20px;
-    color:#aaa;
+}
+
+.fill{
+    height:100%;
+    width:100%;
+    background:red;
+    transition:width 1s linear;
 }
 
 </style>
@@ -178,10 +193,6 @@ body{
 <div class="scanlines"></div>
 
 <h1 class="title">EVERDUSK</h1>
-
-<p class="desc">
-WARNING: SIGNAL INSTABILITY DETECTED. CLICK ANY BUTTON TO BEGIN TRANSFER.
-</p>
 
 <div class="buttons">
 
@@ -199,7 +210,7 @@ WARNING: SIGNAL INSTABILITY DETECTED. CLICK ANY BUTTON TO BEGIN TRANSFER.
 </div>
 
 <audio id="bgMusic" loop>
-<source src="https://cdn.pixabay.com/download/audio/2023/06/29/audio_c9b29860a0.mp3?filename=lofi-study-112191.mp3">
+<source src="https://cdn.pixabay.com/download/audio/2023/06/29/audio_c9b29860a0.mp3">
 </audio>
 
 <!-- CUTSCENE -->
@@ -207,9 +218,16 @@ WARNING: SIGNAL INSTABILITY DETECTED. CLICK ANY BUTTON TO BEGIN TRANSFER.
 <div class="cutscene" id="cutscene">
 
 <div class="countdown" id="countdown">5</div>
-<div class="text" id="cutText">Preparing transfer...</div>
+
+<div class="bar">
+<div class="fill" id="bar"></div>
+</div>
 
 </div>
+
+<!-- FLASH -->
+
+<div id="flash"></div>
 
 <script>
 
@@ -242,59 +260,70 @@ function toggleMusic(){
 
 const cutscene = document.getElementById("cutscene");
 const countdownEl = document.getElementById("countdown");
-const cutText = document.getElementById("cutText");
+const bar = document.getElementById("bar");
+const flash = document.getElementById("flash");
 
-let targetURL = "";
+let target = "";
+
+/* voice */
+function speak(t){
+    const msg = new SpeechSynthesisUtterance(String(t));
+    msg.rate = 0.9;
+    msg.pitch = 0.7;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+}
+
+/* sound */
+const whoosh = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
 
 function startTransfer(url){
 
-    targetURL = url;
+    target = url;
 
     cutscene.classList.add("active");
 
     let count = 5;
-    countdownEl.innerText = count;
+    bar.style.width = "100%";
 
     speak(count);
+    whoosh.play();
 
     const interval = setInterval(() => {
+
+        /* shake */
+        cutscene.classList.add("shake");
+        setTimeout(()=>cutscene.classList.remove("shake"),150);
+
+        /* flash */
+        flash.style.opacity = "0.5";
+        setTimeout(()=>flash.style.opacity = "0",100);
 
         count--;
 
         if(count > 0){
             countdownEl.innerText = count;
             speak(count);
+            bar.style.width = (count/5)*100 + "%";
         }
 
         if(count <= 0){
+
             clearInterval(interval);
 
             countdownEl.innerText = "0";
-            cutText.innerText = "TRANSFER COMPLETE";
-
             speak("transfer complete");
 
+            const end = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
+            end.play();
+
             setTimeout(() => {
-
                 cutscene.classList.remove("active");
-
-                window.location.href = targetURL;
-
-            }, 1200);
+                window.location.href = target;
+            }, 900);
         }
 
-    }, 1000);
-}
-
-/* ========================= */
-/* VOICE */
-/* ========================= */
-
-function speak(text){
-    const msg = new SpeechSynthesisUtterance(text.toString());
-    msg.rate = 0.9;
-    msg.pitch = 0.7;
-    speechSynthesis.speak(msg);
+    },1000);
 }
 
 </script>
