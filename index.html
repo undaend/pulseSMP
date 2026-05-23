@@ -29,7 +29,7 @@ font-family:'Orbitron',sans-serif;
 }
 
 /* ========================= */
-/* BACKGROUND */
+/* BACKGROUND (always visible) */
 /* ========================= */
 
 .bg{
@@ -59,7 +59,7 @@ z-index:-9;
 }
 
 /* ========================= */
-/* EFFECTS */
+/* OVERLAYS */
 /* ========================= */
 
 .scanlines{
@@ -78,6 +78,48 @@ opacity:0;
 mix-blend-mode:screen;
 pointer-events:none;
 z-index:999999;
+}
+
+/* ========================= */
+/* MAIN UI (ALWAYS VISIBLE) */
+/* ========================= */
+
+.main{
+position:relative;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+z-index:10;
+}
+
+.title{
+font-size:110px;
+font-weight:900;
+text-shadow:0 0 50px red;
+}
+
+.buttons{
+margin-top:40px;
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:16px 36px;
+border:1px solid rgba(255,0,0,.3);
+background:rgba(255,0,0,.08);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+background:red;
+transform:scale(1.05);
 }
 
 /* ========================= */
@@ -138,7 +180,7 @@ animation:wipeAnim 1.2s forwards;
 }
 
 /* ========================= */
-/* JUMPSCARE FIXED */
+/* JUMPSCARE */
 /* ========================= */
 
 #scare{
@@ -169,6 +211,22 @@ animation:shake .08s infinite;
 100%{transform:translateX(3px);}
 }
 
+/* ========================= */
+/* SAFETY FALLBACK (IMPORTANT) */
+/* ========================= */
+
+.fallback{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:black;
+color:red;
+font-size:40px;
+z-index:99999999;
+}
+
 </style>
 
 </head>
@@ -180,15 +238,48 @@ animation:shake .08s infinite;
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<section class="cutscene" id="cutscene">
+<!-- MAIN UI (ALWAYS VISIBLE) -->
+<div class="main">
+
+<div>
+<div class="title">EVERDUSK</div>
+
+<div class="buttons">
+
+<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM')">DISCORD</button>
+<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CUTSCENE -->
+<div class="cutscene" id="cutscene">
 <div class="ctext" id="ctext">SYSTEM BOOT</div>
 <div class="cnum" id="cnum">5</div>
-</section>
+</div>
 
-<div class="wipe" id="wipe"></div>
+<!-- JUMPSCARE -->
 <div id="scare"></div>
 
+<!-- WIPE -->
+<div class="wipe" id="wipe"></div>
+
+<!-- FALLBACK -->
+<div class="fallback" id="fallback">SYSTEM ERROR</div>
+
 <script>
+
+/* ========================= */
+/* SAFE GUARDS */
+/* ========================= */
+
+window.onerror = function(){
+document.getElementById("fallback").style.display="flex";
+};
 
 /* ========================= */
 /* ELEMENTS */
@@ -212,18 +303,7 @@ const images = [
 ];
 
 /* ========================= */
-/* VOICE DISTORTION */
-/* ========================= */
-
-function voice(text){
-const msg = new SpeechSynthesisUtterance(text);
-msg.rate = 1.4;
-msg.pitch = 0.1;
-speechSynthesis.speak(msg);
-}
-
-/* ========================= */
-/* GLITCH */
+/* EFFECTS */
 /* ========================= */
 
 function glitchBurst(){
@@ -231,11 +311,22 @@ glitch.style.opacity = 0.7;
 setTimeout(()=>glitch.style.opacity = 0,120);
 }
 
+function voice(text){
+try{
+const msg = new SpeechSynthesisUtterance(text);
+msg.rate = 1.4;
+msg.pitch = 0.1;
+speechSynthesis.speak(msg);
+}catch(e){}
+}
+
 /* ========================= */
-/* MAIN SYSTEM */
+/* MAIN FUNCTION (SAFE) */
 /* ========================= */
 
 function startTransfer(url){
+
+try{
 
 let count = 5;
 
@@ -251,8 +342,8 @@ const messages = [
 
 const interval = setInterval(()=>{
 
+ctext.innerText = messages[5-count];
 cnum.innerText = count;
-ctext.innerText = messages[5 - count];
 
 glitchBurst();
 
@@ -266,36 +357,31 @@ if(count < 0){
 
 clearInterval(interval);
 
-/* GLITCH EXPLOSION */
+/* GLITCH BURST */
 for(let i=0;i<6;i++){
 setTimeout(glitchBurst, i*60);
 }
 
-/* ========================= */
-/* GUARANTEED JUMPSCARE FIX */
-/* ========================= */
-
+/* JUMPSCARE (GUARANTEED) */
 const img = images[Math.floor(Math.random()*images.length)];
 
-/* STEP 1: FORCE RENDER */
 scare.innerHTML = `<img src="${img}">`;
 scare.classList.add("active");
 
-/* STEP 2: HOLD LONG ENOUGH */
+/* HOLD */
 setTimeout(()=>{
 
-/* STEP 3: REMOVE JUMPSCARE */
 scare.classList.remove("active");
 
-/* MEMORY WIPE */
+/* WIPE */
 wipe.classList.add("active");
 
-/* STEP 4: OPEN LINK AFTER VISUAL START */
+/* OPEN LINK */
 setTimeout(()=>{
 
 window.open(url,"_blank");
 
-/* STEP 5: RESET */
+/* RESET */
 setTimeout(()=>{
 
 wipe.classList.remove("active");
@@ -313,6 +399,10 @@ ctext.innerText = "SYSTEM BOOT";
 }
 
 },1000);
+
+}catch(e){
+document.getElementById("fallback").style.display="flex";
+}
 
 }
 
