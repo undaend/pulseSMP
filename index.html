@@ -1,147 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EVERDUSK</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:black;
+    overflow:hidden;
+    color:white;
+    font-family:'Orbitron',sans-serif;
+}
+
+/* BACKGROUND */
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
+    linear-gradient(to bottom, #050505, #000);
+    z-index:-10;
+}
+
+.fog{
+    position:fixed;
+    inset:0;
+    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+    background-size:cover;
+    opacity:.06;
+    animation:fogMove 50s linear infinite;
+    filter:blur(5px);
+}
+
+@keyframes fogMove{
+0%{transform:scale(1.1) translateX(0);}
+50%{transform:scale(1.2) translateX(-60px);}
+100%{transform:scale(1.1) translateX(0);}
+}
+
+.scanlines{
+position:fixed;
+inset:0;
+background:repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,.02),
+rgba(255,255,255,.02) 1px,
+transparent 1px,
+transparent 3px
+);
+pointer-events:none;
+z-index:999;
+}
+
+/* GLITCH */
+.glitch{
+position:fixed;
+inset:0;
+background:red;
+opacity:0;
+mix-blend-mode:screen;
+pointer-events:none;
+z-index:999999;
+}
+
+/* MAIN */
+.main{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.title{
+font-size:120px;
+font-weight:900;
+text-shadow:0 0 10px red,0 0 40px red,0 0 100px red;
+}
+
+.desc{
+max-width:700px;
+margin:auto;
+color:#999;
+line-height:1.8;
+margin-bottom:50px;
+font-family:'IBM Plex Mono',monospace;
+}
+
+/* BUTTONS */
+.buttons{
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:18px 40px;
+color:white;
+border:1px solid rgba(255,0,0,.3);
+background:rgba(255,0,0,.08);
+cursor:pointer;
+text-decoration:none;
+}
+
+.btn:hover{
+background:red;
+box-shadow:0 0 20px red,0 0 60px red;
+}
+
+/* MUSIC */
+.music-player{
+position:fixed;
+bottom:20px;
+right:20px;
+z-index:9999;
+}
+
+.music-player button{
+padding:10px 20px;
+background:rgba(255,0,0,.2);
+border:1px solid red;
+color:white;
+cursor:pointer;
+}
+
+/* CUTSCENE */
+#cutscene{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+background:black;
+z-index:999999;
+}
+
+#count{
+font-size:160px;
+text-shadow:0 0 20px red;
+}
+
+#bar{
+width:300px;
+height:10px;
+border:1px solid red;
+margin-top:20px;
+position:relative;
+}
+
+#fill{
+height:100%;
+width:0%;
+background:red;
+position:absolute;
+}
+
+/* VHS */
+.vhs{
+position:fixed;
+inset:0;
+background:repeating-linear-gradient(
+to bottom,
+rgba(255,0,0,.05),
+transparent 2px
+);
+opacity:0;
+pointer-events:none;
+z-index:999998;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="fog"></div>
+<div class="scanlines"></div>
+<div class="glitch"></div>
+<div class="vhs"></div>
+
+<!-- MAIN -->
+<section class="main">
+
+<div>
+
+<h1 class="title">EVERDUSK</h1>
+
+<p class="desc">WARNING: SIGNAL INSTABILITY DETECTED</p>
+
+<div class="buttons">
+
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">
+ENTER THE VOID
+</button>
+
+<a class="btn" href="https://www.youtube.com/@Everduskofficial" target="_blank">WATCH ARCHIVES</a>
+<a class="btn" href="https://discord.gg/5Xdkuq7h9h" target="_blank">JOIN DISCORD</a>
+<a class="btn" href="https://vexsound.base44.app/" target="_blank">VEXSOUND</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- MUSIC -->
+<div class="music-player">
+<button onclick="toggleMusic()">MUSIC</button>
+</div>
+
+<audio id="music" loop>
+<source src="https://files.catbox.moe/9l6q0q.mp3">
+</audio>
+
+<!-- CUTSCENE -->
+<div id="cutscene">
+<div id="count">5</div>
+<div id="bar"><div id="fill"></div></div>
+</div>
+
 <script>
 
-/* =========================
-   SAFE PATCH SYSTEM (ADDITIVE ONLY)
-   ========================= */
+/* GLITCH */
+setInterval(()=>{
+const g=document.querySelector('.glitch');
+g.style.opacity=.05;
+setTimeout(()=>g.style.opacity=0,100);
+},5000);
 
-/* ---------- CUTSCENE OVERLAY (NEW) ---------- */
+/* MUSIC */
+const music=document.getElementById("music");
 
-const _cutscene = document.createElement("div");
-_cutscene.style.position = "fixed";
-_cutscene.style.inset = "0";
-_cutscene.style.display = "none";
-_cutscene.style.alignItems = "center";
-_cutscene.style.justifyContent = "center";
-_cutscene.style.flexDirection = "column";
-_cutscene.style.background = "black";
-_cutscene.style.zIndex = "99999999";
-document.body.appendChild(_cutscene);
-
-/* countdown text */
-const _count = document.createElement("div");
-_count.style.fontSize = "180px";
-_count.style.color = "white";
-_count.style.textShadow = "0 0 20px red";
-_cutscene.appendChild(_count);
-
-/* XP BAR */
-const _xp = document.createElement("div");
-_xp.style.width = "400px";
-_xp.style.height = "10px";
-_xp.style.marginTop = "20px";
-_xp.style.border = "1px solid red";
-_xp.style.position = "relative";
-_cutscene.appendChild(_xp);
-
-const _xpFill = document.createElement("div");
-_xpFill.style.position = "absolute";
-_xpFill.style.left = "0";
-_xpFill.style.top = "0";
-_xpFill.style.height = "100%";
-_xpFill.style.width = "0%";
-_xpFill.style.background = "red";
-_xp.appendChild(_xpFill);
-
-/* ---------- VHS OVERLAY ---------- */
-
-const _vhs = document.createElement("div");
-_vhs.style.position = "fixed";
-_vhs.style.inset = "0";
-_vhs.style.pointerEvents = "none";
-_vhs.style.opacity = "0";
-_vhs.style.background = "repeating-linear-gradient(to bottom, rgba(255,0,0,0.05), transparent 2px)";
-_vhs.style.mixBlendMode = "screen";
-_vhs.style.zIndex = "99999998";
-document.body.appendChild(_vhs);
-
-/* ---------- SOUND SYSTEM ---------- */
-
-const _beep = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
-const _whoosh = new Audio("https://assets.mixkit.co/active_storage/sfx/1512/1512-preview.mp3");
-
-/* ---------- GLITCH SHAKE (ADD ONLY) ---------- */
-
-function _shake(){
-    document.body.style.transform = "translateX(" + (Math.random()*6-3) + "px)";
-    setTimeout(()=>document.body.style.transform="none",80);
+function toggleMusic(){
+music.play();
 }
 
-/* ---------- RED PULSE ---------- */
-
-function _pulse(){
-    document.body.style.filter = "brightness(2) contrast(2)";
-    setTimeout(()=>document.body.style.filter="none",120);
-}
-
-/* ---------- MAIN PATCH FUNCTION (DOES NOT TOUCH YOUR BUTTONS) ---------- */
+/* CUTSCENE */
+const cut=document.getElementById("cutscene");
+const count=document.getElementById("count");
+const fill=document.getElementById("fill");
+const vhs=document.querySelector(".vhs");
 
 function startTransfer(url){
 
-    let t = 5;
-    _cutscene.style.display = "flex";
+let t=5;
+cut.style.display="flex";
+vhs.style.opacity=.3;
 
-    _whoosh.play();
+const interval=setInterval(()=>{
 
-    const interval = setInterval(()=>{
+count.innerText=t;
+fill.style.width=((5-t)/5)*100+"%";
 
-        _shake();
-        _pulse();
+document.body.style.transform=
+"translateX("+(Math.random()*6-3)+"px)";
 
-        _beep.currentTime = 0;
-        _beep.play();
+setTimeout(()=>document.body.style.transform="none",80);
 
-        _count.innerText = t;
+t--;
 
-        /* XP BAR ANIMATION */
-        _xpFill.style.width = ((5 - t) / 5 * 100) + "%";
-
-        /* VHS MODE ON DURING COUNTDOWN */
-        _vhs.style.opacity = "0.2";
-
-        t--;
-
-        if(t < 0){
-            clearInterval(interval);
-
-            _vhs.style.opacity = "0";
-
-            _cutscene.style.display = "none";
-
-            window.open(url, "_blank");
-        }
-
-    },1000);
+if(t<0){
+clearInterval(interval);
+vhs.style.opacity=0;
+cut.style.display="none";
+window.open(url,"_blank");
 }
 
-/* ---------- FULLSCREEN BUTTON (ADDED SAFE) ---------- */
+},1000);
 
-function toggleFullscreen(){
-    if(!document.fullscreenElement){
-        document.documentElement.requestFullscreen();
-    } else {
-        document.exitFullscreen();
-    }
 }
 
-/* ---------- MUSIC FIX (DOES NOT CHANGE YOUR SYSTEM) ---------- */
-
-const _music = document.querySelector("audio");
-
-if(_music){
-    _music.volume = 0.3;
-    document.addEventListener("click", ()=>{
-        _music.play().catch(()=>{});
-    }, { once:true });
-}
-
-/* ---------- VHS RANDOM FLICKER ---------- */
-
+/* FX */
 setInterval(()=>{
-    _vhs.style.opacity = (Math.random()*0.2);
-},120);
-
-/* =========================
-   END PATCH
-   ========================= */
+document.body.style.filter="contrast(1.05) brightness(1.02)";
+setTimeout(()=>document.body.style.filter="none",120);
+},9000);
 
 </script>
+
+</body>
+</html>
