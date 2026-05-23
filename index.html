@@ -29,7 +29,7 @@ font-family:'Orbitron',sans-serif;
 }
 
 /* ========================= */
-/* BACKGROUND (always visible) */
+/* BACKGROUND */
 /* ========================= */
 
 .bg{
@@ -59,7 +59,7 @@ z-index:-9;
 }
 
 /* ========================= */
-/* OVERLAYS */
+/* EFFECTS */
 /* ========================= */
 
 .scanlines{
@@ -81,7 +81,7 @@ z-index:999999;
 }
 
 /* ========================= */
-/* MAIN UI (ALWAYS VISIBLE) */
+/* MAIN UI */
 /* ========================= */
 
 .main{
@@ -108,6 +108,16 @@ justify-content:center;
 flex-wrap:wrap;
 }
 
+/* ========================= */
+/* PULSE BUTTONS */
+/* ========================= */
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.06);}
+100%{transform:scale(1);}
+}
+
 .btn{
 padding:16px 36px;
 border:1px solid rgba(255,0,0,.3);
@@ -115,11 +125,12 @@ background:rgba(255,0,0,.08);
 color:white;
 cursor:pointer;
 transition:.3s;
+animation:pulse 2s infinite;
 }
 
 .btn:hover{
 background:red;
-transform:scale(1.05);
+transform:scale(1.08);
 }
 
 /* ========================= */
@@ -156,30 +167,6 @@ text-shadow:0 0 60px red;
 }
 
 /* ========================= */
-/* MEMORY WIPE */
-/* ========================= */
-
-.wipe{
-position:fixed;
-inset:0;
-background:black;
-opacity:0;
-pointer-events:none;
-z-index:999999999;
-}
-
-.wipe.active{
-animation:wipeAnim 1.2s forwards;
-}
-
-@keyframes wipeAnim{
-0%{opacity:0;}
-30%{opacity:1;}
-70%{opacity:1;filter:contrast(2);}
-100%{opacity:0;}
-}
-
-/* ========================= */
 /* JUMPSCARE */
 /* ========================= */
 
@@ -211,22 +198,6 @@ animation:shake .08s infinite;
 100%{transform:translateX(3px);}
 }
 
-/* ========================= */
-/* SAFETY FALLBACK (IMPORTANT) */
-/* ========================= */
-
-.fallback{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:black;
-color:red;
-font-size:40px;
-z-index:99999999;
-}
-
 </style>
 
 </head>
@@ -238,17 +209,25 @@ z-index:99999999;
 <div class="scanlines"></div>
 <div class="glitch"></div>
 
-<!-- MAIN UI (ALWAYS VISIBLE) -->
 <div class="main">
 
 <div>
+
 <div class="title">EVERDUSK</div>
 
 <div class="buttons">
 
-<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM')">DISCORD</button>
-<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
-<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
+<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM',0)">
+DISCORD
+</button>
+
+<button class="btn" onclick="startTransfer('https://vexsound.base44.app/',1)">
+VEXSOUND
+</button>
+
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html',2)">
+ENTER VOID
+</button>
 
 </div>
 
@@ -256,30 +235,14 @@ z-index:99999999;
 
 </div>
 
-<!-- CUTSCENE -->
 <div class="cutscene" id="cutscene">
 <div class="ctext" id="ctext">SYSTEM BOOT</div>
 <div class="cnum" id="cnum">5</div>
 </div>
 
-<!-- JUMPSCARE -->
 <div id="scare"></div>
 
-<!-- WIPE -->
-<div class="wipe" id="wipe"></div>
-
-<!-- FALLBACK -->
-<div class="fallback" id="fallback">SYSTEM ERROR</div>
-
 <script>
-
-/* ========================= */
-/* SAFE GUARDS */
-/* ========================= */
-
-window.onerror = function(){
-document.getElementById("fallback").style.display="flex";
-};
 
 /* ========================= */
 /* ELEMENTS */
@@ -288,22 +251,21 @@ document.getElementById("fallback").style.display="flex";
 const cutscene = document.getElementById("cutscene");
 const ctext = document.getElementById("ctext");
 const cnum = document.getElementById("cnum");
-const wipe = document.getElementById("wipe");
 const scare = document.getElementById("scare");
 const glitch = document.querySelector(".glitch");
 
 /* ========================= */
-/* IMAGES */
+/* JUMPSCARES PER BUTTON */
 /* ========================= */
 
-const images = [
+const jumpscares = [
 "https://cdn.corenexis.com/files/c/1164486720.webp",
 "https://cdn.corenexis.com/files/c/9536946720.jpg",
 "https://cdn.corenexis.com/files/c/2912219720.webp"
 ];
 
 /* ========================= */
-/* EFFECTS */
+/* GLITCH */
 /* ========================= */
 
 function glitchBurst(){
@@ -311,22 +273,11 @@ glitch.style.opacity = 0.7;
 setTimeout(()=>glitch.style.opacity = 0,120);
 }
 
-function voice(text){
-try{
-const msg = new SpeechSynthesisUtterance(text);
-msg.rate = 1.4;
-msg.pitch = 0.1;
-speechSynthesis.speak(msg);
-}catch(e){}
-}
-
 /* ========================= */
-/* MAIN FUNCTION (SAFE) */
+/* MAIN FUNCTION */
 /* ========================= */
 
-function startTransfer(url){
-
-try{
+function startTransfer(url,type){
 
 let count = 5;
 
@@ -347,62 +298,46 @@ cnum.innerText = count;
 
 glitchBurst();
 
-if(count === 1){
-voice("system failure imminent");
-}
-
 count--;
 
 if(count < 0){
 
 clearInterval(interval);
 
-/* GLITCH BURST */
+/* glitch burst */
 for(let i=0;i<6;i++){
-setTimeout(glitchBurst, i*60);
+setTimeout(glitchBurst,i*60);
 }
 
-/* JUMPSCARE (GUARANTEED) */
-const img = images[Math.floor(Math.random()*images.length)];
+/* jumpscare */
+const img = jumpscares[type];
 
 scare.innerHTML = `<img src="${img}">`;
 scare.classList.add("active");
 
-/* HOLD */
+/* hold */
 setTimeout(()=>{
 
 scare.classList.remove("active");
 
-/* WIPE */
-wipe.classList.add("active");
-
-/* OPEN LINK */
-setTimeout(()=>{
-
+/* open link */
 window.open(url,"_blank");
 
-/* RESET */
+/* reset */
 setTimeout(()=>{
 
-wipe.classList.remove("active");
 cutscene.classList.remove("active");
 
 cnum.innerText = "5";
 ctext.innerText = "SYSTEM BOOT";
 
-},900);
+},600);
 
-},300);
-
-},1500);
+},1200);
 
 }
 
 },1000);
-
-}catch(e){
-document.getElementById("fallback").style.display="flex";
-}
 
 }
 
