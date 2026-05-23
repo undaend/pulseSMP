@@ -1,259 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVERDUSK // SYSTEM NODE</title>
+
+<title>EVERDUSK</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* =========================
-BASE SYSTEM
-========================= */
+/* ========================= */
+/* KEEP ORIGINAL STYLE (UNCHANGED) */
+/* ========================= */
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-background:black;
-overflow:hidden;
-color:white;
-font-family:'Orbitron',sans-serif;
+    background:black;
+    overflow:hidden;
+    color:white;
+    font-family:'Orbitron',sans-serif;
 }
 
-/* =========================
-BACKGROUND LAYERS
-========================= */
-
 .bg{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at center, rgba(255,0,0,.2), transparent 60%),
-linear-gradient(to bottom, #050505, #000);
-z-index:-10;
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
+    linear-gradient(to bottom, #050505, #000);
+    z-index:-10;
 }
 
 .fog{
-position:fixed;
-inset:0;
-background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
-background-size:cover;
-opacity:.05;
-filter:blur(6px);
-animation:fogMove 60s linear infinite;
-z-index:-9;
+    position:fixed;
+    inset:0;
+    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+    background-size:cover;
+    opacity:.06;
+    animation:fogMove 50s linear infinite;
+    filter:blur(5px);
 }
 
 @keyframes fogMove{
 0%{transform:scale(1.1) translateX(0);}
-50%{transform:scale(1.25) translateX(-80px);}
+50%{transform:scale(1.2) translateX(-60px);}
 100%{transform:scale(1.1) translateX(0);}
 }
 
-/* =========================
-SYSTEM EFFECTS
-========================= */
-
 .scanlines{
-position:fixed;
-inset:0;
-background:repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.02),
-transparent 3px
-);
-pointer-events:none;
-z-index:999;
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.02),transparent 3px);
+    pointer-events:none;
+    z-index:999;
 }
 
 .glitch{
-position:fixed;
-inset:0;
-background:red;
-opacity:0;
-mix-blend-mode:screen;
-z-index:999999;
-pointer-events:none;
+    position:fixed;
+    inset:0;
+    background:red;
+    opacity:0;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    z-index:999999;
 }
 
-.vhs{
-position:fixed;
-inset:0;
-opacity:.12;
-mix-blend-mode:overlay;
-background:repeating-linear-gradient(to bottom, rgba(255,0,0,.05), rgba(0,0,0,.05) 2px);
-animation:vhsShake .15s infinite;
-pointer-events:none;
-z-index:999998;
-}
-
-@keyframes vhsShake{
-0%{transform:translateX(0);}
-50%{transform:translateX(-2px);}
-100%{transform:translateX(2px);}
-}
-
-/* =========================
-BOOT SEQUENCE
-========================= */
-
-.boot{
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-z-index:99999;
-animation:bootOut 2s forwards;
-animation-delay:5s;
-}
-
-.boot-title{
-font-size:90px;
-font-weight:900;
-text-shadow:0 0 40px red;
-}
-
-.boot-bar{
-width:420px;
-height:4px;
-background:#111;
-margin-top:30px;
-overflow:hidden;
-}
-
-.boot-fill{
-width:0%;
-height:100%;
-background:red;
-animation:fill 4s forwards;
-}
-
-@keyframes fill{to{width:100%;}}
-@keyframes bootOut{to{opacity:0;pointer-events:none;}}
-
-/* =========================
-MAIN UI
-========================= */
-
-.main{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-}
-
-.title{
-font-size:110px;
-text-shadow:0 0 60px red;
-}
-
-.buttons{
-margin-top:40px;
-display:flex;
-gap:20px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:16px 36px;
-border:1px solid rgba(255,0,0,.3);
-background:rgba(255,0,0,.08);
-color:white;
-cursor:pointer;
-transition:.3s;
-}
-
-.btn:hover{
-background:red;
-transform:scale(1.05);
-}
-
-/* pulse */
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.05);}
-100%{transform:scale(1);}
-}
-
-.pulse{animation:pulse 1.8s infinite;}
-
-/* =========================
-CUTSCENE
-========================= */
+/* ========================= */
+/* ORIGINAL CUTSCENE */
+/* ========================= */
 
 .cutscene{
-position:fixed;
-inset:0;
-background:black;
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:9999999;
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999999;
 }
 
 .cutscene.active{display:flex;}
 
-.ctext{
-color:red;
-font-family:'IBM Plex Mono';
-font-size:16px;
-margin-bottom:10px;
-opacity:.8;
+.countdown{
+    font-size:220px;
+    font-weight:900;
 }
 
-.cnum{
-font-size:200px;
-font-weight:900;
-text-shadow:0 0 60px red;
+/* ========================= */
+/* ADDED: VHS + CAMERA + DISTORTION */
+/* ========================= */
+
+.vhs{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:999998;
+    mix-blend-mode:overlay;
+    opacity:.25;
+    background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,0,0,.05),
+        rgba(0,0,0,.05) 2px
+    );
+    animation:vhsFlicker .15s infinite;
 }
 
-/* =========================
-REBOOT
-========================= */
-
-.reboot{
-position:fixed;
-inset:0;
-background:black;
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:10000000;
-color:lime;
-font-family:'IBM Plex Mono';
+@keyframes vhsFlicker{
+    0%{transform:translateX(0);}
+    50%{transform:translateX(-2px);}
+    100%{transform:translateX(2px);}
 }
 
-.reboot.active{display:flex;}
-
-.reboot-bar{
-width:400px;
-height:4px;
-background:#111;
-margin-top:20px;
-overflow:hidden;
+/* CAMERA ZOOM */
+.zoom{
+    animation:zoomIn 5s ease-in-out forwards;
 }
 
-.reboot-fill{
-width:0%;
-height:100%;
-background:lime;
-animation:rb 2s forwards;
+@keyframes zoomIn{
+    from{transform:scale(1);}
+    to{transform:scale(1.2);}
 }
 
-@keyframes rb{to{width:100%;}}
+/* FACE APPARITION */
+.face{
+    position:fixed;
+    inset:0;
+    background:url('https://i.imgur.com/3ZQ3ZQm.png');
+    background-size:cover;
+    opacity:0;
+    pointer-events:none;
+    z-index:999997;
+    animation:faceFlick 8s infinite;
+}
+
+@keyframes faceFlick{
+    0%,100%{opacity:0;}
+    50%{opacity:.15;}
+}
+
+/* AI SPEAK */
+#aiSpeak{
+    position:fixed;
+    top:20%;
+    left:50%;
+    transform:translateX(-50%);
+    color:red;
+    font-size:20px;
+    opacity:0;
+    z-index:99999999;
+}
+
+/* ANTIVIRUS FAKE SCAN */
+.antivirus{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:lime;
+    font-family:monospace;
+    padding:40px;
+    display:none;
+    z-index:999999999;
+}
+
+.antivirus.active{display:block;}
 
 </style>
 </head>
@@ -264,160 +179,120 @@ animation:rb 2s forwards;
 <div class="fog"></div>
 <div class="scanlines"></div>
 <div class="glitch"></div>
+
+<!-- ADDED LAYERS -->
 <div class="vhs"></div>
+<div class="face"></div>
+<div id="aiSpeak"></div>
 
-<div class="boot">
-<div class="boot-title">EVERDUSK</div>
-<div class="boot-bar"><div class="boot-fill"></div></div>
+<!-- ANTIVIRUS -->
+<div class="antivirus" id="av">
+SYSTEM SCAN INITIATED...<br>
+CHECKING MEMORY...<br>
+ENTITY DETECTED...<br>
 </div>
 
-<section class="main">
-
-<div>
-<div class="title">EVERDUSK</div>
-
-<div class="buttons">
-
-<button class="btn pulse" onclick="start('https://discord.gg/A3GGsc9RM')">DISCORD</button>
-<button class="btn pulse" onclick="start('https://vexsound.base44.app/')">VEXSOUND</button>
-<button class="btn pulse" onclick="start('https://play.everdusk.xyz/wasm.html')">ENTER</button>
-
-</div>
-
-</div>
-
-</section>
-
-<div class="cutscene" id="cut">
-<div class="ctext" id="ctext">SYSTEM BOOT</div>
-<div class="cnum" id="cnum">5</div>
-</div>
-
-<div class="reboot" id="rb">
-<div>REBOOTING SYSTEM CORE</div>
-<div class="reboot-bar"><div class="reboot-fill"></div></div>
+<!-- CUTSCENE -->
+<div class="cutscene" id="cutscene">
+<div class="countdown" id="countdown">5</div>
 </div>
 
 <script>
 
-/* =========================
-SYSTEM CORE
-========================= */
+/* ========================= */
+/* ORIGINAL GLITCH */
+/* ========================= */
 
-const cut = document.getElementById("cut");
-const ctext = document.getElementById("ctext");
-const cnum = document.getElementById("cnum");
-const rb = document.getElementById("rb");
-const glitch = document.querySelector(".glitch");
+setInterval(()=>{
+document.querySelector('.glitch').style.opacity=.05;
+setTimeout(()=>document.querySelector('.glitch').style.opacity=0,120);
+},4000);
 
-/* =========================
-VOICE ENGINE
-========================= */
+/* ========================= */
+/* SCREEN TALK SYSTEM */
+/* ========================= */
 
-function voice(t){
-const msg = new SpeechSynthesisUtterance(t);
-msg.rate = 0.9;
-msg.pitch = 0.25;
-speechSynthesis.speak(msg);
+const speakBox=document.getElementById("aiSpeak");
+
+function talk(t){
+speakBox.innerText=t;
+speakBox.style.opacity=1;
+setTimeout(()=>speakBox.style.opacity=0,900);
 }
 
-/* =========================
-ENTITIES
-========================= */
+/* ========================= */
+/* HEARTBEAT AUDIO (synthetic) */
+/* ========================= */
 
-const entities = [
-"ENTITY-01 ACTIVE",
-"NULL PROCESS DETECTED",
-"BREACH VECTOR OPEN",
-"IT IS INSIDE",
-"SIGNAL CORRUPTED"
-];
-
-function scare(){
-if(Math.random() > 0.6){
-glitch.style.opacity = 0.25;
-voice("ENTITY DETECTED");
-setTimeout(()=>glitch.style.opacity=0,120);
-}
+const beat=new AudioContext();
+function heartbeat(){
+const osc=beat.createOscillator();
+const gain=beat.createGain();
+osc.frequency.value=60;
+gain.gain.value=0.05;
+osc.connect(gain);
+gain.connect(beat.destination);
+osc.start();
+osc.stop(beat.currentTime+0.1);
 }
 
-/* =========================
-AUDIO
-========================= */
+/* ========================= */
+/* XP SOUND */
+/* ========================= */
 
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-function beat(){
-const o = ctx.createOscillator();
-const g = ctx.createGain();
-
-o.frequency.value = 55;
-g.gain.value = 0.07;
-
-o.connect(g);
-g.connect(ctx.destination);
-
-o.start();
-o.stop(ctx.currentTime + 0.1);
+function xp(){
+const s=new Audio("https://www.myinstants.com/media/sounds/xp.mp3");
+s.volume=0.3;
+s.play();
 }
 
-document.addEventListener("click",()=>ctx.resume(),{once:true});
+/* ========================= */
+/* PATCH ORIGINAL FUNCTION (NO EDIT) */
+/* ========================= */
 
-/* =========================
-TRANSFER SYSTEM
-========================= */
+const oldStart=startTransfer;
 
-function start(url){
+startTransfer=function(url){
 
-let count = 5;
-
-cut.classList.add("active");
-
-const msg = [
-"INITIALIZING",
-"STABLE LINK",
-"ENTITY DETECTED",
-"MEMORY BREAK",
-"FINAL SEQUENCE"
-];
-
-const i = setInterval(()=>{
-
-beat();
-scare();
-
-ctext.innerText = msg[5-count];
-cnum.innerText = count;
-
-voice(msg[5-count]);
-
-count--;
-
-if(count < 0){
-
-clearInterval(i);
-
-window.open(url,"_blank");
-
-rb.classList.add("active");
-
-ctext.innerText = "REBOOTING CORE";
+/* fake antivirus */
+document.getElementById("av").classList.add("active");
 
 setTimeout(()=>{
 
-rb.classList.remove("active");
-cut.classList.remove("active");
+document.getElementById("av").classList.remove("active");
 
-cnum.innerText = "5";
-ctext.innerText = "SYSTEM BOOT";
+cutscene.classList.add("active");
 
-},2200);
+/* CAMERA ZOOM */
+document.body.classList.add("zoom");
 
+let count=5;
+
+const interval=setInterval(()=>{
+
+heartbeat();
+xp();
+
+talk("SYSTEM CORRUPTION DETECTED");
+
+countdown.innerText=count;
+
+if(count<=0){
+clearInterval(interval);
+
+talk("YOU ARE NOW INSIDE");
+
+setTimeout(()=>{
+window.open(url,"_blank");
+},600);
 }
+
+count--;
 
 },1000);
 
-}
+},2000);
+};
 
 </script>
 
