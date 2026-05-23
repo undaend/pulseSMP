@@ -12,39 +12,44 @@
 <style>
 
 /* ========================= */
-/* KEEP ORIGINAL STYLE (UNCHANGED) */
+/* BASE */
 /* ========================= */
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-    background:black;
-    overflow:hidden;
-    color:white;
-    font-family:'Orbitron',sans-serif;
+background:black;
+overflow:hidden;
+color:white;
+font-family:'Orbitron',sans-serif;
 }
 
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
 .bg{
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
-    linear-gradient(to bottom, #050505, #000);
-    z-index:-10;
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at center, rgba(255,0,0,.18), transparent 60%),
+linear-gradient(to bottom, #050505, #000);
+z-index:-10;
 }
 
 .fog{
-    position:fixed;
-    inset:0;
-    background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
-    background-size:cover;
-    opacity:.06;
-    animation:fogMove 50s linear infinite;
-    filter:blur(5px);
+position:fixed;
+inset:0;
+background:url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop');
+background-size:cover;
+opacity:.06;
+filter:blur(5px);
+animation:fogMove 50s linear infinite;
+z-index:-9;
 }
 
 @keyframes fogMove{
@@ -53,124 +58,160 @@ body{
 100%{transform:scale(1.1) translateX(0);}
 }
 
+/* ========================= */
+/* EFFECTS */
+/* ========================= */
+
 .scanlines{
-    position:fixed;
-    inset:0;
-    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.02),transparent 3px);
-    pointer-events:none;
-    z-index:999;
+position:fixed;
+inset:0;
+background:repeating-linear-gradient(to bottom, rgba(255,255,255,.02), transparent 3px);
+pointer-events:none;
+z-index:999;
 }
 
 .glitch{
-    position:fixed;
-    inset:0;
-    background:red;
-    opacity:0;
-    pointer-events:none;
-    mix-blend-mode:screen;
-    z-index:999999;
+position:fixed;
+inset:0;
+background:red;
+opacity:0;
+mix-blend-mode:screen;
+pointer-events:none;
+z-index:999999;
+}
+
+.vhs{
+position:fixed;
+inset:0;
+opacity:.15;
+mix-blend-mode:overlay;
+background:repeating-linear-gradient(to bottom, rgba(255,0,0,.05), rgba(0,0,0,.05) 2px);
+animation:vhsFlicker .15s infinite;
+pointer-events:none;
+z-index:999998;
+}
+
+@keyframes vhsFlicker{
+0%{transform:translateX(0);}
+50%{transform:translateX(-2px);}
+100%{transform:translateX(2px);}
 }
 
 /* ========================= */
-/* ORIGINAL CUTSCENE */
+/* MAIN UI */
+/* ========================= */
+
+.main{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.title{
+font-size:110px;
+font-weight:900;
+text-shadow:0 0 50px red;
+}
+
+.buttons{
+margin-top:40px;
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:16px 36px;
+border:1px solid rgba(255,0,0,.3);
+background:rgba(255,0,0,.08);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+background:red;
+transform:scale(1.05);
+}
+
+/* ========================= */
+/* CUTSCENE */
 /* ========================= */
 
 .cutscene{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:9999999;
+position:fixed;
+inset:0;
+background:black;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:9999999;
 }
 
 .cutscene.active{display:flex;}
 
-.countdown{
-    font-size:220px;
-    font-weight:900;
+.ctext{
+font-size:16px;
+color:red;
+font-family:'IBM Plex Mono';
+margin-bottom:10px;
+opacity:.8;
+}
+
+.cnum{
+font-size:200px;
+font-weight:900;
+text-shadow:0 0 60px red;
 }
 
 /* ========================= */
-/* ADDED: VHS + CAMERA + DISTORTION */
+/* MEMORY WIPE */
 /* ========================= */
 
-.vhs{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:999998;
-    mix-blend-mode:overlay;
-    opacity:.25;
-    background:repeating-linear-gradient(
-        to bottom,
-        rgba(255,0,0,.05),
-        rgba(0,0,0,.05) 2px
-    );
-    animation:vhsFlicker .15s infinite;
+.wipe{
+position:fixed;
+inset:0;
+background:black;
+opacity:0;
+pointer-events:none;
+z-index:999999999;
 }
 
-@keyframes vhsFlicker{
-    0%{transform:translateX(0);}
-    50%{transform:translateX(-2px);}
-    100%{transform:translateX(2px);}
+.wipe.active{
+animation:wipeAnim 1.2s forwards;
 }
 
-/* CAMERA ZOOM */
-.zoom{
-    animation:zoomIn 5s ease-in-out forwards;
+@keyframes wipeAnim{
+0%{opacity:0;}
+30%{opacity:1;}
+70%{opacity:1;filter:contrast(2);}
+100%{opacity:0;}
 }
 
-@keyframes zoomIn{
-    from{transform:scale(1);}
-    to{transform:scale(1.2);}
+/* ========================= */
+/* JUMPSCARE */
+/* ========================= */
+
+#scare{
+position:fixed;
+inset:0;
+display:none;
+z-index:1000000000;
 }
 
-/* FACE APPARITION */
-.face{
-    position:fixed;
-    inset:0;
-    background:url('https://i.imgur.com/3ZQ3ZQm.png');
-    background-size:cover;
-    opacity:0;
-    pointer-events:none;
-    z-index:999997;
-    animation:faceFlick 8s infinite;
+#scare img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:contrast(1.4) brightness(.8);
 }
-
-@keyframes faceFlick{
-    0%,100%{opacity:0;}
-    50%{opacity:.15;}
-}
-
-/* AI SPEAK */
-#aiSpeak{
-    position:fixed;
-    top:20%;
-    left:50%;
-    transform:translateX(-50%);
-    color:red;
-    font-size:20px;
-    opacity:0;
-    z-index:99999999;
-}
-
-/* ANTIVIRUS FAKE SCAN */
-.antivirus{
-    position:fixed;
-    inset:0;
-    background:black;
-    color:lime;
-    font-family:monospace;
-    padding:40px;
-    display:none;
-    z-index:999999999;
-}
-
-.antivirus.active{display:block;}
 
 </style>
+
 </head>
 
 <body>
@@ -179,120 +220,175 @@ body{
 <div class="fog"></div>
 <div class="scanlines"></div>
 <div class="glitch"></div>
-
-<!-- ADDED LAYERS -->
 <div class="vhs"></div>
-<div class="face"></div>
-<div id="aiSpeak"></div>
 
-<!-- ANTIVIRUS -->
-<div class="antivirus" id="av">
-SYSTEM SCAN INITIATED...<br>
-CHECKING MEMORY...<br>
-ENTITY DETECTED...<br>
+<section class="main">
+
+<div>
+
+<div class="title">EVERDUSK</div>
+
+<div class="buttons">
+
+<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM')">DISCORD</button>
+<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
+<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
+
 </div>
 
-<!-- CUTSCENE -->
+</div>
+
+</section>
+
 <div class="cutscene" id="cutscene">
-<div class="countdown" id="countdown">5</div>
+<div class="ctext" id="ctext">SYSTEM BOOT</div>
+<div class="cnum" id="cnum">5</div>
 </div>
+
+<div class="wipe" id="wipe"></div>
+<div id="scare"></div>
 
 <script>
 
 /* ========================= */
-/* ORIGINAL GLITCH */
+/* ELEMENTS */
 /* ========================= */
 
-setInterval(()=>{
-document.querySelector('.glitch').style.opacity=.05;
-setTimeout(()=>document.querySelector('.glitch').style.opacity=0,120);
-},4000);
+const cutscene = document.getElementById("cutscene");
+const ctext = document.getElementById("ctext");
+const cnum = document.getElementById("cnum");
+const wipe = document.getElementById("wipe");
+const scare = document.getElementById("scare");
+const glitch = document.querySelector(".glitch");
 
 /* ========================= */
-/* SCREEN TALK SYSTEM */
+/* ENTITIES */
 /* ========================= */
 
-const speakBox=document.getElementById("aiSpeak");
+const images = [
+"https://cdn.corenexis.com/files/c/1164486720.webp",
+"https://cdn.corenexis.com/files/c/9536946720.jpg",
+"https://cdn.corenexis.com/files/c/2912219720.webp"
+];
 
-function talk(t){
-speakBox.innerText=t;
-speakBox.style.opacity=1;
-setTimeout(()=>speakBox.style.opacity=0,900);
+/* ========================= */
+/* AUDIO (optional heartbeat) */
+/* ========================= */
+
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beat(){
+const o = ctx.createOscillator();
+const g = ctx.createGain();
+
+o.frequency.value = 55;
+g.gain.value = 0.06;
+
+o.connect(g);
+g.connect(ctx.destination);
+
+o.start();
+o.stop(ctx.currentTime + 0.1);
+}
+
+document.addEventListener("click",()=>ctx.resume(),{once:true});
+
+/* ========================= */
+/* VOICE DISTORTION */
+/* ========================= */
+
+function voice(text){
+const msg = new SpeechSynthesisUtterance(text);
+msg.rate = 1.4;
+msg.pitch = 0.1;
+speechSynthesis.speak(msg);
 }
 
 /* ========================= */
-/* HEARTBEAT AUDIO (synthetic) */
+/* GLITCH BURST */
 /* ========================= */
 
-const beat=new AudioContext();
-function heartbeat(){
-const osc=beat.createOscillator();
-const gain=beat.createGain();
-osc.frequency.value=60;
-gain.gain.value=0.05;
-osc.connect(gain);
-gain.connect(beat.destination);
-osc.start();
-osc.stop(beat.currentTime+0.1);
+function glitchBurst(){
+glitch.style.opacity = 0.6;
+setTimeout(()=>glitch.style.opacity = 0,120);
 }
 
 /* ========================= */
-/* XP SOUND */
+/* MAIN SYSTEM */
 /* ========================= */
 
-function xp(){
-const s=new Audio("https://www.myinstants.com/media/sounds/xp.mp3");
-s.volume=0.3;
-s.play();
-}
+function startTransfer(url){
 
-/* ========================= */
-/* PATCH ORIGINAL FUNCTION (NO EDIT) */
-/* ========================= */
-
-const oldStart=startTransfer;
-
-startTransfer=function(url){
-
-/* fake antivirus */
-document.getElementById("av").classList.add("active");
-
-setTimeout(()=>{
-
-document.getElementById("av").classList.remove("active");
+let count = 5;
 
 cutscene.classList.add("active");
 
-/* CAMERA ZOOM */
-document.body.classList.add("zoom");
+const messages = [
+"INITIALIZING",
+"LINK STABLE",
+"ENTITY DETECTED",
+"MEMORY FAILURE",
+"FINAL SEQUENCE"
+];
 
-let count=5;
+const interval = setInterval(()=>{
 
-const interval=setInterval(()=>{
+beat();
 
-heartbeat();
-xp();
+ctext.innerText = messages[5-count];
+cnum.innerText = count;
 
-talk("SYSTEM CORRUPTION DETECTED");
+glitchBurst();
 
-countdown.innerText=count;
-
-if(count<=0){
-clearInterval(interval);
-
-talk("YOU ARE NOW INSIDE");
-
-setTimeout(()=>{
-window.open(url,"_blank");
-},600);
+if(count === 1){
+voice("system failure imminent");
+glitchBurst();
 }
 
 count--;
 
+if(count < 0){
+
+clearInterval(interval);
+
+/* GLITCH EXPLOSION */
+for(let i=0;i<6;i++){
+setTimeout(glitchBurst, i*60);
+}
+
+/* JUMPSCARE */
+const img = images[Math.floor(Math.random()*images.length)];
+scare.innerHTML = `<img src="${img}">`;
+scare.style.display = "block";
+
+setTimeout(()=>{
+
+scare.style.display = "none";
+
+/* MEMORY WIPE */
+wipe.classList.add("active");
+
+/* OPEN LINK */
+window.open(url,"_blank");
+
+setTimeout(()=>{
+
+wipe.classList.remove("active");
+
+/* RESET */
+cutscene.classList.remove("active");
+cnum.innerText = "5";
+ctext.innerText = "SYSTEM BOOT";
+
+},1200);
+
+},700);
+
+}
+
 },1000);
 
-},2000);
-};
+}
 
 </script>
 
