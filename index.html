@@ -80,63 +80,6 @@ pointer-events:none;
 z-index:999999;
 }
 
-.vhs{
-position:fixed;
-inset:0;
-opacity:.15;
-mix-blend-mode:overlay;
-background:repeating-linear-gradient(to bottom, rgba(255,0,0,.05), rgba(0,0,0,.05) 2px);
-animation:vhsFlicker .15s infinite;
-pointer-events:none;
-z-index:999998;
-}
-
-@keyframes vhsFlicker{
-0%{transform:translateX(0);}
-50%{transform:translateX(-2px);}
-100%{transform:translateX(2px);}
-}
-
-/* ========================= */
-/* MAIN UI */
-/* ========================= */
-
-.main{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-}
-
-.title{
-font-size:110px;
-font-weight:900;
-text-shadow:0 0 50px red;
-}
-
-.buttons{
-margin-top:40px;
-display:flex;
-gap:20px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:16px 36px;
-border:1px solid rgba(255,0,0,.3);
-background:rgba(255,0,0,.08);
-color:white;
-cursor:pointer;
-transition:.3s;
-}
-
-.btn:hover{
-background:red;
-transform:scale(1.05);
-}
-
 /* ========================= */
 /* CUTSCENE */
 /* ========================= */
@@ -152,7 +95,9 @@ flex-direction:column;
 z-index:9999999;
 }
 
-.cutscene.active{display:flex;}
+.cutscene.active{
+display:flex;
+}
 
 .ctext{
 font-size:16px;
@@ -193,21 +138,35 @@ animation:wipeAnim 1.2s forwards;
 }
 
 /* ========================= */
-/* JUMPSCARE */
+/* JUMPSCARE (FIXED) */
 /* ========================= */
 
 #scare{
 position:fixed;
 inset:0;
 display:none;
+align-items:center;
+justify-content:center;
+background:black;
 z-index:1000000000;
+}
+
+#scare.active{
+display:flex;
 }
 
 #scare img{
 width:100%;
 height:100%;
 object-fit:cover;
-filter:contrast(1.4) brightness(.8);
+filter:contrast(1.6) brightness(0.7);
+animation:shake .08s infinite;
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+50%{transform:translateX(-3px);}
+100%{transform:translateX(3px);}
 }
 
 </style>
@@ -220,30 +179,11 @@ filter:contrast(1.4) brightness(.8);
 <div class="fog"></div>
 <div class="scanlines"></div>
 <div class="glitch"></div>
-<div class="vhs"></div>
 
-<section class="main">
-
-<div>
-
-<div class="title">EVERDUSK</div>
-
-<div class="buttons">
-
-<button class="btn" onclick="startTransfer('https://discord.gg/A3GGsc9RM')">DISCORD</button>
-<button class="btn" onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
-<button class="btn" onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
-
-</div>
-
-</div>
-
-</section>
-
-<div class="cutscene" id="cutscene">
+<section class="cutscene" id="cutscene">
 <div class="ctext" id="ctext">SYSTEM BOOT</div>
 <div class="cnum" id="cnum">5</div>
-</div>
+</section>
 
 <div class="wipe" id="wipe"></div>
 <div id="scare"></div>
@@ -262,7 +202,7 @@ const scare = document.getElementById("scare");
 const glitch = document.querySelector(".glitch");
 
 /* ========================= */
-/* ENTITIES */
+/* IMAGES */
 /* ========================= */
 
 const images = [
@@ -272,29 +212,7 @@ const images = [
 ];
 
 /* ========================= */
-/* AUDIO (optional heartbeat) */
-/* ========================= */
-
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-function beat(){
-const o = ctx.createOscillator();
-const g = ctx.createGain();
-
-o.frequency.value = 55;
-g.gain.value = 0.06;
-
-o.connect(g);
-g.connect(ctx.destination);
-
-o.start();
-o.stop(ctx.currentTime + 0.1);
-}
-
-document.addEventListener("click",()=>ctx.resume(),{once:true});
-
-/* ========================= */
-/* VOICE DISTORTION */
+/* VOICE DISTORT */
 /* ========================= */
 
 function voice(text){
@@ -309,7 +227,7 @@ speechSynthesis.speak(msg);
 /* ========================= */
 
 function glitchBurst(){
-glitch.style.opacity = 0.6;
+glitch.style.opacity = 0.7;
 setTimeout(()=>glitch.style.opacity = 0,120);
 }
 
@@ -333,16 +251,13 @@ const messages = [
 
 const interval = setInterval(()=>{
 
-beat();
-
-ctext.innerText = messages[5-count];
 cnum.innerText = count;
+ctext.innerText = messages[5 - count];
 
 glitchBurst();
 
 if(count === 1){
 voice("system failure imminent");
-glitchBurst();
 }
 
 count--;
@@ -356,14 +271,16 @@ for(let i=0;i<6;i++){
 setTimeout(glitchBurst, i*60);
 }
 
-/* JUMPSCARE */
+/* GUARANTEED JUMPSCARE */
 const img = images[Math.floor(Math.random()*images.length)];
-scare.innerHTML = `<img src="${img}">`;
-scare.style.display = "block";
 
+scare.innerHTML = `<img src="${img}">`;
+scare.classList.add("active");
+
+/* HOLD JUMPSCARE */
 setTimeout(()=>{
 
-scare.style.display = "none";
+scare.classList.remove("active");
 
 /* MEMORY WIPE */
 wipe.classList.add("active");
@@ -371,12 +288,12 @@ wipe.classList.add("active");
 /* OPEN LINK */
 window.open(url,"_blank");
 
+/* RESET */
 setTimeout(()=>{
 
 wipe.classList.remove("active");
-
-/* RESET */
 cutscene.classList.remove("active");
+
 cnum.innerText = "5";
 ctext.innerText = "SYSTEM BOOT";
 
