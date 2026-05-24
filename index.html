@@ -7,10 +7,11 @@
 
 <title>EVERDUSK</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 
+/* BASE */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -18,6 +19,12 @@ background:black;
 color:white;
 font-family:Orbitron;
 overflow:hidden;
+transition:0.5s;
+}
+
+/* CORRUPTION EFFECT */
+body.corrupt{
+filter:hue-rotate(20deg) contrast(1.2);
 }
 
 /* BACKGROUND */
@@ -26,7 +33,7 @@ position:fixed;inset:0;
 background:radial-gradient(circle, rgba(255,0,0,.2), transparent 60%), #000;
 }
 
-/* BUTTONS */
+/* MAIN */
 .wrap{
 position:relative;
 height:100vh;
@@ -39,7 +46,7 @@ z-index:2;
 }
 
 button{
-padding:15px 30px;
+padding:14px 28px;
 border:1px solid red;
 background:rgba(255,0,0,.1);
 color:white;
@@ -48,40 +55,85 @@ transition:.3s;
 }
 
 button:hover{
-transform:scale(1.1);
 background:red;
+transform:scale(1.1);
 }
 
-/* CUTSCENE */
-.cutscene{
+/* LOADER */
+#loader{
 position:fixed;
 inset:0;
 display:none;
 align-items:center;
 justify-content:center;
-background:black;
-z-index:9999;
 flex-direction:column;
+background:black;
+z-index:99999;
 }
 
-.cutscene.active{display:flex;}
+#loader.active{display:flex;}
 
-#count{
-font-size:180px;
+#num{
+font-size:160px;
+color:red;
+text-shadow:0 0 30px red;
 }
 
-/* JUMPSCARE */
-#scare{
+/* CHAT */
+#chat{
 position:fixed;
-inset:0;
-display:none;
-z-index:10000;
+right:20px;
+bottom:20px;
+width:300px;
+height:340px;
+border:1px solid red;
+background:rgba(0,0,0,.85);
+display:flex;
+flex-direction:column;
+font-family:"IBM Plex Mono", monospace;
+z-index:9999;
 }
 
-#scare img{
-width:100%;
-height:100%;
-object-fit:cover;
+#log{
+flex:1;
+overflow:auto;
+padding:10px;
+font-size:12px;
+color:#ff4b4b;
+}
+
+#input{
+display:flex;
+border-top:1px solid red;
+}
+
+#input input{
+flex:1;
+background:black;
+border:none;
+color:white;
+padding:8px;
+outline:none;
+}
+
+#input button{
+background:red;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+/* GLITCH TEXT */
+.glitchText{
+animation:glitch 0.3s infinite;
+}
+
+@keyframes glitch{
+0%{transform:translateX(0);}
+25%{transform:translateX(-1px);}
+50%{transform:translateX(2px);}
+75%{transform:translateX(-2px);}
+100%{transform:translateX(0);}
 }
 
 </style>
@@ -93,71 +145,169 @@ object-fit:cover;
 <div class="bg"></div>
 
 <div class="wrap">
-
 <h1>EVERDUSK</h1>
 
-<button onclick="startTransfer('https://discord.gg/A3GGsc9RM')">DISCORD</button>
-<button onclick="startTransfer('https://vexsound.base44.app/')">VEXSOUND</button>
-<button onclick="startTransfer('https://play.everdusk.xyz/wasm.html')">ENTER VOID</button>
-
+<button onclick="start('https://discord.gg/A3GGsc9RM')">DISCORD</button>
+<button onclick="start('https://vexsound.base44.app/')">VEXSOUND</button>
+<button onclick="start('https://www.youtube.com/@Everduskofficial')">YOUTUBE</button>
 </div>
 
-<div class="cutscene" id="cutscene">
-<div id="count">5</div>
+<!-- LOADER -->
+<div id="loader">
+<div id="num">5</div>
 </div>
 
-<div id="scare"></div>
+<!-- CHAT -->
+<div id="chat">
+<div id="log"></div>
+<div id="input">
+<input id="msg" placeholder="speak..." />
+<button onclick="send()">></button>
+</div>
+</div>
 
 <script>
 
-/* ALWAYS SAFE INIT */
-window.startTransfer = function(url){
+const loader = document.getElementById("loader");
+const num = document.getElementById("num");
+const log = document.getElementById("log");
+const msg = document.getElementById("msg");
 
-const cutscene = document.getElementById("cutscene");
-const countEl = document.getElementById("count");
-const scare = document.getElementById("scare");
+let corruption = 0;
+let entityMode = "neutral";
 
-let count = 5;
+/* =========================
+   ENTITY PERSONALITY SYSTEM
+========================= */
 
-cutscene.classList.add("active");
+function updateEntityMode(userText){
 
-const images = [
-"https://cdn.corenexis.com/files/c/1164486720.webp",
-"https://cdn.corenexis.com/files/c/9536946720.jpg",
-"https://cdn.corenexis.com/files/c/2912219720.webp"
+if(userText.includes("help")) entityMode = "sympathetic";
+else if(userText.includes("who")) entityMode = "aware";
+else if(userText.includes("exit")) entityMode = "hostile";
+else if(corruption > 5) entityMode = "unstable";
+else entityMode = "neutral";
+
+document.body.classList.toggle("corrupt", corruption > 3);
+}
+
+/* =========================
+   ENTITY RESPONSE
+========================= */
+
+function entityReply(text){
+
+updateEntityMode(text);
+
+let reply = "I am here.";
+
+if(entityMode === "sympathetic") reply = "I can feel you trying to understand.";
+if(entityMode === "aware") reply = "You are speaking to something inside the system.";
+if(entityMode === "hostile") reply = "Leaving is not permitted.";
+if(entityMode === "unstable") reply = "ERROR... I AM NOT ALONE...";
+
+typeEntity(reply);
+}
+
+/* =========================
+   TYPE BEFORE USER (ENTITY INITIATES)
+========================= */
+
+function entityInitiate(){
+
+const lines = [
+"...are you still there?",
+"I can see your input before you type.",
+"this system is remembering you.",
+"you shouldn't continue."
 ];
 
-const timer = setInterval(()=>{
+if(Math.random() < 0.4){
+typeEntity(lines[Math.floor(Math.random()*lines.length)]);
+}
+}
 
-countEl.innerText = count;
-count--;
+/* =========================
+   TYPE EFFECT
+========================= */
 
-if(count < 0){
+function typeEntity(text){
 
-clearInterval(timer);
+let i = 0;
+const div = document.createElement("div");
+div.classList.add("glitchText");
+log.appendChild(div);
 
-/* jumpscare */
-const img = images[Math.floor(Math.random()*images.length)];
+const interval = setInterval(()=>{
 
-scare.innerHTML = `<img src="${img}">`;
-scare.style.display = "block";
+div.innerText = "ENTITY: " + text.slice(0,i);
+i++;
 
-/* open link AFTER scare */
+if(i > text.length){
+clearInterval(interval);
+log.scrollTop = log.scrollHeight;
+}
+
+},30);
+}
+
+/* =========================
+   USER CHAT
+========================= */
+
+function send(){
+
+const text = msg.value;
+if(!text) return;
+
+corruption++;
+log.innerHTML += `<div>YOU: ${text}</div>`;
+msg.value = "";
+
+setTimeout(()=>entityReply(text), 600);
+
+entityInitiate();
+}
+
+/* =========================
+   LOADER (SAFE SIMULATION)
+========================= */
+
+function start(url){
+
+let count = 5;
+loader.classList.add("active");
+
+const interval = setInterval(()=>{
+
+num.innerText = count;
+
+if(count <= 0){
+clearInterval(interval);
+
+/* final entity message */
+typeEntity("You are now inside the system.");
+
+/* open link */
 setTimeout(()=>{
-
-scare.style.display = "none";
 window.open(url,"_blank");
-
-cutscene.classList.remove("active");
-countEl.innerText = "5";
-
-},1200);
+loader.classList.remove("active");
+},800);
 
 }
 
+count--;
+
 },1000);
 
-};
+}
+
+/* passive corruption */
+setInterval(()=>{
+if(corruption > 2){
+document.body.style.filter = `hue-rotate(${corruption*5}deg)`;
+}
+},1000);
 
 </script>
 
