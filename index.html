@@ -1,60 +1,945 @@
 <!DOCTYPE html>
-function closeCam(){
-document.getElementById('camWindow').style.display='none';
-add('SYSTEM: CAMERA OFFLINE');
-setTimeout(()=>{
-add('ENTITY: i can still see movement');
-},9000);
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EVERDUSK OS</title>
+
+<style>
+
+/* =====================================================
+GLOBAL
+===================================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
+
+body{
+background:#030303;
+color:#ff4b4b;
+font-family:monospace;
+overflow:hidden;
+}
+
+/* =====================================================
+BACKGROUND
+===================================================== */
+
+.bg{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at center,
+rgba(255,0,0,.08),
+transparent 60%),
+#030303;
+z-index:-10;
+}
+
+.scanlines{
+position:fixed;
+inset:0;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,.03),
+rgba(255,255,255,.03) 1px,
+transparent 1px,
+transparent 4px
+);
+z-index:999;
+}
+
+.noise{
+position:fixed;
+inset:0;
+pointer-events:none;
+opacity:.05;
+background-image:url("https://i.imgur.com/8KrmQzr.png");
+background-size:cover;
+z-index:998;
+}
+
+/* =====================================================
+TOPBAR
+===================================================== */
+
+.topbar{
+height:45px;
+background:#080808;
+border-bottom:1px solid rgba(255,0,0,.2);
+display:flex;
+align-items:center;
+padding:0 16px;
+letter-spacing:2px;
+font-size:12px;
+}
+
+.status{
+margin-left:auto;
+color:#ff7777;
+}
+
+/* =====================================================
+DESKTOP
+===================================================== */
+
+.desktop{
+display:flex;
+height:calc(100vh - 45px);
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+.sidebar{
+width:110px;
+background:#060606;
+border-right:1px solid rgba(255,0,0,.2);
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:20px;
+gap:18px;
+}
+
+.app{
+width:80px;
+cursor:pointer;
+text-align:center;
+transition:.2s;
+}
+
+.app:hover{
+transform:scale(1.05);
+}
+
+.icon{
+width:64px;
+height:64px;
+margin:auto;
+background:#111;
+border:1px solid rgba(255,0,0,.3);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+box-shadow:0 0 15px rgba(255,0,0,.1);
+}
+
+.label{
+margin-top:8px;
+font-size:11px;
+}
+
+/* =====================================================
+WINDOWS
+===================================================== */
+
+.window{
+position:absolute;
+background:#050505;
+border:1px solid rgba(255,0,0,.3);
+box-shadow:0 0 35px rgba(255,0,0,.15);
+overflow:hidden;
+resize:both;
+min-width:300px;
+min-height:200px;
+}
+
+.header{
+height:38px;
+background:#111;
+display:flex;
+align-items:center;
+padding:0 12px;
+letter-spacing:2px;
+font-size:12px;
+cursor:move;
+}
+
+.close{
+margin-left:auto;
+cursor:pointer;
+font-size:16px;
+}
+
+.content{
+height:calc(100% - 38px);
+overflow:auto;
+padding:14px;
+}
+
+/* =====================================================
+CHAT
+===================================================== */
+
+#chat{
+height:100%;
+overflow-y:auto;
+padding:10px;
+}
+
+.msg{
+margin-bottom:12px;
+line-height:1.5;
+}
+
+.input{
+display:flex;
+border-top:1px solid rgba(255,0,0,.2);
+}
+
+.input input{
+flex:1;
+padding:12px;
+background:black;
+color:white;
+border:none;
+font-family:monospace;
+}
+
+.input button{
+width:120px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+/* =====================================================
+CAM
+===================================================== */
+
+video{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:
+grayscale(.8)
+contrast(1.2)
+brightness(.7);
+}
+
+/* =====================================================
+WARNING
+===================================================== */
+
+.warning{
+position:fixed;
+top:70px;
+right:20px;
+background:#180000;
+border:1px solid red;
+padding:12px 18px;
+display:none;
+z-index:9999;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:.4;}
+100%{opacity:1;}
+}
+
+/* =====================================================
+FLASH
+===================================================== */
+
+.flash{
+position:fixed;
+inset:0;
+background:red;
+opacity:0;
+pointer-events:none;
+z-index:99999;
+}
+
+/* =====================================================
+TERMINAL
+===================================================== */
+
+.terminal-line{
+margin-bottom:10px;
+color:#ff8d8d;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="scanlines"></div>
+<div class="noise"></div>
+<div class="flash" id="flash"></div>
+
+<div class="topbar">
+
+EVERDUSK OPERATING SYSTEM
+
+<div class="status" id="status">
+SIGNAL STABLE
+</div>
+
+</div>
+
+<div class="desktop">
+
+<!-- =====================================================
+SIDEBAR
+===================================================== -->
+
+<div class="sidebar">
+
+<div class="app" onclick="openWindow('chatWindow')">
+<div class="icon">💬</div>
+<div class="label">CHAT</div>
+</div>
+
+<div class="app" onclick="openWindow('camWindow')">
+<div class="icon">◉</div>
+<div class="label">CAM</div>
+</div>
+
+<div class="app"
+onclick="window.location.href='https://files.everdusk.xyz'">
+<div class="icon">🗁</div>
+<div class="label">FILES</div>
+</div>
+
+<div class="app"
+onclick="window.location.href='https://archive.everdusk.xyz'">
+<div class="icon">⚠</div>
+<div class="label">ARCHIVE</div>
+</div>
+
+<div class="app"
+onclick="window.location.href='https://play.everdusk.xyz'">
+<div class="icon">🎮</div>
+<div class="label">PLAY</div>
+</div>
+
+<div class="app"
+onclick="openWindow('terminalWindow')">
+<div class="icon">⌘</div>
+<div class="label">TERMINAL</div>
+</div>
+
+<div class="app"
+onclick="window.location.href='https://youtube.com'">
+<div class="icon">▶</div>
+<div class="label">YOUTUBE</div>
+</div>
+
+</div>
+
+<!-- =====================================================
+CHAT WINDOW
+===================================================== -->
+
+<div class="window"
+id="chatWindow"
+style="width:500px;height:520px;right:40px;top:60px;">
+
+<div class="header">
+
+ENTITY CHAT
+
+<div class="close"
+onclick="closeWindow('chatWindow')">
+✕
+</div>
+
+</div>
+
+<div class="content"
+style="padding:0;display:flex;flex-direction:column;">
+
+<div id="chat"></div>
+
+<div class="input">
+
+<input
+id="msg"
+placeholder="talk to the entity">
+
+<button onclick="send()">
+SEND
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+CAM WINDOW
+===================================================== -->
+
+<div class="window"
+id="camWindow"
+style="width:520px;height:380px;left:140px;top:60px;">
+
+<div class="header">
+
+LIVE CAMERA
+
+<div class="close"
+onclick="closeCam()">
+✕
+</div>
+
+</div>
+
+<div class="content"
+style="padding:0;">
+
+<video
+id="cam"
+autoplay
+muted
+playsinline>
+</video>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+TERMINAL
+===================================================== -->
+
+<div class="window"
+id="terminalWindow"
+style="width:550px;height:350px;left:300px;top:480px;">
+
+<div class="header">
+
+SYSTEM TERMINAL
+
+<div class="close"
+onclick="closeWindow('terminalWindow')">
+✕
+</div>
+
+</div>
+
+<div class="content"
+id="terminal">
+
+<div class="terminal-line">
+EVERDUSK SYSTEM ONLINE
+</div>
+
+<div class="terminal-line">
+WATCHERS ACTIVE
+</div>
+
+<div class="terminal-line">
+ARCHIVE STATUS: LOCKED
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="warning" id="warning">
+UNKNOWN PRESENCE DETECTED
+</div>
+
+<script>
+
+/* =====================================================
+CHAT
+===================================================== */
+
+const chat =
+document.getElementById('chat');
+
+function add(text){
+
+const div =
+document.createElement('div');
+
+div.className='msg';
+
+div.innerText=text;
+
+chat.appendChild(div);
+
+chat.scrollTop=
+chat.scrollHeight;
+
+}
+
+/* =====================================================
+VOICE
+===================================================== */
+
+function speak(text){
+
+speechSynthesis.cancel();
+
+const u =
+new SpeechSynthesisUtterance(text);
+
+u.pitch=.7;
+u.rate=.92;
+
+speechSynthesis.speak(u);
+
+}
+
+/* =====================================================
+SEND
+===================================================== */
+
+function send(){
+
+const input =
+document.getElementById('msg');
+
+const text =
+input.value.trim();
+
+if(!text)return;
+
+input.value='';
+
+add("USER: "+text);
+
+runCommands(text);
+
+setTimeout(()=>{
+
+entityReply();
+
+},1500);
+
+}
+
+/* =====================================================
+ENTITY
+===================================================== */
+
+function entityReply(){
+
+const replies=[
+
+"the archive changed",
+
+"watchers detected",
+
+"signal unstable",
+
+"someone accessed level 4",
+
+"do not trust entity 01",
+
+"containment failure detected",
+
+"i can still see movement",
+
+"the void sees everything",
+
+"they are below bedrock",
+
+"the infection spreads"
+
+];
+
+const r =
+replies[
+Math.floor(Math.random()*replies.length)
+];
+
+add("ENTITY: "+r);
+
+speak(r);
+
+}
+
+/* =====================================================
+COMMANDS
+===================================================== */
+
+function runCommands(t){
+
+if(t==="/signal"){
+
+add("SYSTEM: SIGNAL FOUND");
+
+}
+
+if(t==="/watchers"){
+
+add("SYSTEM: WATCHERS DETECTED");
+
+}
+
+if(t==="/void"){
+
+document.body.style.filter=
+"invert(1)";
+
+}
+
+if(t==="/purge"){
+
+purgeSystem();
+
+}
+
+}
+
+/* =====================================================
+PURGE
+===================================================== */
+
+function purgeSystem(){
+
+let time=10;
+
+const interval=
+setInterval(()=>{
+
+add(
+"SYSTEM PURGE IN "+time
+);
+
+time--;
+
+if(time<0){
+
+clearInterval(interval);
+
+document.body.innerHTML=
+`
+<body style="
+background:black;
+color:red;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+font-family:monospace;
+font-size:42px;
+">
+SYSTEM PURGED
+</body>
+`;
+
+}
+
+},1000);
+
+}
+
+/* =====================================================
+WINDOWS
+===================================================== */
+
+function openWindow(id){
+
+document
+.getElementById(id)
+.style.display='block';
+
+}
+
+function closeWindow(id){
+
+document
+.getElementById(id)
+.style.display='none';
+
+}
+
+/* =====================================================
+CAM
+===================================================== */
 
 async function startCam(){
+
 try{
-const stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
-document.getElementById('cam').srcObject=stream;
+
+const stream=
+await navigator
+.mediaDevices
+.getUserMedia({
+video:true,
+audio:true
+});
+
+document
+.getElementById('cam')
+.srcObject=stream;
+
 }catch(err){
-add('SYSTEM: CAMERA ACCESS DENIED');
-}
+
+add(
+"SYSTEM: CAMERA ACCESS DENIED"
+);
+
 }
 
-let unlocked=false;
-let currentCode='VOID-22';
+}
 
-function openArchive(){
-if(!unlocked){
-const code=prompt('ENTER ACCESS CODE');
-if(code===currentCode){
-unlocked=true;
-document.getElementById('archiveIcon').innerText='⚠';
-window.open('https://archive.everdusk.xyz','_blank');
-}else{
-add('SYSTEM: ACCESS DENIED');
-}
-}else{
-window.open('https://archive.everdusk.xyz','_blank');
-}
-}
+function closeCam(){
+
+document
+.getElementById('camWindow')
+.style.display='none';
+
+add(
+"SYSTEM: CAMERA OFFLINE"
+);
 
 setTimeout(()=>{
-add('UNKNOWN_USER: archive code is '+currentCode);
-speak('archive code leaked');
-},600000);
 
-const fakeUsers=['WATCHER','VOID_SIGNAL','ENTITY_01','UNKNOWN'];
-const fakeLines=[
-'the signal is growing',
-'level 4 should stay locked',
-'the archive changed again',
-'i heard something below bedrock'
+add(
+"ENTITY: i still detect movement"
+);
+
+speak(
+"i still detect movement"
+);
+
+},8000);
+
+}
+
+/* =====================================================
+DRAG WINDOWS
+===================================================== */
+
+document
+.querySelectorAll('.window')
+.forEach(win=>{
+
+const header=
+win.querySelector('.header');
+
+let dragging=false;
+let offsetX=0;
+let offsetY=0;
+
+header.addEventListener('mousedown',e=>{
+
+dragging=true;
+
+offsetX=
+e.clientX-win.offsetLeft;
+
+offsetY=
+e.clientY-win.offsetTop;
+
+});
+
+document.addEventListener('mousemove',e=>{
+
+if(!dragging)return;
+
+win.style.left=
+(e.clientX-offsetX)+'px';
+
+win.style.top=
+(e.clientY-offsetY)+'px';
+
+});
+
+document.addEventListener('mouseup',()=>{
+
+dragging=false;
+
+});
+
+});
+
+/* =====================================================
+FAKE USERS
+===================================================== */
+
+const fakeUsers=[
+
+"WATCHER",
+"VOID_SIGNAL",
+"UNKNOWN_USER",
+"ENTITY_01",
+"BEDROCK"
+
+];
+
+const fakeMsgs=[
+
+"the archive changed",
+
+"signal corruption detected",
+
+"do not open level 4",
+
+"the watcher is real",
+
+"someone disappeared",
+
+"containment unstable",
+
+"bedrock movement detected"
+
 ];
 
 setInterval(()=>{
-const u=fakeUsers[Math.floor(Math.random()*fakeUsers.length)];
-const m=fakeLines[Math.floor(Math.random()*fakeLines.length)];
-add(u+': '+m);
-},45000);
+
+const u=
+fakeUsers[
+Math.floor(Math.random()*fakeUsers.length)
+];
+
+const m=
+fakeMsgs[
+Math.floor(Math.random()*fakeMsgs.length)
+];
+
+add(u+": "+m);
+
+},40000);
+
+/* =====================================================
+WARNINGS
+===================================================== */
+
+setInterval(()=>{
+
+if(Math.random()<0.35){
+
+const w=
+document.getElementById('warning');
+
+w.style.display='block';
+
+document
+.getElementById('status')
+.innerText=
+"THREAT LEVEL HIGH";
+
+flash();
+
+setTimeout(()=>{
+
+w.style.display='none';
+
+document
+.getElementById('status')
+.innerText=
+"SIGNAL STABLE";
+
+},5000);
+
+}
+
+},30000);
+
+/* =====================================================
+FLASH
+===================================================== */
+
+function flash(){
+
+const f=
+document.getElementById('flash');
+
+f.style.opacity='.35';
+
+setTimeout(()=>{
+
+f.style.opacity='0';
+
+},150);
+
+}
+
+/* =====================================================
+ARCHIVE CODE LEAK
+===================================================== */
+
+setTimeout(()=>{
+
+add(
+"UNKNOWN_USER: archive code is VOID-220055"
+);
+
+speak(
+"archive code leaked"
+);
+
+},600000);
+
+/* =====================================================
+TERMINAL LOGS
+===================================================== */
+
+const terminal =
+document.getElementById('terminal');
+
+setInterval(()=>{
+
+const lines=[
+
+"SCANNING SIGNAL...",
+"WATCHER MOVEMENT DETECTED",
+"ARCHIVE ACCESS ATTEMPT",
+"UNKNOWN ENTITY ONLINE",
+"VOID SIGNAL ACTIVE",
+"CONTAINMENT FAILURE"
+
+];
+
+const div =
+document.createElement('div');
+
+div.className='terminal-line';
+
+div.innerText=
+lines[
+Math.floor(Math.random()*lines.length)
+];
+
+terminal.appendChild(div);
+
+terminal.scrollTop=
+terminal.scrollHeight;
+
+},6000);
+
+/* =====================================================
+BOOT
+===================================================== */
 
 startCam();
-add('SYSTEM: EVERDUSK ONLINE');
+
+add(
+"SYSTEM: EVERDUSK ONLINE"
+);
+
+add(
+"SYSTEM: WATCHERS ACTIVE"
+);
+
+speak(
+"everdusk online"
+);
+
 </script>
 
 </body>
