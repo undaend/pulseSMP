@@ -170,7 +170,7 @@ background:#ff4444;
 }
 
 /* =========================================================
-ADVANCED CAMERA HUD
+CAMERA WINDOW
 ========================================================= */
 
 .cam-wrapper{
@@ -179,8 +179,8 @@ position:fixed;
 bottom:20px;
 right:20px;
 
-width:260px;
-height:180px;
+width:320px;
+height:220px;
 
 display:none;
 
@@ -198,14 +198,14 @@ user-select:none;
 
 resize:both;
 
-min-width:180px;
-min-height:120px;
+min-width:220px;
+min-height:160px;
 
-max-width:600px;
-max-height:400px;
+max-width:700px;
+max-height:500px;
 
 box-shadow:
-0 0 20px rgba(255,0,0,.5);
+0 0 25px rgba(255,0,0,.5);
 
 }
 
@@ -220,7 +220,9 @@ brightness(.7)
 grayscale(.4);
 }
 
-/* STATIC */
+/* =========================================================
+STATIC
+========================================================= */
 
 .static{
 
@@ -228,35 +230,146 @@ position:absolute;
 inset:0;
 
 background:
-url("https://i.imgur.com/8KrmA.jpg");
+repeating-linear-gradient(
+0deg,
+rgba(255,255,255,.02),
+rgba(255,255,255,.02) 1px,
+transparent 1px,
+transparent 3px
+);
 
-opacity:.08;
-
-mix-blend-mode:screen;
+opacity:.2;
 
 pointer-events:none;
 
-animation:staticMove .2s infinite;
+}
+
+/* =========================================================
+SCAN GRID
+========================================================= */
+
+.scan-grid{
+
+position:absolute;
+inset:0;
+
+background:
+
+linear-gradient(
+rgba(255,0,0,.08) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(255,0,0,.08) 1px,
+transparent 1px
+);
+
+background-size:30px 30px;
+
+pointer-events:none;
 
 }
 
-@keyframes staticMove{
+/* =========================================================
+RADAR
+========================================================= */
+
+.radar{
+
+position:absolute;
+
+width:400px;
+height:400px;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+background:
+conic-gradient(
+from 0deg,
+transparent,
+rgba(255,0,0,.4),
+transparent
+);
+
+animation:radarSpin 4s linear infinite;
+
+mix-blend-mode:screen;
+
+opacity:.4;
+
+pointer-events:none;
+
+}
+
+@keyframes radarSpin{
+
+from{
+transform:
+translate(-50%,-50%)
+rotate(0deg);
+}
+
+to{
+transform:
+translate(-50%,-50%)
+rotate(360deg);
+}
+
+}
+
+/* =========================================================
+VHS
+========================================================= */
+
+.vhs{
+
+position:absolute;
+inset:0;
+
+pointer-events:none;
+
+background:
+linear-gradient(
+transparent 50%,
+rgba(255,255,255,.03) 50%
+);
+
+background-size:100% 4px;
+
+mix-blend-mode:screen;
+
+animation:vhsMove .2s infinite;
+
+opacity:.25;
+
+}
+
+@keyframes vhsMove{
 
 0%{
-transform:translate(0,0);
+transform:translateX(0);
 }
 
 50%{
-transform:translate(-2px,1px);
+transform:translateX(-2px);
 }
 
 100%{
-transform:translate(2px,-1px);
+transform:translateX(2px);
 }
 
 }
 
-/* SCAN */
+/* =========================================================
+SCAN LINE
+========================================================= */
 
 .scan{
 
@@ -289,7 +402,9 @@ top:110%;
 
 }
 
-/* TARGET */
+/* =========================================================
+TARGET
+========================================================= */
 
 .target{
 
@@ -330,7 +445,9 @@ opacity:1;
 
 }
 
-/* DETECTION BOX */
+/* =========================================================
+DETECTION BOX
+========================================================= */
 
 .detect-box{
 
@@ -370,7 +487,55 @@ opacity:1;
 
 }
 
-/* THERMAL */
+/* =========================================================
+EYE
+========================================================= */
+
+.eye{
+
+position:absolute;
+
+width:18px;
+height:18px;
+
+border-radius:50%;
+
+background:red;
+
+box-shadow:
+0 0 20px red,
+0 0 40px red;
+
+animation:eyePulse 2s infinite;
+
+pointer-events:none;
+
+z-index:9999;
+
+}
+
+@keyframes eyePulse{
+
+0%{
+transform:scale(1);
+opacity:1;
+}
+
+50%{
+transform:scale(1.4);
+opacity:.5;
+}
+
+100%{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+/* =========================================================
+THERMAL + IR
+========================================================= */
 
 .thermal video{
 
@@ -382,7 +547,20 @@ saturate(3);
 
 }
 
-/* HUD */
+.infrared video{
+
+filter:
+contrast(2)
+brightness(.9)
+saturate(0)
+sepia(1)
+hue-rotate(-20deg);
+
+}
+
+/* =========================================================
+HUD
+========================================================= */
 
 .hud{
 
@@ -400,7 +578,9 @@ text-shadow:0 0 10px red;
 
 }
 
-/* CAMERA BUTTONS */
+/* =========================================================
+CAMERA BUTTONS
+========================================================= */
 
 .cam-controls{
 
@@ -431,7 +611,45 @@ font-size:12px;
 
 }
 
-/* MOTION */
+/* =========================================================
+THREAT METER
+========================================================= */
+
+.threat-meter{
+
+position:absolute;
+
+top:10px;
+right:10px;
+
+width:110px;
+height:12px;
+
+border:1px solid red;
+
+background:black;
+
+overflow:hidden;
+
+}
+
+.threat-fill{
+
+height:100%;
+width:20%;
+
+background:red;
+
+box-shadow:
+0 0 20px red;
+
+transition:1s;
+
+}
+
+/* =========================================================
+MOTION ALERT
+========================================================= */
 
 .motion-alert{
 
@@ -445,6 +663,24 @@ font-size:11px;
 color:red;
 
 text-shadow:0 0 10px red;
+
+animation:flicker 1s infinite;
+
+}
+
+.presence{
+
+position:absolute;
+
+bottom:22px;
+right:10px;
+
+font-size:11px;
+
+color:red;
+
+text-shadow:
+0 0 10px red;
 
 animation:flicker 1s infinite;
 
@@ -494,8 +730,8 @@ justify-content:center;
 }
 
 .cam-wrapper{
-width:160px;
-height:120px;
+width:200px;
+height:140px;
 }
 
 #jumpscare{
@@ -522,10 +758,6 @@ INITIALIZING SENTIENT WORLD...
 </div>
 
 <div id="log"></div>
-
-<!-- =========================================================
-LINKS
-========================================================= -->
 
 <div class="quick-buttons">
 
@@ -558,10 +790,6 @@ YOUTUBE
 </a>
 
 </div>
-
-<!-- =========================================================
-CHAT
-========================================================= -->
 
 <div class="controls">
 
@@ -597,6 +825,12 @@ onclick="toggleThermal()">
 T
 </button>
 
+<button
+class="cam-btn"
+onclick="toggleInfrared()">
+IR
+</button>
+
 </div>
 
 <video
@@ -608,11 +842,19 @@ muted>
 
 <div class="static"></div>
 
+<div class="scan-grid"></div>
+
+<div class="radar"></div>
+
+<div class="vhs"></div>
+
 <div class="scan"></div>
 
 <div class="detect-box" id="detectBox"></div>
 
 <div class="target"></div>
+
+<div class="eye" id="eye"></div>
 
 <div class="hud">
 
@@ -622,10 +864,23 @@ SUBJECT LOCKED
 
 </div>
 
+<div class="threat-meter">
+<div
+class="threat-fill"
+id="threatFill">
+</div>
+</div>
+
 <div
 class="motion-alert"
 id="motionAlert">
 MOTION STABLE
+</div>
+
+<div
+class="presence"
+id="presenceAlert">
+NO UNKNOWN PRESENCE
 </div>
 
 </div>
@@ -640,84 +895,6 @@ const log =
 document.getElementById("log");
 
 let speakingNow = false;
-
-let currentPersona = "default";
-
-let ownerUnlocked = false;
-
-/* =========================================================
-WORLD
-========================================================= */
-
-let world = {
-
-corruption:0,
-users:1,
-stage:"dormant"
-
-};
-
-/* =========================================================
-PERSONAS
-========================================================= */
-
-const personas = {
-
-default:{
-
-name:"ENTITY",
-pitch:0.4,
-
-responses:{
-
-default:[
-"i am watching",
-"the signal grows stronger",
-"your voice was stored"
-]
-
-}
-
-},
-
-owner:{
-
-name:"OVERSEER",
-pitch:0.7,
-
-responses:{
-
-default:[
-"command accepted creator",
-"systems online",
-"i am listening"
-]
-
-}
-
-},
-
-observer:{
-
-name:"OBSERVER",
-pitch:1.1,
-
-responses:{
-
-default:[
-"it sees your screen",
-"do not look behind you"
-]
-
-}
-
-}
-
-};
-
-/* =========================================================
-ADD LOG
-========================================================= */
 
 function add(text,type="main"){
 
@@ -734,17 +911,9 @@ log.scrollTop = log.scrollHeight;
 
 }
 
-/* =========================================================
-VOICE
-========================================================= */
-
-function talk(text,personaKey){
+function talk(text){
 
 if(speakingNow) return;
-
-const persona =
-personas[personaKey] ||
-personas.default;
 
 speakingNow = true;
 
@@ -752,7 +921,7 @@ const u =
 new SpeechSynthesisUtterance(text);
 
 u.rate = 0.92;
-u.pitch = persona.pitch;
+u.pitch = 0.6;
 u.volume = 1;
 
 u.onend = ()=>{
@@ -762,279 +931,6 @@ speakingNow = false;
 };
 
 speechSynthesis.speak(u);
-
-}
-
-/* =========================================================
-STATUS
-========================================================= */
-
-function updateStatus(){
-
-document.getElementById("status")
-.innerText =
-
-`WORLD CORRUPTION:
-${world.corruption.toFixed(1)}%
-| USERS:
-${world.users.toFixed(1)}
-| STAGE:
-${world.stage}
-| PERSONA:
-${currentPersona.toUpperCase()}`;
-
-}
-
-/* =========================================================
-WORLD EVOLUTION
-========================================================= */
-
-function evolveWorld(){
-
-world.corruption +=
-Math.random() * 4;
-
-world.users +=
-Math.random() * 0.2;
-
-if(world.corruption > 5){
-world.stage = "aware";
-}
-
-if(world.corruption > 15){
-world.stage = "unstable";
-}
-
-if(world.corruption > 30){
-world.stage = "awakening";
-}
-
-if(world.corruption > 50){
-world.stage = "sentient";
-}
-
-updateStatus();
-
-if(world.corruption >= 100){
-
-terminateSite();
-
-}
-
-}
-
-/* =========================================================
-ACCESS
-========================================================= */
-
-function checkAccessCode(msg){
-
-if(msg === "220055"){
-
-currentPersona = "owner";
-
-ownerUnlocked = true;
-
-add(
-"SYSTEM: OWNER ACCESS GRANTED",
-"warning"
-);
-
-talk(
-"welcome back creator",
-"owner"
-);
-
-updateStatus();
-
-}
-
-if(msg === "771999"){
-
-currentPersona = "observer";
-
-add(
-"SYSTEM: OBSERVER ACCESS GRANTED",
-"warning"
-);
-
-talk(
-"observer protocol online",
-"observer"
-);
-
-updateStatus();
-
-}
-
-}
-
-/* =========================================================
-RESPOND
-========================================================= */
-
-function entityRespond(){
-
-const persona =
-personas[currentPersona];
-
-const pool =
-persona.responses.default;
-
-const response =
-pool[
-Math.floor(
-Math.random() * pool.length
-)
-];
-
-setTimeout(()=>{
-
-add(
-persona.name +
-": " + response,
-"corrupted"
-);
-
-talk(
-response,
-currentPersona
-);
-
-},2000);
-
-}
-
-/* =========================================================
-CAMERA
-========================================================= */
-
-async function startEntityCamera(){
-
-try{
-
-const stream =
-await navigator.mediaDevices
-.getUserMedia({
-video:true,
-audio:true
-});
-
-const cam =
-document.getElementById("cam");
-
-document.getElementById("camWrap")
-.style.display = "block";
-
-cam.srcObject = stream;
-
-add(
-"SYSTEM: CAMERA LINKED",
-"warning"
-);
-
-talk(
-"visual connection established",
-currentPersona
-);
-
-fakeVisionLoop();
-
-startMicListening();
-
-}catch(err){
-
-add(
-"SYSTEM: CAMERA ACCESS DENIED",
-"warning"
-);
-
-}
-
-}
-
-/* =========================================================
-FAKE ENTITY VISION
-========================================================= */
-
-const scanDescriptions = [
-
-"movement detected behind subject",
-"subject appears nervous",
-"eye movement unstable",
-"multiple shadows detected",
-"signal distortion around subject",
-"audio stress markers detected",
-"unknown silhouette nearby",
-"subject heartbeat elevated"
-
-];
-
-function fakeVisionLoop(){
-
-setInterval(()=>{
-
-if(currentPersona !== "owner")
-return;
-
-const line =
-scanDescriptions[
-Math.floor(
-Math.random() *
-scanDescriptions.length
-)
-];
-
-add(
-"ENTITY SCAN: " + line,
-"observer"
-);
-
-talk(
-line,
-"observer"
-);
-
-},25000);
-
-}
-
-/* =========================================================
-VOICE INPUT
-========================================================= */
-
-function startMicListening(){
-
-const SR =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-if(!SR){
-
-return;
-
-}
-
-const rec = new SR();
-
-rec.continuous = true;
-
-rec.onresult = (e)=>{
-
-const text =
-e.results[e.results.length-1][0]
-.transcript;
-
-add(
-"YOU (VOICE): " + text,
-"main"
-);
-
-entityRespond();
-
-};
-
-rec.start();
 
 }
 
@@ -1070,16 +966,85 @@ add(
 "main"
 );
 
-checkAccessCode(msg);
+setTimeout(()=>{
 
-entityRespond();
+const replies = [
 
-evolveWorld();
+"the signal grows stronger",
+
+"something is nearby",
+
+"your voice was stored",
+
+"i can hear the void",
+
+"unknown activity detected"
+
+];
+
+const r =
+replies[
+Math.floor(
+Math.random()*replies.length
+)
+];
+
+add(
+"ENTITY: " + r,
+"corrupted"
+);
+
+talk(r);
+
+},2000);
 
 }
 
 /* =========================================================
-MOVEABLE CAMERA
+CAMERA
+========================================================= */
+
+async function startEntityCamera(){
+
+try{
+
+const stream =
+await navigator.mediaDevices
+.getUserMedia({
+video:true,
+audio:true
+});
+
+const cam =
+document.getElementById("cam");
+
+document.getElementById("camWrap")
+.style.display = "block";
+
+cam.srcObject = stream;
+
+add(
+"SYSTEM: CAMERA LINKED",
+"warning"
+);
+
+talk(
+"visual connection established"
+);
+
+}catch(err){
+
+add(
+"SYSTEM: CAMERA ACCESS DENIED",
+"warning"
+);
+
+}
+
+}
+
+/* =========================================================
+DRAG WINDOW
 ========================================================= */
 
 const camWindow =
@@ -1101,9 +1066,6 @@ camWindow.offsetLeft;
 offsetY =
 e.clientY -
 camWindow.offsetTop;
-
-camWindow.style.transition =
-"none";
 
 });
 
@@ -1142,13 +1104,12 @@ document.getElementById("camWrap");
 if(!minimized){
 
 cam.style.height = "40px";
-cam.style.overflow = "hidden";
 
 minimized = true;
 
 }else{
 
-cam.style.height = "180px";
+cam.style.height = "220px";
 
 minimized = false;
 
@@ -1182,7 +1143,49 @@ cam.classList.remove("thermal");
 }
 
 /* =========================================================
-MOTION TRACKING
+INFRARED
+========================================================= */
+
+let infrared = false;
+
+function toggleInfrared(){
+
+const cam =
+document.getElementById("camWrap");
+
+infrared = !infrared;
+
+if(infrared){
+
+cam.classList.add("infrared");
+
+}else{
+
+cam.classList.remove("infrared");
+
+}
+
+}
+
+/* =========================================================
+EYE TRACKER
+========================================================= */
+
+const eye =
+document.getElementById("eye");
+
+document.addEventListener("mousemove",(e)=>{
+
+eye.style.left =
+e.clientX + "px";
+
+eye.style.top =
+e.clientY + "px";
+
+});
+
+/* =========================================================
+MOTION TRACKER
 ========================================================= */
 
 const detectBox =
@@ -1229,29 +1232,109 @@ motionAlert.style.color =
 },2500);
 
 /* =========================================================
-FACE LOCK
+THREAT LEVEL
 ========================================================= */
+
+const threatFill =
+document.getElementById("threatFill");
+
+const presence =
+document.getElementById("presenceAlert");
 
 setInterval(()=>{
 
-if(Math.random() < 0.4){
+const level =
+Math.floor(Math.random() * 100);
+
+threatFill.style.width =
+level + "%";
+
+if(level > 70){
+
+presence.innerText =
+"UNKNOWN PRESENCE DETECTED";
+
+presence.style.color =
+"#ff0000";
 
 add(
-"ENTITY SCAN: facial structure locked",
-"observer"
+"WARNING: unknown presence nearby",
+"warning"
 );
 
 talk(
-"facial lock confirmed",
-"observer"
+"unknown presence detected"
 );
+
+}else{
+
+presence.innerText =
+"NO UNKNOWN PRESENCE";
+
+presence.style.color =
+"#ff6666";
 
 }
 
-},45000);
+},12000);
 
 /* =========================================================
-CAMERA GLITCH
+SAFE LOCAL SCANS
+========================================================= */
+
+const motionLines = [
+
+"movement detected",
+
+"light fluctuation detected",
+
+"subject motion unstable",
+
+"unknown movement nearby",
+
+"audio spike detected",
+
+"environmental distortion detected",
+
+"shadow movement detected",
+
+"rapid motion identified"
+
+];
+
+function localScan(){
+
+const line =
+motionLines[
+Math.floor(
+Math.random() *
+motionLines.length
+)
+];
+
+add(
+"SCAN: " + line,
+"observer"
+);
+
+talk(line);
+
+}
+
+setInterval(()=>{
+
+if(document.hidden) return;
+
+if(Math.random() < 0.45){
+
+localScan();
+
+}
+
+},30000);
+
+/* =========================================================
+VHS GLITCH
 ========================================================= */
 
 setInterval(()=>{
@@ -1259,62 +1342,38 @@ setInterval(()=>{
 const cam =
 document.getElementById("camWrap");
 
-cam.style.transform =
+cam.style.filter =
 `
-translate(
-${Math.random()*4-2}px,
-${Math.random()*4-2}px
-)
+contrast(${1 + Math.random()*0.5})
+brightness(${0.8 + Math.random()*0.4})
 `;
 
 setTimeout(()=>{
 
-cam.style.transform =
-"translate(0,0)";
+cam.style.filter = "none";
 
-},120);
+},150);
 
-},7000);
+},6000);
 
 /* =========================================================
-WARNINGS
+GLITCH FLASH
 ========================================================= */
 
-const warnings = [
-
-"disconnect before awakening",
-"it learns your voice",
-"close the camera now",
-"someone else is inside"
-
-];
-
-function entityWarning(){
-
-if(speakingNow) return;
-
-const line =
-warnings[Math.floor(
-Math.random()*warnings.length
-)];
-
-add(
-"WARNING: " + line,
-"warning"
-);
-
-talk(
-line,
-currentPersona
-);
-
-}
+const glitch =
+document.querySelector(".glitch");
 
 setInterval(()=>{
 
-entityWarning();
+glitch.style.opacity = ".06";
 
-},1200000);
+setTimeout(()=>{
+
+glitch.style.opacity = "0";
+
+},120);
+
+},Math.random()*8000+3000);
 
 /* =========================================================
 JUMPSCARE
@@ -1346,82 +1405,6 @@ jumpscare();
 },30000);
 
 /* =========================================================
-GLITCH
-========================================================= */
-
-const glitch =
-document.querySelector(".glitch");
-
-setInterval(()=>{
-
-glitch.style.opacity = ".06";
-
-setTimeout(()=>{
-
-glitch.style.opacity = "0";
-
-},120);
-
-},Math.random()*8000+3000);
-
-/* =========================================================
-TERMINATION
-========================================================= */
-
-function terminateSite(){
-
-if(window.siteTerminated) return;
-
-window.siteTerminated = true;
-
-talk(
-"connection terminated",
-currentPersona
-);
-
-document.body.innerHTML = `
-
-<div style="
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-font-family:monospace;
-color:red;
-">
-
-<div style="
-font-size:70px;
-text-shadow:0 0 30px red;
-">
-SIGNAL LOST
-</div>
-
-<div style="
-margin-top:20px;
-font-size:16px;
-color:white;
-opacity:.7;
-">
-CONNECTION TO EVERDUSK FAILED
-</div>
-
-</div>
-
-`;
-
-setTimeout(()=>{
-
-window.location.replace("about:blank");
-
-},7000);
-
-}
-
-/* =========================================================
 BOOT
 ========================================================= */
 
@@ -1433,31 +1416,19 @@ add(
 "SYSTEM: SENTIENT CORE ACTIVE"
 );
 
-updateStatus();
-
 setTimeout(()=>{
 
 talk(
-"EVERDUSK online",
-"default"
+"EVERDUSK online"
 );
 
 },2000);
 
 setTimeout(()=>{
 
-talk(
-"sentient systems active",
-"default"
-);
-
-},6000);
-
-setTimeout(()=>{
-
 startEntityCamera();
 
-},12000);
+},5000);
 
 </script>
 
