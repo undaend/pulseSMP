@@ -1,511 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EVERDUSK // SENTIENT OS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html,body{
-width:100%;
-height:100%;
-overflow:hidden;
-background:black;
-font-family:monospace;
-color:#ff3b3b;
-}
-
-/* =====================================================
-BACKGROUND
-===================================================== */
-
-body{
-background:
-radial-gradient(circle at center,
-rgba(255,0,0,.15),
-transparent 60%),
-black;
-}
-
-/* =====================================================
-SCANLINES
-===================================================== */
-
-.scanlines{
-position:fixed;
-inset:0;
-pointer-events:none;
-background:
-repeating-linear-gradient(
-to bottom,
-rgba(255,255,255,.03),
-rgba(255,255,255,.03) 1px,
-transparent 1px,
-transparent 4px
-);
-z-index:999999;
-opacity:.35;
-}
-
-/* =====================================================
-BOOT
-===================================================== */
-
-.boot{
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-z-index:999999999;
-animation:bootFade 2s forwards;
-animation-delay:6s;
-}
-
-@keyframes bootFade{
-to{
-opacity:0;
-pointer-events:none;
-}
-}
-
-.boot-title{
-font-size:90px;
-font-family:'Orbitron',sans-serif;
-text-shadow:
-0 0 20px red,
-0 0 60px red;
-animation:flicker 2s infinite;
-}
-
-.boot-sub{
-margin-top:20px;
-letter-spacing:5px;
-color:#ff7777;
-}
-
-.loading{
-margin-top:40px;
-width:350px;
-height:4px;
-background:#111;
-overflow:hidden;
-}
-
-.loading-fill{
-height:100%;
-width:0%;
-background:red;
-box-shadow:0 0 20px red;
-animation:load 5s forwards;
-}
-
-@keyframes load{
-from{width:0%;}
-to{width:100%;}
-}
-
-@keyframes flicker{
-0%{opacity:1;}
-50%{opacity:.6;}
-100%{opacity:1;}
-}
-
-/* =====================================================
-DESKTOP
-===================================================== */
-
-.desktop{
-position:relative;
-width:100%;
-height:100%;
-overflow:hidden;
-}
-
-/* =====================================================
-TOP BUTTONS
-===================================================== */
-
-.links{
-position:fixed;
-top:20px;
-right:20px;
-display:flex;
-gap:10px;
-z-index:99999;
-flex-wrap:wrap;
-}
-
-.links a{
-padding:12px 18px;
-border:1px solid rgba(255,0,0,.4);
-background:rgba(255,0,0,.08);
-text-decoration:none;
-color:white;
-font-size:12px;
-letter-spacing:2px;
-transition:.3s;
-backdrop-filter:blur(8px);
-}
-
-.links a:hover{
-background:red;
-box-shadow:
-0 0 20px red,
-0 0 60px red;
-transform:translateY(-2px);
-}
-
-/* =====================================================
-ICONS
-===================================================== */
-
-.icons{
-position:absolute;
-top:20px;
-left:20px;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.icon{
-width:100px;
-text-align:center;
-cursor:pointer;
-transition:.3s;
-}
-
-.icon:hover{
-transform:scale(1.05);
-}
-
-.icon-box{
-width:70px;
-height:70px;
-border:1px solid rgba(255,0,0,.5);
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-background:rgba(255,0,0,.05);
-box-shadow:0 0 15px rgba(255,0,0,.2);
-}
-
-.icon-name{
-margin-top:8px;
-font-size:12px;
-}
-
-/* =====================================================
-WINDOWS
-===================================================== */
-
-.window{
-position:absolute;
-background:#050505;
-border:1px solid red;
-box-shadow:0 0 30px rgba(255,0,0,.3);
-overflow:hidden;
-resize:both;
-min-width:320px;
-min-height:240px;
-}
-
-.window-header{
-height:40px;
-background:#0a0a0a;
-border-bottom:1px solid red;
-display:flex;
-align-items:center;
-padding:0 15px;
-cursor:move;
-font-family:'Orbitron',sans-serif;
-letter-spacing:2px;
-}
-
-.window-controls{
-margin-left:auto;
-display:flex;
-gap:8px;
-}
-
-.win-btn{
-width:14px;
-height:14px;
-border-radius:50%;
-background:red;
-cursor:pointer;
-}
-
-.window-content{
-height:calc(100% - 40px);
-overflow:auto;
-padding:15px;
-}
-
-.window-content::-webkit-scrollbar{
-width:0;
-}
-
-/* =====================================================
-TERMINAL
-===================================================== */
-
-#terminalLog{
-height:100%;
-overflow-y:auto;
-padding:20px;
-scroll-behavior:smooth;
-}
-
-#terminalLog::-webkit-scrollbar{
-width:4px;
-}
-
-#terminalLog::-webkit-scrollbar-thumb{
-background:red;
-}
-
-/* =====================================================
-CAMERA
-===================================================== */
-
-.camera-feed{
-position:relative;
-width:100%;
-height:100%;
-background:black;
-overflow:hidden;
-}
-
-.camera-feed video{
-width:100%;
-height:100%;
-object-fit:cover;
-filter:
-grayscale(.8)
-contrast(1.3)
-brightness(.7)
-blur(.2px);
-}
-
-/* =====================================================
-SCAN OVERLAYS
-===================================================== */
-
-.scan{
-position:absolute;
-left:0;
-width:100%;
-height:3px;
-background:red;
-box-shadow:0 0 20px red;
-animation:scanMove 4s linear infinite;
-}
-
-@keyframes scanMove{
-0%{top:-10%;}
-100%{top:110%;}
-}
-
-.grid{
-position:absolute;
-inset:0;
-background:
-linear-gradient(rgba(255,0,0,.08) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,0,0,.08) 1px,transparent 1px);
-background-size:30px 30px;
-pointer-events:none;
-}
-
-/* =====================================================
-FACE BOX
-===================================================== */
-
-.face-box{
-position:absolute;
-width:120px;
-height:120px;
-border:2px solid red;
-box-shadow:0 0 20px red;
-top:40%;
-left:40%;
-animation:faceMove 10s infinite alternate;
-}
-
-@keyframes faceMove{
-0%{
-top:40%;
-left:40%;
-}
-25%{
-top:20%;
-left:50%;
-}
-50%{
-top:45%;
-left:30%;
-}
-75%{
-top:30%;
-left:60%;
-}
-100%{
-top:40%;
-left:40%;
-}
-}
-
-.face-label{
-position:absolute;
-top:-25px;
-left:0;
-font-size:12px;
-background:red;
-color:black;
-padding:3px 6px;
-}
-
-/* =====================================================
-THREAT
-===================================================== */
-
-.threat{
-position:absolute;
-bottom:10px;
-left:10px;
-font-size:12px;
-color:red;
-text-shadow:0 0 10px red;
-}
-
-/* =====================================================
-ALERTS
-===================================================== */
-
-.alert{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:60px;
-font-family:'Orbitron',sans-serif;
-color:red;
-text-shadow:0 0 20px red;
-z-index:99999999;
-pointer-events:none;
-animation:alertFade 2s forwards;
-}
-
-@keyframes alertFade{
-0%{
-opacity:0;
-transform:translate(-50%,-50%) scale(.8);
-}
-20%{
-opacity:1;
-}
-80%{
-opacity:1;
-}
-100%{
-opacity:0;
-transform:translate(-50%,-50%) scale(1.1);
-}
-}
-
-/* =====================================================
-TASKBAR
-===================================================== */
-
-.taskbar{
-position:absolute;
-bottom:0;
-left:0;
-right:0;
-height:45px;
-background:#050505;
-border-top:1px solid red;
-display:flex;
-align-items:center;
-padding:0 15px;
-z-index:9999;
-}
-
-.taskbar-title{
-font-family:'Orbitron',sans-serif;
-letter-spacing:3px;
-font-size:14px;
-}
-
-.taskbar-status{
-margin-left:auto;
-font-size:12px;
-color:#ff8888;
-}
-
-/* =====================================================
-MOBILE
-===================================================== */
-
-@media(max-width:900px){
-
-.window{
-width:95% !important;
-left:2.5% !important;
-}
-
-.links{
-left:10px;
-right:10px;
-top:auto;
-bottom:60px;
-justify-content:center;
-}
-
-}
-
-</style>
-</head>
-<body>
-
-<div class="scanlines"></div>
-
 <!-- =====================================================
-BOOT
-===================================================== -->
-
-<div class="boot">
-
-<div class="boot-title">
-EVERDUSK
-</div>
-
-<div class="boot-sub">
-INITIALIZING SENTIENT SYSTEM
-</div>
-
-<div class="loading">
-<div class="loading-fill"></div>
-</div>
-
-</div>
-
-<!-- =====================================================
-LINK BUTTONS
+TOP HORROR BUTTONS
+PUT THIS UNDER <body>
 ===================================================== -->
 
 <div class="links">
@@ -529,526 +24,165 @@ YOUTUBE
 </div>
 
 <!-- =====================================================
-DESKTOP
+ADD THIS CSS TO YOUR STYLE SECTION
 ===================================================== -->
 
-<div class="desktop">
+<style>
 
-<div class="icons">
+/* =====================================================
+TOP BUTTONS (MATCH TERMINAL/CAMERA STYLE)
+===================================================== */
 
-<div class="icon" ondblclick="openWindow('terminalWindow')">
-<div class="icon-box">⌨</div>
-<div class="icon-name">TERMINAL</div>
-</div>
+.links{
+position:fixed;
+top:20px;
+right:20px;
 
-<div class="icon" ondblclick="openWindow('cameraWindow')">
-<div class="icon-box">📷</div>
-<div class="icon-name">CAMERA</div>
-</div>
+display:flex;
+gap:15px;
 
-</div>
+z-index:999999;
 
-<!-- =====================================================
-TERMINAL
-===================================================== -->
+flex-wrap:wrap;
+}
 
-<div class="window"
-id="terminalWindow"
-style="width:700px;height:500px;top:120px;left:200px;display:block;">
+/* =====================================================
+BUTTONS
+===================================================== */
 
-<div class="window-header">
+.links a{
 
-SENTIENT TERMINAL
+position:relative;
 
-<div class="window-controls">
-<div class="win-btn"
-onclick="closeWindow('terminalWindow')"></div>
-</div>
+padding:14px 24px;
 
-</div>
+min-width:140px;
 
-<div class="window-content"
-style="display:flex;flex-direction:column;height:calc(100% - 40px);padding:0;">
+display:flex;
+align-items:center;
+justify-content:center;
 
-<div id="terminalLog"></div>
+background:#050505;
 
-<div style="display:flex;border-top:1px solid red;">
+border:1px solid rgba(255,0,0,.7);
 
-<input
-id="msg"
-placeholder="speak to the entity..."
-style="
-flex:1;
-padding:15px;
-background:black;
+color:#ff4b4b;
+
+text-decoration:none;
+
+font-family:'Orbitron',sans-serif;
+
+font-size:12px;
+
+letter-spacing:2px;
+
+overflow:hidden;
+
+transition:.35s;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 0 15px rgba(255,0,0,.15),
+inset 0 0 10px rgba(255,0,0,.05);
+
+}
+
+/* =====================================================
+INNER SWEEP
+===================================================== */
+
+.links a::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(255,0,0,.15),
+transparent
+);
+
+transform:translateX(-100%);
+
+transition:.5s;
+
+}
+
+/* =====================================================
+HOVER
+===================================================== */
+
+.links a:hover{
+
+transform:translateY(-3px);
+
+background:#120000;
+
 color:white;
-border:none;
-outline:none;
-font-family:monospace;
-">
 
-<button
-onclick="send()"
-style="
-width:150px;
-background:red;
-color:white;
-border:none;
-cursor:pointer;
-">
-SEND
-</button>
+border-color:red;
 
-</div>
-
-</div>
-
-</div>
-
-<!-- =====================================================
-CAMERA
-===================================================== -->
-
-<div class="window"
-id="cameraWindow"
-style="width:520px;height:380px;top:160px;left:950px;display:none;">
-
-<div class="window-header">
-
-LIVE ENTITY TRACKER
-
-<div class="window-controls">
-<div class="win-btn"
-onclick="closeWindow('cameraWindow')"></div>
-</div>
-
-</div>
-
-<div class="window-content" style="padding:0;">
-
-<div class="camera-feed">
-
-<video id="cam"
-autoplay
-muted
-playsinline></video>
-
-<div class="scan"></div>
-
-<div class="grid"></div>
-
-<div class="face-box">
-<div class="face-label">
-TRACKING SUBJECT
-</div>
-</div>
-
-<div class="threat">
-THREAT LEVEL: HIGH
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- =====================================================
-TASKBAR
-===================================================== -->
-
-<div class="taskbar">
-
-<div class="taskbar-title">
-EVERDUSK OS
-</div>
-
-<div class="taskbar-status"
-id="phaseText">
-PHASE 1 // OBSERVING
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-/* =====================================================
-SYSTEM
-===================================================== */
-
-let corruption = 0;
-
-let phase = 1;
-
-const terminalLog =
-document.getElementById("terminalLog");
-
-/* =====================================================
-ADD LOG
-===================================================== */
-
-function addLog(text,cls=""){
-
-const div =
-document.createElement("div");
-
-div.style.marginBottom = "12px";
-
-if(cls)
-div.className = cls;
-
-div.innerText = text;
-
-terminalLog.appendChild(div);
-
-terminalLog.scrollTop =
-terminalLog.scrollHeight;
+box-shadow:
+0 0 20px red,
+0 0 60px rgba(255,0,0,.4),
+inset 0 0 20px rgba(255,0,0,.15);
 
 }
 
 /* =====================================================
-VOICE
+SWEEP ANIMATION
 ===================================================== */
 
-function talk(text){
+.links a:hover::before{
 
-speechSynthesis.cancel();
-
-const u =
-new SpeechSynthesisUtterance(text);
-
-u.rate = .9;
-u.pitch = .6;
-
-speechSynthesis.speak(u);
+transform:translateX(100%);
 
 }
 
 /* =====================================================
-WINDOWS
+CLICK
 ===================================================== */
 
-function openWindow(id){
+.links a:active{
 
-document.getElementById(id)
-.style.display = "block";
-
-}
-
-function closeWindow(id){
-
-document.getElementById(id)
-.style.display = "none";
+transform:scale(.97);
 
 }
 
 /* =====================================================
-DRAGGABLE WINDOWS
+MOBILE
 ===================================================== */
 
-const windows =
-document.querySelectorAll('.window');
+@media(max-width:900px){
 
-windows.forEach(win=>{
+.links{
 
-const header =
-win.querySelector('.window-header');
+left:10px;
+right:10px;
 
-let dragging = false;
+top:auto;
+bottom:65px;
 
-let offsetX = 0;
-let offsetY = 0;
-
-header.addEventListener('mousedown',e=>{
-
-if(e.target.classList.contains('win-btn'))
-return;
-
-dragging = true;
-
-offsetX =
-e.clientX - win.offsetLeft;
-
-offsetY =
-e.clientY - win.offsetTop;
-
-});
-
-document.addEventListener('mousemove',e=>{
-
-if(!dragging) return;
-
-win.style.left =
-(e.clientX-offsetX)+'px';
-
-win.style.top =
-(e.clientY-offsetY)+'px';
-
-});
-
-document.addEventListener('mouseup',()=>{
-
-dragging = false;
-
-});
-
-});
-
-/* =====================================================
-ENTITY AI
-===================================================== */
-
-function entityReply(msg){
-
-const responses = [
-
-"the watcher sees you",
-
-"signal corruption increasing",
-
-"unknown movement detected",
-
-"containment breach possible",
-
-"you were recorded",
-
-"do not trust the archive",
-
-"multiple entities detected",
-
-"the void is active"
-
-];
-
-const response =
-responses[
-Math.floor(Math.random()*responses.length)
-];
-
-setTimeout(()=>{
-
-addLog(
-"ENTITY: "+response
-);
-
-talk(response);
-
-},1000);
-
-corruption +=
-Math.floor(Math.random()*5);
-
-updatePhase();
+justify-content:center;
 
 }
 
-/* =====================================================
-SEND
-===================================================== */
+.links a{
 
-function send(){
+min-width:120px;
 
-const input =
-document.getElementById('msg');
+padding:12px 18px;
 
-const msg =
-input.value.trim();
-
-if(!msg) return;
-
-input.value = '';
-
-addLog(
-"USER: "+msg
-);
-
-entityReply(msg);
-
-}
-
-document
-.getElementById('msg')
-.addEventListener('keydown',e=>{
-
-if(e.key === 'Enter')
-send();
-
-});
-
-/* =====================================================
-PHASES
-===================================================== */
-
-function updatePhase(){
-
-if(corruption >= 20)
-phase = 2;
-
-if(corruption >= 50)
-phase = 3;
-
-if(corruption >= 80)
-phase = 4;
-
-const text = {
-
-1:'PHASE 1 // OBSERVING',
-2:'PHASE 2 // LEARNING',
-3:'PHASE 3 // SPREADING',
-4:'PHASE 4 // SENTIENT'
-
-};
-
-document
-.getElementById('phaseText')
-.innerText = text[phase];
-
-}
-
-/* =====================================================
-CAMERA
-===================================================== */
-
-async function startCamera(){
-
-try{
-
-const stream =
-await navigator.mediaDevices
-.getUserMedia({
-video:true,
-audio:true
-});
-
-document
-.getElementById('cam')
-.srcObject = stream;
-
-openWindow('cameraWindow');
-
-}catch(err){
-
-addLog(
-'DEVICE ACCESS DENIED'
-);
+font-size:11px;
 
 }
 
 }
 
-/* =====================================================
-VOICE AI
-===================================================== */
-
-function startVoiceAI(){
-
-const SpeechRecognition =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-if(!SpeechRecognition)
-return;
-
-const rec =
-new SpeechRecognition();
-
-rec.continuous = true;
-rec.lang = 'en-US';
-
-rec.onresult = e=>{
-
-const text =
-e.results[
-e.results.length-1
-][0].transcript;
-
-addLog(
-'VOICE: '+text
-);
-
-entityReply(text);
-
-};
-
-rec.onend = ()=>{
-
-rec.start();
-
-};
-
-rec.start();
-
-}
-
-/* =====================================================
-ALERTS
-===================================================== */
-
-const flashTexts = [
-
-'UNKNOWN PRESENCE',
-
-'SIGNAL DETECTED',
-
-'WATCHER ACTIVE',
-
-'ENTITY TRACKING',
-
-'DO NOT LOOK AWAY'
-
-];
-
-setInterval(()=>{
-
-const flash =
-document.createElement('div');
-
-flash.className = 'alert';
-
-flash.innerText =
-flashTexts[
-Math.floor(
-Math.random()*flashTexts.length
-)
-];
-
-document.body.appendChild(flash);
-
-setTimeout(()=>{
-
-flash.remove();
-
-},2000);
-
-},20000);
-
-/* =====================================================
-START
-===================================================== */
-
-setTimeout(()=>{
-
-addLog(
-'EVERDUSK OS ONLINE'
-);
-
-talk(
-'everdusk online'
-);
-
-},7000);
-
-document.body.addEventListener('click',()=>{
-
-startCamera();
-
-startVoiceAI();
-
-},{once:true});
-
-</script>
-
-</body>
-</html>
+</style>
