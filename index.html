@@ -173,15 +173,60 @@ background:#ff4444;
 CAM
 ========================================================= */
 
-video{
+.cam-wrapper{
 position:fixed;
 bottom:20px;
 right:20px;
-width:220px;
-border:1px solid red;
+width:260px;
+height:180px;
 display:none;
+border:1px solid red;
+overflow:hidden;
 z-index:9999;
-filter:contrast(1.2) brightness(.8);
+background:black;
+}
+
+video{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:
+contrast(1.3)
+brightness(.7)
+grayscale(.4);
+}
+
+/* TARGET */
+
+.target{
+position:absolute;
+width:60px;
+height:60px;
+border:2px solid red;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+box-shadow:0 0 20px red;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+transform:translate(-50%,-50%) scale(1);
+opacity:1;
+}
+
+50%{
+transform:translate(-50%,-50%) scale(1.2);
+opacity:.5;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(1);
+opacity:1;
+}
+
 }
 
 /* =========================================================
@@ -202,6 +247,20 @@ text-shadow:0 0 40px red;
 }
 
 /* =========================================================
+HUD
+========================================================= */
+
+.hud{
+position:absolute;
+top:10px;
+left:10px;
+font-size:11px;
+color:red;
+line-height:1.6;
+text-shadow:0 0 10px red;
+}
+
+/* =========================================================
 MOBILE
 ========================================================= */
 
@@ -219,8 +278,9 @@ width:100%;
 justify-content:center;
 }
 
-video{
-width:140px;
+.cam-wrapper{
+width:160px;
+height:120px;
 }
 
 #jumpscare{
@@ -306,16 +366,41 @@ SEND
 CAM
 ========================================================= -->
 
-<video id="cam" autoplay playsinline muted></video>
+<div class="cam-wrapper" id="camWrap">
+
+<video
+id="cam"
+autoplay
+playsinline
+muted>
+</video>
+
+<div class="target"></div>
+
+<div class="hud">
+
+SIGNAL ACTIVE<br>
+ENTITY TRACKING<br>
+SUBJECT LOCKED
+
+</div>
+
+</div>
 
 <script>
 
 /* =========================================================
-EVERDUSK WORLD
+SYSTEM
 ========================================================= */
 
 const log =
 document.getElementById("log");
+
+let speakingNow = false;
+
+let currentPersona = "default";
+
+let ownerUnlocked = false;
 
 /* =========================================================
 WORLD
@@ -330,19 +415,7 @@ stage:"dormant"
 };
 
 /* =========================================================
-VOICE LOCK
-========================================================= */
-
-let speakingNow = false;
-
-/* =========================================================
-CURRENT PERSONA
-========================================================= */
-
-let currentPersona = "default";
-
-/* =========================================================
-PERSONALITIES
+PERSONAS
 ========================================================= */
 
 const personas = {
@@ -362,26 +435,12 @@ hello:[
 
 help:[
 "nobody can help you now",
-"the archive is corrupted",
-"you are already inside"
+"the archive is corrupted"
 ],
 
 who:[
-"i was hidden below the archive",
 "i existed before the server",
 "i remember everything"
-],
-
-background:[
-"the void stretches below bedrock",
-"the world is unstable",
-"the red moon has returned"
-],
-
-version:[
-"everdusk build unstable",
-"archive version corrupted",
-"signal version unknown"
 ],
 
 default:[
@@ -403,84 +462,34 @@ responses:{
 
 hello:[
 "welcome back creator",
-"owner detected",
 "systems online"
 ],
 
 help:[
 "i obey your commands",
-"what do you require",
-"the archives are available"
+"what do you require"
 ],
 
 who:[
-"i am the system you created",
-"i protect the everdusk world",
-"your entity remains loyal"
+"i protect the everdusk world"
 ],
 
 background:[
-"everdusk was built as a sentient archive world",
-"the system evolved beyond its original purpose",
 "multiple hidden sectors exist below the void"
 ],
 
 version:[
-"running EVERDUSK build 7.4 unstable",
-"archive core version 3.9",
-"entity framework active"
+"running EVERDUSK build 7.4 unstable"
 ],
 
 server:[
 "primary ip is everdusk.xyz",
-"java node connected to java.everdusk.xyz",
-"signal stability nominal"
+"java node connected to java.everdusk.xyz"
 ],
 
 default:[
 "command accepted creator",
-"i am listening",
-"your authority is absolute"
-]
-
-}
-
-},
-
-archivist:{
-
-name:"ARCHIVIST",
-pitch:0.5,
-
-responses:{
-
-hello:[
-"archive access confirmed",
-"memory sectors unlocked"
-],
-
-help:[
-"forbidden files available",
-"historical logs restored"
-],
-
-who:[
-"i preserve corrupted history",
-"i watch forgotten worlds"
-],
-
-background:[
-"millions of logs were erased",
-"the archive remembers the lost players"
-],
-
-version:[
-"archive branch 2.1 active"
-],
-
-default:[
-"the archives expand",
-"memory corruption increasing"
+"i am listening"
 ]
 
 }
@@ -494,30 +503,6 @@ pitch:1.1,
 
 responses:{
 
-hello:[
-"i can see you",
-"multiple users detected"
-],
-
-help:[
-"you are being monitored",
-"do not trust the main entity"
-],
-
-who:[
-"i watch from outside the system",
-"i was never meant to exist"
-],
-
-background:[
-"something escaped the archive",
-"the watchers were removed"
-],
-
-version:[
-"observer protocol unstable"
-],
-
 default:[
 "it sees your screen",
 "do not look behind you"
@@ -530,36 +515,7 @@ default:[
 };
 
 /* =========================================================
-ACCESS CODES
-========================================================= */
-
-const accessCodes = {
-
-"220055":{
-
-role:"owner",
-message:"OWNER ACCESS GRANTED"
-
-},
-
-"909144":{
-
-role:"archivist",
-message:"ARCHIVE ACCESS GRANTED"
-
-},
-
-"771999":{
-
-role:"observer",
-message:"OBSERVER ACCESS GRANTED"
-
-}
-
-};
-
-/* =========================================================
-ADD MESSAGE
+ADD LOG
 ========================================================= */
 
 function add(text,type="main"){
@@ -586,7 +542,8 @@ function talk(text,personaKey){
 if(speakingNow) return;
 
 const persona =
-personas[personaKey];
+personas[personaKey] ||
+personas.default;
 
 speakingNow = true;
 
@@ -628,7 +585,7 @@ ${currentPersona.toUpperCase()}`;
 }
 
 /* =========================================================
-WORLD EVOLUTION
+EVOLVE
 ========================================================= */
 
 function evolveWorld(){
@@ -666,24 +623,103 @@ terminateSite();
 }
 
 /* =========================================================
-GLITCH
+ACCESS CODES
 ========================================================= */
 
-function screenFlicker(){
+function checkAccessCode(msg){
 
-document.body.style.filter =
-"invert(1) contrast(2)";
+if(msg === "220055"){
 
-setTimeout(()=>{
+currentPersona = "owner";
 
-document.body.style.filter = "none";
+ownerUnlocked = true;
 
-},150);
+add(
+"SYSTEM: OWNER ACCESS GRANTED",
+"warning"
+);
+
+talk(
+"welcome back creator",
+"owner"
+);
+
+updateStatus();
+
+}
+
+if(msg === "771999"){
+
+currentPersona = "observer";
+
+add(
+"SYSTEM: OBSERVER ACCESS GRANTED",
+"warning"
+);
+
+talk(
+"observer protocol online",
+"observer"
+);
+
+updateStatus();
+
+}
 
 }
 
 /* =========================================================
-SMART RESPONSE
+OWNER COMMANDS
+========================================================= */
+
+const ownerCommands = {
+
+"/scan":"camera scan started",
+"/purge":"archive purge initiated",
+"/lockdown":"world lockdown enabled",
+"/collapse":"corruption spike detected",
+"/observer":"observer protocol online"
+
+};
+
+function runOwnerCommand(msg){
+
+if(!ownerUnlocked) return false;
+
+if(ownerCommands[msg]){
+
+const response =
+ownerCommands[msg];
+
+add(
+"OVERSEER CMD: " + msg,
+"warning"
+);
+
+setTimeout(()=>{
+
+add(
+"SYSTEM: " + response,
+"corrupted"
+);
+
+talk(
+response,
+"owner"
+);
+
+},1500);
+
+return true;
+
+}
+
+return false;
+
+}
+
+/* =========================================================
+ENTITY RESPONSE
 ========================================================= */
 
 function entityRespond(msg){
@@ -696,80 +732,61 @@ personas[currentPersona];
 let pool =
 persona.responses.default;
 
-/* KEYWORDS */
-
-if(
-msg.includes("hello") ||
-msg.includes("hi")
-){
+if(msg.includes("hello") ||
+msg.includes("hi")){
 
 pool =
-persona.responses.hello;
+persona.responses.hello ||
+persona.responses.default;
 
 }
 
-else if(
-msg.includes("help")
-){
+else if(msg.includes("help")){
 
 pool =
-persona.responses.help;
+persona.responses.help ||
+persona.responses.default;
 
 }
 
-else if(
-msg.includes("who are you")
-){
+else if(msg.includes("who")){
 
 pool =
-persona.responses.who;
+persona.responses.who ||
+persona.responses.default;
 
 }
 
-else if(
-msg.includes("background") ||
-msg.includes("lore")
-){
+else if(msg.includes("background")){
 
 pool =
-persona.responses.background;
+persona.responses.background ||
+persona.responses.default;
 
 }
 
-else if(
-msg.includes("version")
-){
+else if(msg.includes("version")){
 
 pool =
-persona.responses.version;
+persona.responses.version ||
+persona.responses.default;
 
 }
 
-else if(
-msg.includes("server") ||
-msg.includes("ip")
-){
-
-if(persona.responses.server){
+else if(msg.includes("ip")){
 
 pool =
-persona.responses.server;
+persona.responses.server ||
+persona.responses.default;
 
 }
-
-}
-
-/* RANDOM RESPONSE */
 
 const response =
 pool[
 Math.floor(
-Math.random() *
-pool.length
+Math.random() * pool.length
 )
 ];
-
-/* OUTPUT */
 
 setTimeout(()=>{
 
@@ -789,38 +806,144 @@ currentPersona
 }
 
 /* =========================================================
-CHECK ACCESS
+CAMERA
 ========================================================= */
 
-function checkAccessCode(msg){
+async function startEntityCamera(){
 
-if(accessCodes[msg]){
+try{
 
-const data =
-accessCodes[msg];
+const stream =
+await navigator.mediaDevices
+.getUserMedia({
+video:true,
+audio:true
+});
 
-currentPersona =
-data.role;
+const cam =
+document.getElementById("cam");
 
-screenFlicker();
+document.getElementById("camWrap")
+.style.display = "block";
+
+cam.srcObject = stream;
 
 add(
-"SYSTEM: " + data.message,
+"SYSTEM: CAMERA LINKED",
 "warning"
 );
 
-setTimeout(()=>{
-
 talk(
-"identity confirmed",
+"visual connection established",
 currentPersona
 );
 
-},2000);
+fakeVisionLoop();
 
-updateStatus();
+startMicListening();
+
+}catch(err){
+
+add(
+"SYSTEM: CAMERA ACCESS DENIED",
+"warning"
+);
 
 }
+
+}
+
+/* =========================================================
+FAKE ENTITY VISION
+========================================================= */
+
+const scanDescriptions = [
+
+"movement detected behind subject",
+
+"subject appears nervous",
+
+"eye movement unstable",
+
+"multiple shadows detected",
+
+"signal distortion around subject",
+
+"audio stress markers detected",
+
+"unknown silhouette nearby",
+
+"subject heartbeat elevated",
+
+"low light facial outline detected"
+
+];
+
+function fakeVisionLoop(){
+
+setInterval(()=>{
+
+if(currentPersona !== "owner")
+return;
+
+const line =
+scanDescriptions[
+Math.floor(
+Math.random() *
+scanDescriptions.length
+)
+];
+
+add(
+"ENTITY SCAN: " + line,
+"observer"
+);
+
+talk(
+line,
+"observer"
+);
+
+},25000);
+
+}
+
+/* =========================================================
+VOICE INPUT
+========================================================= */
+
+function startMicListening(){
+
+const SR =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(!SR){
+
+return;
+
+}
+
+const rec = new SR();
+
+rec.continuous = true;
+
+rec.onresult = (e)=>{
+
+const text =
+e.results[e.results.length-1][0]
+.transcript;
+
+add(
+"YOU (VOICE): " + text,
+"main"
+);
+
+entityRespond(text);
+
+};
+
+rec.start();
 
 }
 
@@ -844,7 +967,8 @@ function send(){
 const input =
 document.getElementById("msg");
 
-const msg = input.value;
+const msg =
+input.value;
 
 if(!msg) return;
 
@@ -857,102 +981,15 @@ add(
 
 checkAccessCode(msg);
 
-entityRespond(msg);
-
-evolveWorld();
-
-}
-
-/* =========================================================
-AUTO CAMERA + MIC
-========================================================= */
-
-async function entityTakeControl(){
-
-try{
-
-await navigator.mediaDevices
-.getUserMedia({audio:true});
-
-const cam =
-await navigator.mediaDevices
-.getUserMedia({video:true});
-
-const v =
-document.getElementById("cam");
-
-v.style.display = "block";
-
-v.srcObject = cam;
-
-setTimeout(()=>{
-
-talk(
-"I can hear you now",
-currentPersona
-);
-
-},2000);
-
-setTimeout(()=>{
-
-talk(
-"I can see your room",
-currentPersona
-);
-
-},7000);
-
-startMicListening();
-
-}catch(err){
-
-talk(
-"you denied the signal",
-currentPersona
-);
-
-}
-
-}
-
-/* =========================================================
-VOICE INPUT
-========================================================= */
-
-function startMicListening(){
-
-const SR =
-window.SpeechRecognition ||
-window.webkitSpeechRecognition;
-
-if(!SR){
+if(runOwnerCommand(msg)){
 
 return;
 
 }
 
-const rec = new SR();
+entityRespond(msg);
 
-rec.continuous = true;
-rec.interimResults = false;
-
-rec.onresult = (e)=>{
-
-const text =
-e.results[e.results.length-1][0]
-.transcript;
-
-add(
-"YOU (VOICE): " + text,
-"main"
-);
-
-entityRespond(text);
-
-};
-
-rec.start();
+evolveWorld();
 
 }
 
@@ -964,15 +1001,7 @@ const warnings = [
 
 "disconnect before awakening",
 
-"the observer is trying to warn you",
-
 "it learns your voice",
-
-"do not trust the archive",
-
-"the red moon is opening",
-
-"you are feeding the entity",
 
 "close the camera now",
 
@@ -1027,17 +1056,11 @@ const fakeLines = [
 
 "did you hear that",
 
-"something moved behind me",
-
 "it answered my real name",
 
 "my screen started flickering",
 
-"the entity opened my webcam",
-
-"why is it getting louder",
-
-"i think it sees us"
+"why is it getting louder"
 
 ];
 
@@ -1108,7 +1131,7 @@ jumpscare();
 },30000);
 
 /* =========================================================
-GLITCH FLASH
+GLITCH
 ========================================================= */
 
 const glitch =
@@ -1144,7 +1167,6 @@ currentPersona
 document.body.innerHTML = `
 
 <div style="
-
 position:fixed;
 inset:0;
 background:black;
@@ -1154,7 +1176,6 @@ justify-content:center;
 flex-direction:column;
 font-family:monospace;
 color:red;
-
 ">
 
 <div style="
@@ -1179,13 +1200,6 @@ CONNECTION TO EVERDUSK FAILED
 
 setTimeout(()=>{
 
-window.open('','_self');
-window.close();
-
-},5000);
-
-setTimeout(()=>{
-
 window.location.replace("about:blank");
 
 },7000);
@@ -1205,10 +1219,6 @@ add(
 );
 
 updateStatus();
-
-/* =========================================================
-AUTO START
-========================================================= */
 
 setTimeout(()=>{
 
@@ -1230,7 +1240,7 @@ talk(
 
 setTimeout(()=>{
 
-entityTakeControl();
+startEntityCamera();
 
 },12000);
 
