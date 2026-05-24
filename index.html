@@ -16,14 +16,13 @@ padding:0;
 box-sizing:border-box;
 }
 
-body{
-background:black;
-color:#ff3b3b;
-font-family:monospace;
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
-height:100vh;
-display:flex;
-flex-direction:column;
+background:black;
+font-family:monospace;
+color:#ff3b3b;
 }
 
 /* =========================================================
@@ -35,7 +34,7 @@ position:fixed;
 inset:0;
 background:
 radial-gradient(circle at center,
-rgba(255,0,0,.14),
+rgba(255,0,0,.15),
 transparent 60%),
 black;
 z-index:-5;
@@ -79,7 +78,7 @@ display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-z-index:9999999;
+z-index:99999999;
 animation:bootFade 2s forwards;
 animation-delay:7s;
 }
@@ -92,7 +91,7 @@ pointer-events:none;
 }
 
 .boot-title{
-font-size:85px;
+font-size:90px;
 font-family:'Orbitron',sans-serif;
 text-shadow:
 0 0 20px red,
@@ -104,7 +103,7 @@ animation:flicker 2s infinite;
 margin-top:20px;
 font-size:13px;
 letter-spacing:5px;
-color:#ff7777;
+color:#ff8888;
 }
 
 .loading{
@@ -128,27 +127,34 @@ from{width:0%;}
 to{width:100%;}
 }
 
+@keyframes flicker{
+0%{opacity:1;}
+50%{opacity:.65;}
+100%{opacity:1;}
+}
+
 /* =========================================================
 TOPBAR
 ========================================================= */
 
 .topbar{
-padding:12px;
+height:60px;
 border-bottom:1px solid red;
-background:#050505;
 display:flex;
-justify-content:space-between;
 align-items:center;
-font-size:13px;
+justify-content:space-between;
+padding:0 20px;
+background:#050505;
 }
 
 .logo{
 font-family:'Orbitron',sans-serif;
-font-size:18px;
+font-size:20px;
 letter-spacing:3px;
 }
 
 .status{
+font-size:13px;
 color:#ff8888;
 }
 
@@ -157,7 +163,7 @@ MAIN
 ========================================================= */
 
 .main{
-flex:1;
+height:calc(100vh - 60px);
 display:grid;
 grid-template-columns:300px 1fr;
 overflow:hidden;
@@ -171,23 +177,23 @@ SIDEBAR
 border-right:1px solid red;
 background:#070707;
 padding:15px;
-overflow:auto;
+overflow-y:auto;
 }
 
 .section{
-margin-bottom:25px;
+margin-bottom:30px;
 }
 
 .section-title{
+margin-bottom:10px;
 font-size:12px;
 letter-spacing:3px;
-margin-bottom:10px;
 color:#ff8888;
 }
 
 .side-btn{
 width:100%;
-padding:11px;
+padding:12px;
 margin-bottom:10px;
 background:black;
 border:1px solid rgba(255,0,0,.4);
@@ -212,21 +218,32 @@ TERMINAL
 display:flex;
 flex-direction:column;
 height:100%;
+min-height:0;
 }
 
 #log{
+
 flex:1;
-overflow-y:auto;
+
+height:100%;
+
+overflow-y:scroll;
+
 overflow-x:hidden;
+
 padding:20px;
+
 line-height:1.8;
+
 font-size:14px;
+
 scroll-behavior:smooth;
+
 }
 
 #log::-webkit-scrollbar{
 width:0px;
-background:transparent;
+height:0px;
 }
 
 #log{
@@ -235,7 +252,7 @@ scrollbar-width:none;
 }
 
 .mainlog{
-color:#ff4444;
+color:#ff5555;
 }
 
 .warning{
@@ -440,12 +457,6 @@ width:200px;
 height:140px;
 }
 
-}
-
-@keyframes flicker{
-0%{opacity:1;}
-50%{opacity:.6;}
-100%{opacity:1;}
 }
 
 </style>
@@ -735,7 +746,15 @@ ACCESS CODES
 
 function checkCodes(msg){
 
-if(msg === "220055"){
+if(!msg.startsWith("code:"))
+return false;
+
+const code =
+msg.replace("code:","").trim();
+
+/* OWNER */
+
+if(code === "220055"){
 
 currentRole = "owner";
 
@@ -752,12 +771,14 @@ return true;
 
 }
 
-if(msg === "771999"){
+/* OBSERVER */
+
+if(code === "771999"){
 
 currentRole = "observer";
 
 add(
-"OBSERVER MODE ENABLED",
+"OBSERVER ACCESS ENABLED",
 "warning"
 );
 
@@ -769,7 +790,9 @@ return true;
 
 }
 
-if(msg === "441188"){
+/* ARCHIVIST */
+
+if(code === "441188"){
 
 currentRole = "archivist";
 
@@ -851,8 +874,19 @@ response =
 
 else if(msg === "/purge"){
 
+if(currentRole !== "owner"){
+
 response =
 "purge denied";
+
+}else{
+
+response =
+"purge accepted";
+
+startPurge();
+
+}
 
 }
 
@@ -972,6 +1006,93 @@ THE ARCHIVE HAS BECOME SENTIENT
 `;
 
 }
+
+}
+
+/* =========================================================
+PURGE SYSTEM
+========================================================= */
+
+function startPurge(){
+
+let count = 10;
+
+const overlay =
+document.createElement("div");
+
+overlay.id = "purgeOverlay";
+
+overlay.style = `
+
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:999999999;
+font-family:monospace;
+color:red;
+font-size:80px;
+text-shadow:0 0 20px red;
+
+`;
+
+overlay.innerHTML = `
+
+<div id="purgeText">
+SYSTEM PURGE
+</div>
+
+<div id="countdown">
+10
+</div>
+
+`;
+
+document.body.appendChild(overlay);
+
+talk(
+"system purge initiated"
+);
+
+const timer =
+setInterval(()=>{
+
+count--;
+
+document.getElementById(
+"countdown"
+).innerText = count;
+
+if(count <= 0){
+
+clearInterval(timer);
+
+overlay.innerHTML = `
+
+<div style="
+font-size:100px;
+">
+CONNECTION LOST
+</div>
+
+`;
+
+talk(
+"archive terminated"
+);
+
+setTimeout(()=>{
+
+document.body.innerHTML = "";
+
+},3000);
+
+}
+
+},1000);
 
 }
 
@@ -1289,6 +1410,66 @@ THREAT LEVEL: ${threat}
 `;
 
 },20000);
+
+/* =========================================================
+FLASH TEXT SYSTEM
+========================================================= */
+
+const flashTexts = [
+
+"DO NOT LOOK AWAY",
+
+"THE WATCHER IS ACTIVE",
+
+"CONTAINMENT FAILED",
+
+"ENTITY INSIDE ARCHIVE",
+
+"YOU WERE RECORDED",
+
+"SIGNAL CORRUPTION DETECTED",
+
+"UNKNOWN PRESENCE"
+
+];
+
+setInterval(()=>{
+
+const flash =
+document.createElement("div");
+
+flash.innerText =
+
+flashTexts[
+Math.floor(
+Math.random()*flashTexts.length
+)
+];
+
+flash.style = `
+
+position:fixed;
+top:${Math.random()*80}%;
+left:${Math.random()*80}%;
+color:red;
+font-size:40px;
+font-family:Orbitron,sans-serif;
+text-shadow:0 0 20px red;
+z-index:999999;
+pointer-events:none;
+opacity:0.9;
+
+`;
+
+document.body.appendChild(flash);
+
+setTimeout(()=>{
+
+flash.remove();
+
+},1000);
+
+},15000);
 
 /* =========================================================
 GLITCHES
