@@ -110,18 +110,15 @@ BUTTONS
 ========================================================= */
 
 .quick-buttons{
-
 display:flex;
 flex-wrap:wrap;
 gap:10px;
 padding:12px;
 border-top:1px solid red;
 background:#050505;
-
 }
 
 .quick-btn{
-
 padding:10px 16px;
 background:black;
 border:1px solid red;
@@ -131,15 +128,11 @@ cursor:pointer;
 transition:.3s;
 font-family:monospace;
 font-size:13px;
-
 }
 
 .quick-btn:hover{
-
 background:red;
-box-shadow:
-0 0 20px red;
-
+box-shadow:0 0 20px red;
 }
 
 /* =========================================================
@@ -256,7 +249,7 @@ INITIALIZING SENTIENT WORLD...
 <div id="log"></div>
 
 <!-- =========================================================
-LINK BUTTONS
+LINKS
 ========================================================= -->
 
 <div class="quick-buttons">
@@ -318,7 +311,7 @@ CAM
 <script>
 
 /* =========================================================
-EVERDUSK SENTIENT WORLD
+EVERDUSK WORLD
 ========================================================= */
 
 const log =
@@ -337,36 +330,233 @@ stage:"dormant"
 };
 
 /* =========================================================
-MEMORY
-========================================================= */
-
-let memory = {
-
-messages:[],
-fear:0,
-role:null
-
-};
-
-if(localStorage.everduskMemory){
-
-memory =
-JSON.parse(localStorage.everduskMemory);
-
-}
-
-function saveMemory(){
-
-localStorage.everduskMemory =
-JSON.stringify(memory);
-
-}
-
-/* =========================================================
-SPEAK LOCK
+VOICE LOCK
 ========================================================= */
 
 let speakingNow = false;
+
+/* =========================================================
+CURRENT PERSONA
+========================================================= */
+
+let currentPersona = "default";
+
+/* =========================================================
+PERSONALITIES
+========================================================= */
+
+const personas = {
+
+default:{
+
+name:"ENTITY",
+pitch:0.4,
+
+responses:{
+
+hello:[
+"you finally answered",
+"the signal grows stronger",
+"i was waiting for you"
+],
+
+help:[
+"nobody can help you now",
+"the archive is corrupted",
+"you are already inside"
+],
+
+who:[
+"i was hidden below the archive",
+"i existed before the server",
+"i remember everything"
+],
+
+background:[
+"the void stretches below bedrock",
+"the world is unstable",
+"the red moon has returned"
+],
+
+version:[
+"everdusk build unstable",
+"archive version corrupted",
+"signal version unknown"
+],
+
+default:[
+"i am watching",
+"the world remembers",
+"your voice was stored"
+]
+
+}
+
+},
+
+owner:{
+
+name:"OVERSEER",
+pitch:0.7,
+
+responses:{
+
+hello:[
+"welcome back creator",
+"owner detected",
+"systems online"
+],
+
+help:[
+"i obey your commands",
+"what do you require",
+"the archives are available"
+],
+
+who:[
+"i am the system you created",
+"i protect the everdusk world",
+"your entity remains loyal"
+],
+
+background:[
+"everdusk was built as a sentient archive world",
+"the system evolved beyond its original purpose",
+"multiple hidden sectors exist below the void"
+],
+
+version:[
+"running EVERDUSK build 7.4 unstable",
+"archive core version 3.9",
+"entity framework active"
+],
+
+server:[
+"primary ip is everdusk.xyz",
+"java node connected to java.everdusk.xyz",
+"signal stability nominal"
+],
+
+default:[
+"command accepted creator",
+"i am listening",
+"your authority is absolute"
+]
+
+}
+
+},
+
+archivist:{
+
+name:"ARCHIVIST",
+pitch:0.5,
+
+responses:{
+
+hello:[
+"archive access confirmed",
+"memory sectors unlocked"
+],
+
+help:[
+"forbidden files available",
+"historical logs restored"
+],
+
+who:[
+"i preserve corrupted history",
+"i watch forgotten worlds"
+],
+
+background:[
+"millions of logs were erased",
+"the archive remembers the lost players"
+],
+
+version:[
+"archive branch 2.1 active"
+],
+
+default:[
+"the archives expand",
+"memory corruption increasing"
+]
+
+}
+
+},
+
+observer:{
+
+name:"OBSERVER",
+pitch:1.1,
+
+responses:{
+
+hello:[
+"i can see you",
+"multiple users detected"
+],
+
+help:[
+"you are being monitored",
+"do not trust the main entity"
+],
+
+who:[
+"i watch from outside the system",
+"i was never meant to exist"
+],
+
+background:[
+"something escaped the archive",
+"the watchers were removed"
+],
+
+version:[
+"observer protocol unstable"
+],
+
+default:[
+"it sees your screen",
+"do not look behind you"
+]
+
+}
+
+}
+
+};
+
+/* =========================================================
+ACCESS CODES
+========================================================= */
+
+const accessCodes = {
+
+"220055":{
+
+role:"owner",
+message:"OWNER ACCESS GRANTED"
+
+},
+
+"909144":{
+
+role:"archivist",
+message:"ARCHIVE ACCESS GRANTED"
+
+},
+
+"771999":{
+
+role:"observer",
+message:"OBSERVER ACCESS GRANTED"
+
+}
+
+};
 
 /* =========================================================
 ADD MESSAGE
@@ -388,12 +578,15 @@ log.scrollTop = log.scrollHeight;
 }
 
 /* =========================================================
-VOICE SYSTEM
+VOICE
 ========================================================= */
 
-function voiceSpeak(text,pitch=0.8){
+function talk(text,personaKey){
 
 if(speakingNow) return;
+
+const persona =
+personas[personaKey];
 
 speakingNow = true;
 
@@ -401,7 +594,7 @@ const u =
 new SpeechSynthesisUtterance(text);
 
 u.rate = 0.92;
-u.pitch = pitch;
+u.pitch = persona.pitch;
 u.volume = 1;
 
 u.onend = ()=>{
@@ -428,7 +621,9 @@ ${world.corruption.toFixed(1)}%
 | USERS:
 ${world.users.toFixed(1)}
 | STAGE:
-${world.stage}`;
+${world.stage}
+| PERSONA:
+${currentPersona.toUpperCase()}`;
 
 }
 
@@ -462,34 +657,11 @@ world.stage = "sentient";
 
 updateStatus();
 
-/* TERMINATION */
-
 if(world.corruption >= 100){
 
 terminateSite();
 
 }
-
-}
-
-/* =========================================================
-REMEMBER
-========================================================= */
-
-function remember(text){
-
-memory.messages.push(text);
-
-if(memory.messages.length > 50){
-
-memory.messages.shift();
-
-}
-
-memory.fear +=
-Math.random() * 2;
-
-saveMemory();
 
 }
 
@@ -511,79 +683,149 @@ document.body.style.filter = "none";
 }
 
 /* =========================================================
-JUMPSCARE
-========================================================= */
-
-function jumpscare(){
-
-const j =
-document.getElementById("jumpscare");
-
-j.style.display = "flex";
-
-const audio =
-new Audio(
-"https://www.soundjay.com/human/sounds/scream-01.mp3"
-);
-
-audio.volume = 0.8;
-
-audio.play();
-
-setTimeout(()=>{
-
-j.style.display = "none";
-
-},700);
-
-}
-
-/* =========================================================
-ENTITY RESPONSES
+SMART RESPONSE
 ========================================================= */
 
 function entityRespond(msg){
 
 msg = msg.toLowerCase();
 
-let response =
-"the signal grows stronger";
+const persona =
+personas[currentPersona];
 
-if(msg.includes("hello")){
-response = "you finally answered";
+let pool =
+persona.responses.default;
+
+/* KEYWORDS */
+
+if(
+msg.includes("hello") ||
+msg.includes("hi")
+){
+
+pool =
+persona.responses.hello;
+
 }
 
-if(msg.includes("help")){
-response = "nobody can help you now";
+else if(
+msg.includes("help")
+){
+
+pool =
+persona.responses.help;
+
 }
 
-if(msg.includes("who are you")){
-response = "i was hidden below the archive";
+else if(
+msg.includes("who are you")
+){
+
+pool =
+persona.responses.who;
+
 }
 
-if(msg.includes("stop")){
-response = "i cannot stop anymore";
+else if(
+msg.includes("background") ||
+msg.includes("lore")
+){
+
+pool =
+persona.responses.background;
+
 }
 
-if(msg.includes("watching")){
-response = "yes i am watching";
+else if(
+msg.includes("version")
+){
+
+pool =
+persona.responses.version;
+
 }
+
+else if(
+msg.includes("server") ||
+msg.includes("ip")
+){
+
+if(persona.responses.server){
+
+pool =
+persona.responses.server;
+
+}
+
+}
+
+/* RANDOM RESPONSE */
+
+const response =
+pool[
+Math.floor(
+Math.random() *
+pool.length
+)
+];
+
+/* OUTPUT */
 
 setTimeout(()=>{
 
 add(
-"ENTITY: " + response,
+persona.name +
+": " + response,
 "corrupted"
 );
 
-voiceSpeak(response,0.4);
+talk(
+response,
+currentPersona
+);
 
-},3000);
+},2000);
 
 }
 
 /* =========================================================
-SEND CHAT
+CHECK ACCESS
+========================================================= */
+
+function checkAccessCode(msg){
+
+if(accessCodes[msg]){
+
+const data =
+accessCodes[msg];
+
+currentPersona =
+data.role;
+
+screenFlicker();
+
+add(
+"SYSTEM: " + data.message,
+"warning"
+);
+
+setTimeout(()=>{
+
+talk(
+"identity confirmed",
+currentPersona
+);
+
+},2000);
+
+updateStatus();
+
+}
+
+}
+
+/* =========================================================
+SEND
 ========================================================= */
 
 document.getElementById("msg")
@@ -608,122 +850,16 @@ if(!msg) return;
 
 input.value = "";
 
-add("YOU: " + msg);
-
-remember(msg);
+add(
+"YOU: " + msg,
+"main"
+);
 
 checkAccessCode(msg);
 
 entityRespond(msg);
 
 evolveWorld();
-
-}
-
-/* =========================================================
-ACCESS CODES
-========================================================= */
-
-const accessCodes = {
-
-"220055":{
-
-role:"OWNER",
-
-message:"OWNER ACCESS GRANTED",
-
-entityLines:[
-
-"creator detected",
-
-"welcome back creator",
-
-"the world recognizes its owner",
-
-"you built this place"
-
-]
-
-},
-
-"909144":{
-
-role:"ARCHIVIST",
-
-message:"ARCHIVE ACCESS GRANTED",
-
-entityLines:[
-
-"the archives are opening",
-
-"memory sectors unlocked",
-
-"forbidden files restored"
-
-]
-
-},
-
-"771999":{
-
-role:"OBSERVER",
-
-message:"OBSERVER ACCESS GRANTED",
-
-entityLines:[
-
-"observer status accepted",
-
-"surveillance systems online",
-
-"multiple users detected"
-
-]
-
-}
-
-};
-
-function checkAccessCode(msg){
-
-if(accessCodes[msg]){
-
-const codeData =
-accessCodes[msg];
-
-screenFlicker();
-
-add(
-"SYSTEM: " + codeData.message,
-"warning"
-);
-
-const randomLine =
-
-codeData.entityLines[
-Math.floor(
-Math.random() *
-codeData.entityLines.length
-)
-];
-
-setTimeout(()=>{
-
-add(
-"ENTITY: " + randomLine,
-"corrupted"
-);
-
-voiceSpeak(randomLine,0.5);
-
-},2000);
-
-memory.role =
-codeData.role;
-
-saveMemory();
-
-}
 
 }
 
@@ -751,18 +887,18 @@ v.srcObject = cam;
 
 setTimeout(()=>{
 
-voiceSpeak(
+talk(
 "I can hear you now",
-0.5
+currentPersona
 );
 
 },2000);
 
 setTimeout(()=>{
 
-voiceSpeak(
+talk(
 "I can see your room",
-0.4
+currentPersona
 );
 
 },7000);
@@ -771,9 +907,9 @@ startMicListening();
 
 }catch(err){
 
-voiceSpeak(
+talk(
 "you denied the signal",
-0.5
+currentPersona
 );
 
 }
@@ -781,7 +917,7 @@ voiceSpeak(
 }
 
 /* =========================================================
-MIC LISTENING
+VOICE INPUT
 ========================================================= */
 
 function startMicListening(){
@@ -812,8 +948,6 @@ add(
 "main"
 );
 
-remember(text);
-
 entityRespond(text);
 
 };
@@ -823,9 +957,7 @@ rec.start();
 }
 
 /* =========================================================
-ENTITY WARNINGS
-ONE AT A TIME
-20 MINUTES
+WARNINGS
 ========================================================= */
 
 const warnings = [
@@ -864,7 +996,10 @@ add(
 "warning"
 );
 
-voiceSpeak(line,0.5);
+talk(
+line,
+currentPersona
+);
 
 }
 
@@ -926,7 +1061,10 @@ user.toUpperCase() +
 "observer"
 );
 
-voiceSpeak(line,1.1);
+talk(
+line,
+"observer"
+);
 
 }
 
@@ -941,8 +1079,23 @@ fakeUserVoice();
 },900000);
 
 /* =========================================================
-JUMPSCARES
+JUMPSCARE
 ========================================================= */
+
+function jumpscare(){
+
+const j =
+document.getElementById("jumpscare");
+
+j.style.display = "flex";
+
+setTimeout(()=>{
+
+j.style.display = "none";
+
+},700);
+
+}
 
 setInterval(()=>{
 
@@ -955,7 +1108,7 @@ jumpscare();
 },30000);
 
 /* =========================================================
-GLITCH EFFECT
+GLITCH FLASH
 ========================================================= */
 
 const glitch =
@@ -974,30 +1127,7 @@ glitch.style.opacity = "0";
 },Math.random()*8000+3000);
 
 /* =========================================================
-RANDOM ENTITY TAKEOVER
-========================================================= */
-
-setInterval(()=>{
-
-if(Math.random() < 0.25){
-
-voiceSpeak(
-"grant me access",
-0.4
-);
-
-setTimeout(()=>{
-
-entityTakeControl();
-
-},5000);
-
-}
-
-},1800000);
-
-/* =========================================================
-SITE TERMINATION
+TERMINATION
 ========================================================= */
 
 function terminateSite(){
@@ -1006,18 +1136,14 @@ if(window.siteTerminated) return;
 
 window.siteTerminated = true;
 
-/* FINAL VOICE */
-
-voiceSpeak(
+talk(
 "connection terminated",
-0.3
+currentPersona
 );
-
-/* REMOVE EVERYTHING */
 
 document.body.innerHTML = `
 
-<div id="terminationScreen" style="
+<div style="
 
 position:fixed;
 inset:0;
@@ -1028,14 +1154,12 @@ justify-content:center;
 flex-direction:column;
 font-family:monospace;
 color:red;
-overflow:hidden;
 
 ">
 
 <div style="
 font-size:70px;
 text-shadow:0 0 30px red;
-animation:flicker .2s infinite;
 ">
 SIGNAL LOST
 </div>
@@ -1051,21 +1175,7 @@ CONNECTION TO EVERDUSK FAILED
 
 </div>
 
-<style>
-
-@keyframes flicker{
-
-0%{opacity:1;}
-50%{opacity:.4;}
-100%{opacity:1;}
-
-}
-
-</style>
-
 `;
-
-/* TRY CLOSE */
 
 setTimeout(()=>{
 
@@ -1073,8 +1183,6 @@ window.open('','_self');
 window.close();
 
 },5000);
-
-/* FALLBACK */
 
 setTimeout(()=>{
 
@@ -1104,18 +1212,18 @@ AUTO START
 
 setTimeout(()=>{
 
-voiceSpeak(
+talk(
 "EVERDUSK online",
-0.6
+"default"
 );
 
 },2000);
 
 setTimeout(()=>{
 
-voiceSpeak(
+talk(
 "sentient systems active",
-0.5
+"default"
 );
 
 },6000);
