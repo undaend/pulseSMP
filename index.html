@@ -54,16 +54,6 @@ pointer-events:none;
 z-index:999999;
 }
 
-.glitch{
-position:fixed;
-inset:0;
-background:red;
-opacity:0;
-pointer-events:none;
-mix-blend-mode:screen;
-z-index:999999;
-}
-
 /* =========================================================
 STATUS
 ========================================================= */
@@ -94,10 +84,6 @@ color:#ff4444;
 
 .warning{
 color:yellow;
-}
-
-.observer{
-color:gray;
 }
 
 .corrupted{
@@ -196,14 +182,6 @@ cursor:move;
 
 user-select:none;
 
-resize:both;
-
-min-width:220px;
-min-height:160px;
-
-max-width:700px;
-max-height:500px;
-
 box-shadow:
 0 0 25px rgba(255,0,0,.5);
 
@@ -221,7 +199,7 @@ grayscale(.4);
 }
 
 /* =========================================================
-STATIC
+OVERLAYS
 ========================================================= */
 
 .static{
@@ -243,10 +221,6 @@ opacity:.2;
 pointer-events:none;
 
 }
-
-/* =========================================================
-SCAN GRID
-========================================================= */
 
 .scan-grid{
 
@@ -271,105 +245,6 @@ background-size:30px 30px;
 pointer-events:none;
 
 }
-
-/* =========================================================
-RADAR
-========================================================= */
-
-.radar{
-
-position:absolute;
-
-width:400px;
-height:400px;
-
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%);
-
-border-radius:50%;
-
-background:
-conic-gradient(
-from 0deg,
-transparent,
-rgba(255,0,0,.4),
-transparent
-);
-
-animation:radarSpin 4s linear infinite;
-
-mix-blend-mode:screen;
-
-opacity:.4;
-
-pointer-events:none;
-
-}
-
-@keyframes radarSpin{
-
-from{
-transform:
-translate(-50%,-50%)
-rotate(0deg);
-}
-
-to{
-transform:
-translate(-50%,-50%)
-rotate(360deg);
-}
-
-}
-
-/* =========================================================
-VHS
-========================================================= */
-
-.vhs{
-
-position:absolute;
-inset:0;
-
-pointer-events:none;
-
-background:
-linear-gradient(
-transparent 50%,
-rgba(255,255,255,.03) 50%
-);
-
-background-size:100% 4px;
-
-mix-blend-mode:screen;
-
-animation:vhsMove .2s infinite;
-
-opacity:.25;
-
-}
-
-@keyframes vhsMove{
-
-0%{
-transform:translateX(0);
-}
-
-50%{
-transform:translateX(-2px);
-}
-
-100%{
-transform:translateX(2px);
-}
-
-}
-
-/* =========================================================
-SCAN LINE
-========================================================= */
 
 .scan{
 
@@ -401,10 +276,6 @@ top:110%;
 }
 
 }
-
-/* =========================================================
-TARGET
-========================================================= */
 
 .target{
 
@@ -446,119 +317,6 @@ opacity:1;
 }
 
 /* =========================================================
-DETECTION BOX
-========================================================= */
-
-.detect-box{
-
-position:absolute;
-
-border:2px solid red;
-
-width:90px;
-height:90px;
-
-top:40%;
-left:35%;
-
-box-shadow:
-0 0 20px red;
-
-animation:detectPulse 2s infinite;
-
-}
-
-@keyframes detectPulse{
-
-0%{
-transform:scale(1);
-opacity:1;
-}
-
-50%{
-transform:scale(1.05);
-opacity:.5;
-}
-
-100%{
-transform:scale(1);
-opacity:1;
-}
-
-}
-
-/* =========================================================
-EYE
-========================================================= */
-
-.eye{
-
-position:absolute;
-
-width:18px;
-height:18px;
-
-border-radius:50%;
-
-background:red;
-
-box-shadow:
-0 0 20px red,
-0 0 40px red;
-
-animation:eyePulse 2s infinite;
-
-pointer-events:none;
-
-z-index:9999;
-
-}
-
-@keyframes eyePulse{
-
-0%{
-transform:scale(1);
-opacity:1;
-}
-
-50%{
-transform:scale(1.4);
-opacity:.5;
-}
-
-100%{
-transform:scale(1);
-opacity:1;
-}
-
-}
-
-/* =========================================================
-THERMAL + IR
-========================================================= */
-
-.thermal video{
-
-filter:
-hue-rotate(-40deg)
-contrast(2)
-brightness(1.2)
-saturate(3);
-
-}
-
-.infrared video{
-
-filter:
-contrast(2)
-brightness(.9)
-saturate(0)
-sepia(1)
-hue-rotate(-20deg);
-
-}
-
-/* =========================================================
 HUD
 ========================================================= */
 
@@ -576,139 +334,6 @@ line-height:1.6;
 
 text-shadow:0 0 10px red;
 
-}
-
-/* =========================================================
-CAMERA BUTTONS
-========================================================= */
-
-.cam-controls{
-
-position:absolute;
-top:5px;
-right:5px;
-
-display:flex;
-gap:5px;
-
-z-index:99999;
-
-}
-
-.cam-btn{
-
-width:24px;
-height:24px;
-
-border:none;
-
-background:red;
-color:white;
-
-cursor:pointer;
-
-font-size:12px;
-
-}
-
-/* =========================================================
-THREAT METER
-========================================================= */
-
-.threat-meter{
-
-position:absolute;
-
-top:10px;
-right:10px;
-
-width:110px;
-height:12px;
-
-border:1px solid red;
-
-background:black;
-
-overflow:hidden;
-
-}
-
-.threat-fill{
-
-height:100%;
-width:20%;
-
-background:red;
-
-box-shadow:
-0 0 20px red;
-
-transition:1s;
-
-}
-
-/* =========================================================
-MOTION ALERT
-========================================================= */
-
-.motion-alert{
-
-position:absolute;
-
-bottom:5px;
-left:5px;
-
-font-size:11px;
-
-color:red;
-
-text-shadow:0 0 10px red;
-
-animation:flicker 1s infinite;
-
-}
-
-.presence{
-
-position:absolute;
-
-bottom:22px;
-right:10px;
-
-font-size:11px;
-
-color:red;
-
-text-shadow:
-0 0 10px red;
-
-animation:flicker 1s infinite;
-
-}
-
-@keyframes flicker{
-
-0%{opacity:1;}
-50%{opacity:.4;}
-100%{opacity:1;}
-
-}
-
-/* =========================================================
-JUMPSCARE
-========================================================= */
-
-#jumpscare{
-position:fixed;
-inset:0;
-background:black;
-display:none;
-align-items:center;
-justify-content:center;
-font-size:120px;
-color:red;
-z-index:9999999;
-text-shadow:0 0 40px red;
 }
 
 /* =========================================================
@@ -734,10 +359,6 @@ width:200px;
 height:140px;
 }
 
-#jumpscare{
-font-size:60px;
-}
-
 }
 
 </style>
@@ -747,17 +368,16 @@ font-size:60px;
 
 <div class="bg"></div>
 <div class="scanlines"></div>
-<div class="glitch"></div>
-
-<div id="jumpscare">
-I SEE YOU
-</div>
 
 <div id="status">
-INITIALIZING SENTIENT WORLD...
+SYSTEM ONLINE
 </div>
 
 <div id="log"></div>
+
+<!-- =========================================================
+LINK BUTTONS
+========================================================= -->
 
 <div class="quick-buttons">
 
@@ -791,6 +411,10 @@ YOUTUBE
 
 </div>
 
+<!-- =========================================================
+CHAT
+========================================================= -->
+
 <div class="controls">
 
 <input
@@ -806,32 +430,10 @@ SEND
 </div>
 
 <!-- =========================================================
-CAMERA
+CAMERA WINDOW
 ========================================================= -->
 
 <div class="cam-wrapper" id="camWrap">
-
-<div class="cam-controls">
-
-<button
-class="cam-btn"
-onclick="toggleMinimize()">
-—
-</button>
-
-<button
-class="cam-btn"
-onclick="toggleThermal()">
-T
-</button>
-
-<button
-class="cam-btn"
-onclick="toggleInfrared()">
-IR
-</button>
-
-</div>
 
 <video
 id="cam"
@@ -844,17 +446,9 @@ muted>
 
 <div class="scan-grid"></div>
 
-<div class="radar"></div>
-
-<div class="vhs"></div>
-
 <div class="scan"></div>
 
-<div class="detect-box" id="detectBox"></div>
-
 <div class="target"></div>
-
-<div class="eye" id="eye"></div>
 
 <div class="hud">
 
@@ -862,25 +456,6 @@ SIGNAL ACTIVE<br>
 ENTITY TRACKING<br>
 SUBJECT LOCKED
 
-</div>
-
-<div class="threat-meter">
-<div
-class="threat-fill"
-id="threatFill">
-</div>
-</div>
-
-<div
-class="motion-alert"
-id="motionAlert">
-MOTION STABLE
-</div>
-
-<div
-class="presence"
-id="presenceAlert">
-NO UNKNOWN PRESENCE
 </div>
 
 </div>
@@ -894,7 +469,18 @@ SYSTEM
 const log =
 document.getElementById("log");
 
+const status =
+document.getElementById("status");
+
 let speakingNow = false;
+
+let currentRole = "guest";
+
+let ownerUnlocked = false;
+
+/* =========================================================
+ADD LOG
+========================================================= */
 
 function add(text,type="main"){
 
@@ -910,6 +496,10 @@ log.appendChild(div);
 log.scrollTop = log.scrollHeight;
 
 }
+
+/* =========================================================
+VOICE
+========================================================= */
 
 function talk(text){
 
@@ -935,6 +525,142 @@ speechSynthesis.speak(u);
 }
 
 /* =========================================================
+ACCESS CODES
+========================================================= */
+
+function checkCodes(msg){
+
+/* OWNER */
+
+if(msg === "220055"){
+
+ownerUnlocked = true;
+
+currentRole = "owner";
+
+status.innerText =
+"OWNER ACCESS GRANTED";
+
+add(
+"SYSTEM: OWNER ACCESS GRANTED",
+"warning"
+);
+
+talk(
+"welcome back creator"
+);
+
+return true;
+
+}
+
+/* OBSERVER */
+
+if(msg === "771999"){
+
+currentRole = "observer";
+
+status.innerText =
+"OBSERVER ACCESS GRANTED";
+
+add(
+"SYSTEM: OBSERVER ACCESS GRANTED",
+"warning"
+);
+
+talk(
+"observer systems online"
+);
+
+return true;
+
+}
+
+/* ARCHIVIST */
+
+if(msg === "441188"){
+
+currentRole = "archivist";
+
+status.innerText =
+"ARCHIVE ACCESS GRANTED";
+
+add(
+"SYSTEM: ARCHIVE ACCESS GRANTED",
+"warning"
+);
+
+talk(
+"archive unlocked"
+);
+
+return true;
+
+}
+
+return false;
+
+}
+
+/* =========================================================
+ENTITY RESPONSE
+========================================================= */
+
+function entityRespond(){
+
+const replies = {
+
+guest:[
+"the signal grows stronger",
+"something is nearby",
+"your voice was stored"
+],
+
+owner:[
+"command accepted creator",
+"systems online",
+"all sectors stable"
+],
+
+observer:[
+"do not trust the shadows",
+"something moved behind you",
+"the watcher sees everything"
+],
+
+archivist:[
+"the archive remembers",
+"old files were restored",
+"hidden records detected"
+]
+
+};
+
+const pool =
+replies[currentRole] ||
+replies.guest;
+
+const response =
+pool[
+Math.floor(
+Math.random()*pool.length
+)
+];
+
+setTimeout(()=>{
+
+add(
+"ENTITY: " + response,
+"corrupted"
+);
+
+talk(response);
+
+},1500);
+
+}
+
+/* =========================================================
 SEND
 ========================================================= */
 
@@ -955,7 +681,7 @@ const input =
 document.getElementById("msg");
 
 const msg =
-input.value;
+input.value.trim();
 
 if(!msg) return;
 
@@ -966,37 +692,16 @@ add(
 "main"
 );
 
-setTimeout(()=>{
+/* CHECK CODES */
 
-const replies = [
+const unlocked =
+checkCodes(msg);
 
-"the signal grows stronger",
+if(unlocked) return;
 
-"something is nearby",
+/* ENTITY REPLY */
 
-"your voice was stored",
-
-"i can hear the void",
-
-"unknown activity detected"
-
-];
-
-const r =
-replies[
-Math.floor(
-Math.random()*replies.length
-)
-];
-
-add(
-"ENTITY: " + r,
-"corrupted"
-);
-
-talk(r);
-
-},2000);
+entityRespond();
 
 }
 
@@ -1018,8 +723,10 @@ audio:true
 const cam =
 document.getElementById("cam");
 
-document.getElementById("camWrap")
-.style.display = "block";
+const wrap =
+document.getElementById("camWrap");
+
+wrap.style.display = "block";
 
 cam.srcObject = stream;
 
@@ -1044,7 +751,7 @@ add(
 }
 
 /* =========================================================
-DRAG WINDOW
+MOVEABLE CAMERA
 ========================================================= */
 
 const camWindow =
@@ -1080,6 +787,7 @@ camWindow.style.top =
 (e.clientY - offsetY) + "px";
 
 camWindow.style.right = "auto";
+
 camWindow.style.bottom = "auto";
 
 });
@@ -1089,320 +797,6 @@ document.addEventListener("mouseup",()=>{
 dragging = false;
 
 });
-
-/* =========================================================
-MINIMIZE
-========================================================= */
-
-let minimized = false;
-
-function toggleMinimize(){
-
-const cam =
-document.getElementById("camWrap");
-
-if(!minimized){
-
-cam.style.height = "40px";
-
-minimized = true;
-
-}else{
-
-cam.style.height = "220px";
-
-minimized = false;
-
-}
-
-}
-
-/* =========================================================
-THERMAL
-========================================================= */
-
-let thermal = false;
-
-function toggleThermal(){
-
-const cam =
-document.getElementById("camWrap");
-
-thermal = !thermal;
-
-if(thermal){
-
-cam.classList.add("thermal");
-
-}else{
-
-cam.classList.remove("thermal");
-
-}
-
-}
-
-/* =========================================================
-INFRARED
-========================================================= */
-
-let infrared = false;
-
-function toggleInfrared(){
-
-const cam =
-document.getElementById("camWrap");
-
-infrared = !infrared;
-
-if(infrared){
-
-cam.classList.add("infrared");
-
-}else{
-
-cam.classList.remove("infrared");
-
-}
-
-}
-
-/* =========================================================
-EYE TRACKER
-========================================================= */
-
-const eye =
-document.getElementById("eye");
-
-document.addEventListener("mousemove",(e)=>{
-
-eye.style.left =
-e.clientX + "px";
-
-eye.style.top =
-e.clientY + "px";
-
-});
-
-/* =========================================================
-MOTION TRACKER
-========================================================= */
-
-const detectBox =
-document.getElementById("detectBox");
-
-const motionAlert =
-document.getElementById("motionAlert");
-
-setInterval(()=>{
-
-const x =
-Math.random() * 60;
-
-const y =
-Math.random() * 60;
-
-detectBox.style.left =
-x + "%";
-
-detectBox.style.top =
-y + "%";
-
-const detected =
-Math.random() < 0.5;
-
-if(detected){
-
-motionAlert.innerText =
-"MOTION DETECTED";
-
-motionAlert.style.color =
-"#ff0000";
-
-}else{
-
-motionAlert.innerText =
-"MOTION STABLE";
-
-motionAlert.style.color =
-"#ff6666";
-
-}
-
-},2500);
-
-/* =========================================================
-THREAT LEVEL
-========================================================= */
-
-const threatFill =
-document.getElementById("threatFill");
-
-const presence =
-document.getElementById("presenceAlert");
-
-setInterval(()=>{
-
-const level =
-Math.floor(Math.random() * 100);
-
-threatFill.style.width =
-level + "%";
-
-if(level > 70){
-
-presence.innerText =
-"UNKNOWN PRESENCE DETECTED";
-
-presence.style.color =
-"#ff0000";
-
-add(
-"WARNING: unknown presence nearby",
-"warning"
-);
-
-talk(
-"unknown presence detected"
-);
-
-}else{
-
-presence.innerText =
-"NO UNKNOWN PRESENCE";
-
-presence.style.color =
-"#ff6666";
-
-}
-
-},12000);
-
-/* =========================================================
-SAFE LOCAL SCANS
-========================================================= */
-
-const motionLines = [
-
-"movement detected",
-
-"light fluctuation detected",
-
-"subject motion unstable",
-
-"unknown movement nearby",
-
-"audio spike detected",
-
-"environmental distortion detected",
-
-"shadow movement detected",
-
-"rapid motion identified"
-
-];
-
-function localScan(){
-
-const line =
-motionLines[
-Math.floor(
-Math.random() *
-motionLines.length
-)
-];
-
-add(
-"SCAN: " + line,
-"observer"
-);
-
-talk(line);
-
-}
-
-setInterval(()=>{
-
-if(document.hidden) return;
-
-if(Math.random() < 0.45){
-
-localScan();
-
-}
-
-},30000);
-
-/* =========================================================
-VHS GLITCH
-========================================================= */
-
-setInterval(()=>{
-
-const cam =
-document.getElementById("camWrap");
-
-cam.style.filter =
-`
-contrast(${1 + Math.random()*0.5})
-brightness(${0.8 + Math.random()*0.4})
-`;
-
-setTimeout(()=>{
-
-cam.style.filter = "none";
-
-},150);
-
-},6000);
-
-/* =========================================================
-GLITCH FLASH
-========================================================= */
-
-const glitch =
-document.querySelector(".glitch");
-
-setInterval(()=>{
-
-glitch.style.opacity = ".06";
-
-setTimeout(()=>{
-
-glitch.style.opacity = "0";
-
-},120);
-
-},Math.random()*8000+3000);
-
-/* =========================================================
-JUMPSCARE
-========================================================= */
-
-function jumpscare(){
-
-const j =
-document.getElementById("jumpscare");
-
-j.style.display = "flex";
-
-setTimeout(()=>{
-
-j.style.display = "none";
-
-},700);
-
-}
-
-setInterval(()=>{
-
-if(Math.random() < 0.12){
-
-jumpscare();
-
-}
-
-},30000);
 
 /* =========================================================
 BOOT
@@ -1428,7 +822,7 @@ setTimeout(()=>{
 
 startEntityCamera();
 
-},5000);
+},4000);
 
 </script>
 
