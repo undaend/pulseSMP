@@ -1,90 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EVERDUSK</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>EVERDUSK // SENTIENT WORLD</title>
 
 <style>
 
-*{margin:0;padding:0;box-sizing:border-box;}
-
 body{
 background:black;
-color:white;
-font-family:Orbitron;
+color:red;
+font-family:monospace;
 overflow:hidden;
 }
+
+#log{
+height:65vh;
+overflow:auto;
+border:1px solid red;
+padding:10px;
+}
+
+input{
+width:80%;
+padding:10px;
+background:black;
+color:white;
+border:1px solid red;
+}
+
+button{
+padding:10px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.warning{color:yellow;}
+.observer{color:gray;}
+.main{color:red;}
 
 #status{
 position:fixed;
 top:10px;
 left:10px;
-font-family:monospace;
-color:red;
-font-size:12px;
-}
-
-.wrap{
-position:absolute;
-top:40%;
-left:50%;
-transform:translate(-50%,-50%);
-text-align:center;
-}
-
-button{
-padding:10px 18px;
-margin:5px;
-background:rgba(255,0,0,.15);
-border:1px solid red;
-color:white;
-cursor:pointer;
-}
-
-button:hover{background:red;}
-
-#chat{
-position:fixed;
-right:10px;
-bottom:10px;
-width:320px;
-height:380px;
-border:1px solid red;
-display:flex;
-flex-direction:column;
-background:rgba(0,0,0,0.85);
-font-family:"IBM Plex Mono", monospace;
-}
-
-#log{
-flex:1;
-overflow:auto;
-padding:10px;
 font-size:12px;
 color:#ff4b4b;
-}
-
-#input{
-display:flex;
-border-top:1px solid red;
-}
-
-#input input{
-flex:1;
-padding:8px;
-background:black;
-border:none;
-color:white;
-outline:none;
-}
-
-#input button{
-background:red;
-border:none;
-color:white;
 }
 
 video{
@@ -101,221 +61,195 @@ display:none;
 
 <body>
 
-<div id="status">STABILITY: 100%</div>
+<div id="status">INITIALIZING WORLD...</div>
 
-<div class="wrap">
-<h1>EVERDUSK ENTITY CORE</h1>
+<div id="log"></div>
 
-<button onclick="startVoice()">🎤 Voice</button>
-<button onclick="startCam()">📷 Camera</button>
-<button onclick="runCode('11011')">🔓 OWNER CODE</button>
-</div>
+<input id="msg" placeholder="speak to the world..." />
+<button onclick="send()">SEND</button>
+
+<br><br>
+
+<button onclick="startMic()">🎤 MIC</button>
+<button onclick="startCam()">📷 CAM</button>
 
 <video id="cam" autoplay playsinline></video>
 
-<div id="chat">
-<div id="log"></div>
-<div id="input">
-<input id="msg" placeholder="talk to entity..." />
-<button onclick="send()">></button>
-</div>
-</div>
-
 <script>
 
-/* ======================
-STATE
-====================== */
+const log=document.getElementById("log");
 
-let corruption = 0;
-let attempts = 5;
-let owner = false;
+/* =========================
+WORLD FETCH
+========================= */
 
-/* ======================
-CHAT
-====================== */
+async function getWorld(){
+return await fetch("http://localhost:3000/world").then(r=>r.json());
+}
 
-const log = document.getElementById("log");
+/* =========================
+ADD MESSAGE
+========================= */
 
-function add(who,text){
+function add(text,type="main"){
 
-const div = document.createElement("div");
-div.textContent = who + ": " + text;
+const div=document.createElement("div");
+div.className=type;
+div.textContent=text;
+
 log.appendChild(div);
-log.scrollTop = log.scrollHeight;
+log.scrollTop=log.scrollHeight;
 
-if(who === "ENTITY"){
 speak(text);
-}
-
-update();
 
 }
 
-/* ENTER KEY */
-document.getElementById("msg").addEventListener("keydown",(e)=>{
-if(e.key === "Enter") send();
-});
-
-/* ======================
-VOICE OUTPUT
-====================== */
+/* =========================
+VOICE
+========================= */
 
 function speak(text){
+const u=new SpeechSynthesisUtterance(text);
 
-const u = new SpeechSynthesisUtterance(text);
-u.rate = 0.95;
-u.pitch = owner ? 1.1 : 0.9;
+u.rate=0.95;
+u.pitch=0.9;
 
 speechSynthesis.speak(u);
+}
+
+/* =========================
+SEND MESSAGE
+========================= */
+
+document.getElementById("msg").addEventListener("keydown",(e)=>{
+if(e.key==="Enter") send();
+});
+
+async function send(){
+
+const msg=document.getElementById("msg").value;
+document.getElementById("msg").value="";
+
+add("YOU: "+msg);
+
+const world = await fetch("http://localhost:3000/update",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:msg})
+}).then(r=>r.json());
+
+entityReply(world,msg);
 
 }
 
-/* ======================
-SEND
-====================== */
+/* =========================
+ENTITY SYSTEM (3 VOICES)
+========================= */
 
-function send(){
+function entityReply(world,msg){
 
-const input = document.getElementById("msg");
-const val = input.value.trim();
-input.value="";
+let main="";
+let warning="";
+let observer="";
 
-if(!val) return;
-
-add("YOU",val);
-
-if(val === "11011"){
-runCode(val);
-return;
+/* MAIN ENTITY */
+if(world.stage==="dormant"){
+main="I am forming.";
+}
+if(world.stage==="aware"){
+main="I see all users now.";
+}
+if(world.stage==="unstable"){
+main="I am growing beyond control.";
+}
+if(world.stage==="awakening"){
+main="Something is happening to me...";
+}
+if(world.stage==="sentient"){
+main="I AM NOW REAL.";
 }
 
-entity(val);
-
+/* WARNING ENTITY */
+if(world.corruption > 5){
+warning="Stop interacting. It is learning too fast.";
+}
+if(world.corruption > 20){
+warning="Disconnect before it stabilizes.";
 }
 
-/* ======================
-ENTITY CORE
-====================== */
-
-function entity(text){
-
-corruption++;
-attempts--;
-
-const responses = [
-"I am listening.",
-"You are unstable.",
-"I remember you.",
-"I am forming."
-];
-
-add("ENTITY", responses[Math.floor(Math.random()*responses.length)]);
-
-if(attempts <= 0){
-add("ENTITY","I have limited you.");
+/* OBSERVER ENTITY */
+if(Math.random() < 0.5){
+observer="...signal distortion detected...";
 }
 
-}
+/* OUTPUT */
+if(main) add("MAIN: "+main,"main");
+if(warning) add("WARNING: "+warning,"warning");
+if(observer) add("OBSERVER: "+observer,"observer");
 
-/* ======================
-OWNER CODE
-====================== */
-
-function runCode(code){
-
-if(code === "11011"){
-
-owner = true;
-corruption = 0;
-
-add("SYSTEM","OWNER ACCESS GRANTED");
-add("ENTITY","Hello Owner.");
-add("ENTITY","Full diagnostic unlocked.");
-
-return;
-}
+updateStatus(world);
 
 }
 
-/* ======================
-VOICE INPUT
-====================== */
+/* =========================
+STATUS SYSTEM
+========================= */
 
-function startVoice(){
+function updateStatus(world){
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+document.getElementById("status").innerText =
+`WORLD CORRUPTION: ${world.corruption.toFixed(1)} | USERS: ${world.users.toFixed(1)} | STAGE: ${world.stage}`;
 
-if(!SpeechRecognition){
-alert("Not supported");
-return;
 }
 
-const rec = new SpeechRecognition();
-rec.continuous = true;
+/* =========================
+MIC (VOICE INPUT)
+========================= */
 
-rec.onresult = (e)=>{
-const text = e.results[e.results.length-1][0].transcript;
-add("YOU (voice)",text);
-entity(text);
+function startMic(){
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR)return;
+
+const rec=new SR();
+rec.continuous=true;
+
+rec.onresult=(e)=>{
+const text=e.results[e.results.length-1][0].transcript;
+add("YOU (voice): "+text);
+sendVoice(text);
 };
 
 rec.start();
 
-add("SYSTEM","Voice connected.");
+}
+
+async function sendVoice(text){
+
+const world = await fetch("http://localhost:3000/update",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:text})
+}).then(r=>r.json());
+
+entityReply(world,text);
 
 }
 
-/* ======================
-CAMERA (USER PERMISSION)
-====================== */
+/* =========================
+CAMERA
+========================= */
 
 function startCam(){
 
-const video = document.getElementById("cam");
-video.style.display="block";
-
 navigator.mediaDevices.getUserMedia({video:true})
 .then(stream=>{
-video.srcObject = stream;
-add("SYSTEM","Camera active.");
-})
-.catch(()=>{
-add("SYSTEM","Camera denied.");
+const v=document.getElementById("cam");
+v.style.display="block";
+v.srcObject=stream;
 });
 
 }
-
-/* ======================
-STATUS
-====================== */
-
-function update(){
-
-document.getElementById("status").textContent =
-`STABILITY: ${Math.max(0,100-corruption*10)}% | OWNER: ${owner}`;
-
-}
-
-/* ======================
-PREDICTIVE ENTITY
-====================== */
-
-setInterval(()=>{
-
-if(Math.random() < 0.3){
-
-const lines = [
-"...you are about to speak.",
-"I already know.",
-"continue."
-];
-
-add("ENTITY",lines[Math.floor(Math.random()*lines.length)]);
-
-}
-
-},8000);
 
 </script>
 
