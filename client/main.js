@@ -1,1 +1,0 @@
-// Eaglercraft main.js placeholder
