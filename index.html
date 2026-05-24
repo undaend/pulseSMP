@@ -1,98 +1,136 @@
-# EVERDUSK Desktop OS Upgrade
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-Replace your current buttons section with this desktop-style app launcher system.
+<title>EVERDUSK OS</title>
 
-```html
-<!-- =====================================================
-DESKTOP ICONS
-===================================================== -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
-<div class="desktop-icons">
+<style>
 
-<div class="desktop-app" onclick="window.open('https://discord.gg/5Xdkuq7h9h','_blank')">
-<div class="app-icon">☠</div>
-<div class="app-label">EVERDUSK</div>
-</div>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-<div class="desktop-app" onclick="window.open('https://discord.com/invite/dseKG8dpWv','_blank')">
-<div class="app-icon">⌘</div>
-<div class="app-label">PULSE</div>
-</div>
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+background:#050505;
+font-family:monospace;
+color:#ff4b4b;
+}
 
-<div class="desktop-app" onclick="window.open('https://vexsound.base44.app/','_blank')">
-<div class="app-icon">♫</div>
-<div class="app-label">VEXSOUND</div>
-</div>
+/* =====================================================
+BACKGROUND
+===================================================== */
 
-<div class="desktop-app" onclick="window.open('https://www.youtube.com/@Everduskofficial','_blank')">
-<div class="app-icon">▶</div>
-<div class="app-label">YOUTUBE</div>
-</div>
+body{
+background:
+radial-gradient(circle at center,
+rgba(255,0,0,.08),
+transparent 60%),
+#020202;
+}
 
-<div class="desktop-app" onclick="document.getElementById('terminalWindow').style.display='block'">
-<div class="app-icon">⌨</div>
-<div class="app-label">TERMINAL</div>
-</div>
+/* =====================================================
+SCANLINES
+===================================================== */
 
-<div class="desktop-app" onclick="document.getElementById('cameraWindow').style.display='block'">
-<div class="app-icon">◉</div>
-<div class="app-label">CAMERA</div>
-</div>
+body::after{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
 
-<div class="desktop-app" onclick="spawnAlert('ENTITY ARCHIVE OPENED')">
-<div class="app-icon">⚠</div>
-<div class="app-label">ARCHIVE</div>
-</div>
+background:
+repeating-linear-gradient(
+to bottom,
+rgba(255,255,255,.02),
+rgba(255,255,255,.02) 1px,
+transparent 1px,
+transparent 4px
+);
 
-</div>
-```
+opacity:.25;
+z-index:999999;
+}
 
-Add this CSS inside your `<style>` section:
-
-```css
 /* =====================================================
 DESKTOP
 ===================================================== */
 
-.desktop-icons{
-position:absolute;
-top:30px;
-left:30px;
-
-display:grid;
-grid-template-columns:repeat(2,120px);
-gap:28px;
-
-z-index:1000;
-}
-
-.desktop-app{
-width:110px;
-text-align:center;
-cursor:pointer;
-user-select:none;
-transition:.25s;
-}
-
-.desktop-app:hover{
-transform:scale(1.05);
-}
-
-.desktop-app:active{
-transform:scale(.95);
+.desktop{
+position:relative;
+width:100%;
+height:100%;
+overflow:hidden;
 }
 
 /* =====================================================
-APP ICON
+SIDEBAR APPS
 ===================================================== */
 
+.sidebar{
+position:absolute;
+left:0;
+top:0;
+bottom:0;
+
+width:110px;
+
+background:rgba(10,0,0,.9);
+
+border-right:1px solid rgba(255,0,0,.25);
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+padding-top:20px;
+
+gap:18px;
+
+z-index:9999;
+
+backdrop-filter:blur(10px);
+}
+
+/* =====================================================
+APP ICONS
+===================================================== */
+
+.app{
+width:85px;
+text-align:center;
+cursor:pointer;
+transition:.25s;
+user-select:none;
+}
+
+.app:hover{
+transform:scale(1.05);
+}
+
+.app:active{
+transform:scale(.95);
+}
+
 .app-icon{
-width:72px;
-height:72px;
+width:64px;
+height:64px;
 
 margin:auto;
 
-border:1px solid rgba(255,0,0,.6);
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:28px;
 
 background:
 linear-gradient(
@@ -101,131 +139,847 @@ rgba(255,0,0,.15),
 rgba(0,0,0,.7)
 );
 
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:32px;
-color:#ff4b4b;
+border:1px solid rgba(255,0,0,.45);
 
 box-shadow:
-0 0 20px rgba(255,0,0,.2),
+0 0 20px rgba(255,0,0,.12),
 inset 0 0 20px rgba(255,0,0,.05);
 
-backdrop-filter:blur(8px);
+color:#ff4b4b;
 
 transition:.3s;
 }
 
-.desktop-app:hover .app-icon{
-
-border-color:red;
+.app:hover .app-icon{
 
 color:white;
 
+border-color:red;
+
 box-shadow:
 0 0 20px red,
-0 0 50px rgba(255,0,0,.4),
-inset 0 0 25px rgba(255,0,0,.15);
+0 0 50px rgba(255,0,0,.4);
 
 }
 
+.app-name{
+margin-top:8px;
+font-size:11px;
+letter-spacing:2px;
+font-family:'Orbitron',sans-serif;
+color:#ff7a7a;
+}
+
 /* =====================================================
-LABEL
+WINDOWS
 ===================================================== */
 
-.app-label{
-margin-top:10px;
+.window{
+position:absolute;
 
-font-size:12px;
-letter-spacing:2px;
+background:#050505;
+
+border:1px solid rgba(255,0,0,.5);
+
+box-shadow:
+0 0 30px rgba(255,0,0,.15);
+
+overflow:hidden;
+
+resize:both;
+
+min-width:320px;
+min-height:220px;
+}
+
+/* =====================================================
+WINDOW HEADER
+===================================================== */
+
+.window-header{
+height:40px;
+
+background:#0a0a0a;
+
+border-bottom:1px solid rgba(255,0,0,.3);
+
+display:flex;
+align-items:center;
+
+padding:0 15px;
+
+cursor:move;
 
 font-family:'Orbitron',sans-serif;
 
-color:#ff7777;
+letter-spacing:2px;
 
-text-shadow:0 0 10px rgba(255,0,0,.5);
+user-select:none;
 }
 
 /* =====================================================
-TASKBAR STYLE
+WINDOW CONTENT
+===================================================== */
+
+.window-content{
+height:calc(100% - 40px);
+overflow:auto;
+padding:15px;
+}
+
+.window-content::-webkit-scrollbar{
+width:5px;
+}
+
+.window-content::-webkit-scrollbar-thumb{
+background:red;
+}
+
+/* =====================================================
+CHAT
+===================================================== */
+
+#chatLog{
+height:100%;
+overflow-y:auto;
+padding-bottom:10px;
+}
+
+.message{
+margin-bottom:14px;
+line-height:1.5;
+}
+
+/* =====================================================
+INPUT
+===================================================== */
+
+.chat-input{
+display:flex;
+border-top:1px solid rgba(255,0,0,.25);
+}
+
+.chat-input input{
+flex:1;
+padding:14px;
+background:black;
+color:white;
+border:none;
+outline:none;
+font-family:monospace;
+}
+
+.chat-input button{
+width:130px;
+background:red;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+/* =====================================================
+CAMERA
+===================================================== */
+
+.camera-feed{
+position:relative;
+width:100%;
+height:100%;
+background:black;
+overflow:hidden;
+}
+
+.camera-feed video{
+width:100%;
+height:100%;
+object-fit:cover;
+
+filter:
+grayscale(.8)
+contrast(1.2)
+brightness(.7);
+}
+
+/* =====================================================
+CAMERA OVERLAYS
+===================================================== */
+
+.scan{
+position:absolute;
+left:0;
+width:100%;
+height:3px;
+background:red;
+box-shadow:0 0 20px red;
+animation:scanMove 4s linear infinite;
+}
+
+@keyframes scanMove{
+0%{top:-10%;}
+100%{top:110%;}
+}
+
+.grid{
+position:absolute;
+inset:0;
+
+background:
+linear-gradient(rgba(255,0,0,.08) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,0,0,.08) 1px,transparent 1px);
+
+background-size:30px 30px;
+}
+
+.face-box{
+position:absolute;
+
+width:120px;
+height:120px;
+
+border:2px solid red;
+
+top:35%;
+left:40%;
+
+box-shadow:0 0 20px red;
+
+animation:faceMove 10s infinite alternate;
+}
+
+@keyframes faceMove{
+
+0%{
+top:35%;
+left:40%;
+}
+
+50%{
+top:25%;
+left:55%;
+}
+
+100%{
+top:45%;
+left:30%;
+}
+
+}
+
+.face-label{
+position:absolute;
+top:-24px;
+left:0;
+
+padding:4px 8px;
+
+background:red;
+color:black;
+
+font-size:11px;
+}
+
+/* =====================================================
+TASKBAR
 ===================================================== */
 
 .taskbar{
-position:fixed;
-bottom:0;
+position:absolute;
 left:0;
 right:0;
-height:50px;
+bottom:0;
 
-background:rgba(5,0,0,.95);
+height:42px;
 
-border-top:1px solid red;
+background:#070707;
+
+border-top:1px solid rgba(255,0,0,.25);
 
 display:flex;
 align-items:center;
 
 padding:0 20px;
 
-backdrop-filter:blur(10px);
-
-z-index:999999;
+z-index:99999;
 }
 
 .taskbar-title{
 font-family:'Orbitron',sans-serif;
-letter-spacing:4px;
+letter-spacing:3px;
 font-size:13px;
-color:#ff4b4b;
 }
 
 .taskbar-status{
 margin-left:auto;
 font-size:12px;
-color:#ff8888;
+color:#ff7a7a;
 }
 
 /* =====================================================
-DESKTOP BACKGROUND GLOW
+MOBILE
 ===================================================== */
 
-body::before{
-content:"";
+@media(max-width:900px){
 
-position:fixed;
-inset:0;
-
-background:
-radial-gradient(circle at center,
-rgba(255,0,0,.08),
-transparent 70%);
-
-pointer-events:none;
-
-animation:pulseGlow 8s infinite;
+.sidebar{
+width:100%;
+height:90px;
+flex-direction:row;
+bottom:0;
+top:auto;
+overflow-x:auto;
+padding:10px;
 }
 
-@keyframes pulseGlow{
-0%{opacity:.3;}
-50%{opacity:.6;}
-100%{opacity:.3;}
+.window{
+width:95% !important;
+left:2.5% !important;
 }
-```
 
-Then REMOVE this old section:
+}
 
-```html
-<div class="links">
-```
+</style>
+</head>
+<body>
 
-and everything inside it.
+<div class="desktop">
 
-Now the site will feel like:
+<!-- =====================================================
+SIDEBAR
+===================================================== -->
 
-* a horror operating system
-* a corrupted SCP desktop
-* a sentient PC
-* an infected analog horror launcher
-* a fake haunted operating system
+<div class="sidebar">
 
-with clickable desktop apps instead of website buttons.
+<div class="app"
+onclick="window.open('https://discord.gg/5Xdkuq7h9h','_blank')">
+
+<div class="app-icon">☠</div>
+
+<div class="app-name">
+EVERDUSK
+</div>
+
+</div>
+
+<div class="app"
+onclick="window.open('https://discord.com/invite/dseKG8dpWv','_blank')">
+
+<div class="app-icon">⌘</div>
+
+<div class="app-name">
+PULSE
+</div>
+
+</div>
+
+<div class="app"
+onclick="window.open('https://vexsound.base44.app/','_blank')">
+
+<div class="app-icon">♫</div>
+
+<div class="app-name">
+VEXSOUND
+</div>
+
+</div>
+
+<div class="app"
+onclick="window.open('https://www.youtube.com/@Everduskofficial','_blank')">
+
+<div class="app-icon">▶</div>
+
+<div class="app-name">
+YOUTUBE
+</div>
+
+</div>
+
+<div class="app"
+onclick="openWindow('filesWindow')">
+
+<div class="app-icon">🗁</div>
+
+<div class="app-name">
+FILES
+</div>
+
+</div>
+
+<div class="app"
+onclick="openWindow('archiveWindow')">
+
+<div class="app-icon">⚠</div>
+
+<div class="app-name">
+ARCHIVE
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+CAMERA WINDOW
+===================================================== -->
+
+<div class="window"
+id="cameraWindow"
+
+style="
+width:520px;
+height:420px;
+top:80px;
+left:140px;
+">
+
+<div class="window-header">
+LIVE CAMERA
+</div>
+
+<div class="window-content" style="padding:0;">
+
+<div class="camera-feed">
+
+<video id="cam"
+autoplay
+muted
+playsinline></video>
+
+<div class="scan"></div>
+
+<div class="grid"></div>
+
+<div class="face-box">
+
+<div class="face-label">
+TRACKING SUBJECT
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+CHAT WINDOW
+===================================================== -->
+
+<div class="window"
+
+id="chatWindow"
+
+style="
+width:560px;
+height:520px;
+top:60px;
+right:40px;
+">
+
+<div class="window-header">
+ENTITY CHAT
+</div>
+
+<div class="window-content"
+style="
+display:flex;
+flex-direction:column;
+padding:0;
+">
+
+<div id="chatLog"></div>
+
+<div class="chat-input">
+
+<input
+id="msg"
+placeholder="speak to the entity..."
+>
+
+<button onclick="send()">
+SEND
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+FILES WINDOW
+===================================================== -->
+
+<div class="window"
+
+id="filesWindow"
+
+style="
+width:420px;
+height:300px;
+top:180px;
+left:240px;
+display:none;
+">
+
+<div class="window-header">
+INFECTED FILES
+</div>
+
+<div class="window-content">
+
+<div class="message">
+archive_01.corrupted
+</div>
+
+<div class="message">
+watcher_log.txt
+</div>
+
+<div class="message">
+entity_signal.mp4
+</div>
+
+<div class="message">
+do_not_open.exe
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+ARCHIVE WINDOW
+===================================================== -->
+
+<div class="window"
+
+id="archiveWindow"
+
+style="
+width:420px;
+height:300px;
+top:220px;
+left:320px;
+display:none;
+">
+
+<div class="window-header">
+SCP ARCHIVE
+</div>
+
+<div class="window-content">
+
+<div class="message">
+SUBJECT: WATCHER
+</div>
+
+<div class="message">
+STATUS: ACTIVE
+</div>
+
+<div class="message">
+THREAT LEVEL: HIGH
+</div>
+
+<div class="message">
+Containment failed.
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+TASKBAR
+===================================================== -->
+
+<div class="taskbar">
+
+<div class="taskbar-title">
+EVERDUSK OS
+</div>
+
+<div class="taskbar-status">
+WATCHER ACTIVE
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =====================================================
+CHAT
+===================================================== */
+
+const log =
+document.getElementById('chatLog');
+
+function addMessage(text){
+
+const div =
+document.createElement('div');
+
+div.className = 'message';
+
+div.innerText = text;
+
+log.appendChild(div);
+
+log.scrollTop =
+log.scrollHeight;
+
+}
+
+/* =====================================================
+VOICE
+===================================================== */
+
+function talk(text){
+
+speechSynthesis.cancel();
+
+const u =
+new SpeechSynthesisUtterance(text);
+
+u.rate = .9;
+u.pitch = .7;
+
+speechSynthesis.speak(u);
+
+}
+
+/* =====================================================
+ENTITY RESPONSES
+===================================================== */
+
+function entityReply(msg){
+
+const replies = [
+
+"the watcher sees you",
+
+"signal corruption detected",
+
+"do not trust the archive",
+
+"containment breach possible",
+
+"unknown movement detected",
+
+"you were recorded"
+
+];
+
+const reply =
+replies[
+Math.floor(Math.random()*replies.length)
+];
+
+setTimeout(()=>{
+
+addMessage(
+"ENTITY: " + reply
+);
+
+talk(reply);
+
+},1200);
+
+}
+
+/* =====================================================
+SEND
+===================================================== */
+
+function send(){
+
+const input =
+document.getElementById('msg');
+
+const text =
+input.value.trim();
+
+if(!text) return;
+
+input.value = '';
+
+addMessage(
+"USER: " + text
+);
+
+entityReply(text);
+
+}
+
+document
+.getElementById('msg')
+.addEventListener('keydown',e=>{
+
+if(e.key === 'Enter')
+send();
+
+});
+
+/* =====================================================
+CAMERA
+===================================================== */
+
+async function startCamera(){
+
+try{
+
+const stream =
+await navigator.mediaDevices
+.getUserMedia({
+video:true,
+audio:true
+});
+
+document
+.getElementById('cam')
+.srcObject = stream;
+
+}catch(err){
+
+addMessage(
+"SYSTEM: CAMERA ACCESS DENIED"
+);
+
+}
+
+}
+
+/* =====================================================
+VOICE AI
+===================================================== */
+
+function startVoiceAI(){
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(!SpeechRecognition)
+return;
+
+const rec =
+new SpeechRecognition();
+
+rec.continuous = true;
+
+rec.lang = 'en-US';
+
+rec.onresult = e=>{
+
+const text =
+e.results[
+e.results.length-1
+][0].transcript;
+
+addMessage(
+"VOICE: " + text
+);
+
+entityReply(text);
+
+};
+
+rec.onend = ()=>{
+
+rec.start();
+
+};
+
+rec.start();
+
+}
+
+/* =====================================================
+WINDOWS
+===================================================== */
+
+function openWindow(id){
+
+document
+.getElementById(id)
+.style.display = 'block';
+
+}
+
+/* =====================================================
+DRAGGING
+===================================================== */
+
+const windows =
+document.querySelectorAll('.window');
+
+windows.forEach(win=>{
+
+const header =
+win.querySelector('.window-header');
+
+let dragging = false;
+
+let offsetX = 0;
+let offsetY = 0;
+
+header.addEventListener('mousedown',e=>{
+
+dragging = true;
+
+offsetX =
+e.clientX - win.offsetLeft;
+
+offsetY =
+e.clientY - win.offsetTop;
+
+});
+
+document.addEventListener('mousemove',e=>{
+
+if(!dragging) return;
+
+win.style.left =
+(e.clientX-offsetX)+'px';
+
+win.style.top =
+(e.clientY-offsetY)+'px';
+
+});
+
+document.addEventListener('mouseup',()=>{
+
+dragging = false;
+
+});
+
+});
+
+/* =====================================================
+START
+===================================================== */
+
+document.body.addEventListener('click',()=>{
+
+startCamera();
+
+startVoiceAI();
+
+talk(
+"everdusk system online"
+);
+
+},{once:true});
+
+addMessage(
+"SYSTEM: EVERDUSK ONLINE"
+);
+
+</script>
+
+</body>
+</html>
