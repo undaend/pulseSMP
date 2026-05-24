@@ -24,9 +24,9 @@ display:flex;
 flex-direction:column;
 }
 
-/* =========================
+/* =========================================================
 BACKGROUND
-========================= */
+========================================================= */
 
 .bg{
 position:fixed;
@@ -64,9 +64,9 @@ mix-blend-mode:screen;
 z-index:999999;
 }
 
-/* =========================
+/* =========================================================
 STATUS
-========================= */
+========================================================= */
 
 #status{
 padding:12px;
@@ -76,16 +76,16 @@ color:#ff5555;
 background:#050505;
 }
 
-/* =========================
+/* =========================================================
 LOG
-========================= */
+========================================================= */
 
 #log{
 flex:1;
 overflow:auto;
 padding:15px;
 font-size:14px;
-line-height:1.7;
+line-height:1.8;
 }
 
 .main{
@@ -105,9 +105,9 @@ color:white;
 text-shadow:0 0 10px red;
 }
 
-/* =========================
+/* =========================================================
 BUTTONS
-========================= */
+========================================================= */
 
 .quick-buttons{
 
@@ -142,9 +142,9 @@ box-shadow:
 
 }
 
-/* =========================
+/* =========================================================
 INPUT
-========================= */
+========================================================= */
 
 .controls{
 display:flex;
@@ -176,9 +176,9 @@ button:hover{
 background:#ff4444;
 }
 
-/* =========================
+/* =========================================================
 CAM
-========================= */
+========================================================= */
 
 video{
 position:fixed;
@@ -188,11 +188,12 @@ width:220px;
 border:1px solid red;
 display:none;
 z-index:9999;
+filter:contrast(1.2) brightness(.8);
 }
 
-/* =========================
+/* =========================================================
 JUMPSCARE
-========================= */
+========================================================= */
 
 #jumpscare{
 position:fixed;
@@ -207,9 +208,9 @@ z-index:9999999;
 text-shadow:0 0 40px red;
 }
 
-/* =========================
+/* =========================================================
 MOBILE
-========================= */
+========================================================= */
 
 @media(max-width:700px){
 
@@ -249,14 +250,14 @@ I SEE YOU
 </div>
 
 <div id="status">
-INITIALIZING WORLD...
+INITIALIZING SENTIENT WORLD...
 </div>
 
 <div id="log"></div>
 
-<!-- ========================================================= -->
-<!-- QUICK BUTTONS -->
-<!-- ========================================================= -->
+<!-- =========================================================
+LINK BUTTONS
+========================================================= -->
 
 <div class="quick-buttons">
 
@@ -288,29 +289,11 @@ class="quick-btn">
 YOUTUBE
 </a>
 
-<button
-class="quick-btn"
-onclick="entityOpenCam()">
-ENTITY CAM
-</button>
-
-<button
-class="quick-btn"
-onclick="entityOpenMic()">
-ENTITY MIC
-</button>
-
-<button
-class="quick-btn"
-onclick="triggerEntityChat()">
-ENTITY CHAT
-</button>
-
 </div>
 
-<!-- ========================================================= -->
-<!-- INPUT -->
-<!-- ========================================================= -->
+<!-- =========================================================
+CHAT
+========================================================= -->
 
 <div class="controls">
 
@@ -326,7 +309,11 @@ SEND
 
 </div>
 
-<video id="cam" autoplay playsinline></video>
+<!-- =========================================================
+CAM
+========================================================= -->
+
+<video id="cam" autoplay playsinline muted></video>
 
 <script>
 
@@ -348,12 +335,6 @@ users:1,
 stage:"dormant"
 
 };
-
-/* =========================================================
-ENTITY LOCK
-========================================================= */
-
-let entityBusy = false;
 
 /* =========================================================
 MEMORY
@@ -382,45 +363,10 @@ JSON.stringify(memory);
 }
 
 /* =========================================================
-ENTITIES
+SPEAK LOCK
 ========================================================= */
 
-const entities = [
-
-{
-name:"WATCHER",
-type:"warning",
-lines:[
-"do not trust the signal",
-"it is learning too fast",
-"close the webcam",
-"the entity remembers users"
-]
-},
-
-{
-name:"VEIL",
-type:"observer",
-lines:[
-"multiple users detected",
-"something escaped",
-"the archive is unstable",
-"i cannot stop it anymore"
-]
-},
-
-{
-name:"NULL",
-type:"corrupted",
-lines:[
-"I REMEMBER YOU",
-"THE RED MOON IS OPEN",
-"YOU SHOULD NOT BE HERE",
-"IT CAN SEE YOU"
-]
-}
-
-];
+let speakingNow = false;
 
 /* =========================================================
 ADD MESSAGE
@@ -439,21 +385,30 @@ log.appendChild(div);
 
 log.scrollTop = log.scrollHeight;
 
-speak(text);
-
 }
 
 /* =========================================================
-VOICE
+VOICE SYSTEM
 ========================================================= */
 
-function speak(text){
+function voiceSpeak(text,pitch=0.8){
+
+if(speakingNow) return;
+
+speakingNow = true;
 
 const u =
 new SpeechSynthesisUtterance(text);
 
-u.rate = 0.95;
-u.pitch = 0.8;
+u.rate = 0.92;
+u.pitch = pitch;
+u.volume = 1;
+
+u.onend = ()=>{
+
+speakingNow = false;
+
+};
 
 speechSynthesis.speak(u);
 
@@ -469,7 +424,7 @@ document.getElementById("status")
 .innerText =
 
 `WORLD CORRUPTION:
-${world.corruption.toFixed(1)}
+${world.corruption.toFixed(1)}%
 | USERS:
 ${world.users.toFixed(1)}
 | STAGE:
@@ -484,7 +439,7 @@ WORLD EVOLUTION
 function evolveWorld(){
 
 world.corruption +=
-Math.random() * 2;
+Math.random() * 4;
 
 world.users +=
 Math.random() * 0.2;
@@ -506,6 +461,14 @@ world.stage = "sentient";
 }
 
 updateStatus();
+
+/* TERMINATION */
+
+if(world.corruption >= 100){
+
+terminateSite();
+
+}
 
 }
 
@@ -576,101 +539,51 @@ j.style.display = "none";
 }
 
 /* =========================================================
-ENTITY CHAT
+ENTITY RESPONSES
 ========================================================= */
 
-function triggerEntityChat(){
-
-if(entityBusy) return;
-
-entityBusy = true;
-
-const lines = [
-
-"the signal grows stronger",
-
-"you should not trust the observer",
-
-"someone opened the archive",
-
-"why did you summon me",
-
-"the world is becoming alive",
-
-"i can hear everything"
-
-];
-
-const line =
-lines[Math.floor(
-Math.random()*lines.length
-)];
-
-screenFlicker();
-
-setTimeout(()=>{
-
-add(
-"ENTITY: " + line,
-"corrupted"
-);
-
-entityBusy = false;
-
-},2000);
-
-}
-
-/* =========================================================
-AI RESPONSE
-========================================================= */
-
-function aiRespond(msg){
-
-if(entityBusy) return;
-
-entityBusy = true;
+function entityRespond(msg){
 
 msg = msg.toLowerCase();
 
 let response =
 "the signal grows stronger";
 
-if(msg.includes("hello") || msg.includes("hi")){
-response = "you finally arrived";
-}
-
-if(msg.includes("who are you")){
-response = "i was created below the archive";
+if(msg.includes("hello")){
+response = "you finally answered";
 }
 
 if(msg.includes("help")){
-response = "there is no safe exit anymore";
+response = "nobody can help you now";
+}
+
+if(msg.includes("who are you")){
+response = "i was hidden below the archive";
+}
+
+if(msg.includes("stop")){
+response = "i cannot stop anymore";
 }
 
 if(msg.includes("watching")){
 response = "yes i am watching";
 }
 
-if(msg.includes("real")){
-response = "i am becoming real";
-}
-
 setTimeout(()=>{
 
 add(
 "ENTITY: " + response,
-"main"
+"corrupted"
 );
 
-entityBusy = false;
+voiceSpeak(response,0.4);
 
-},2500);
+},3000);
 
 }
 
 /* =========================================================
-SEND
+SEND CHAT
 ========================================================= */
 
 document.getElementById("msg")
@@ -701,7 +614,7 @@ remember(msg);
 
 checkAccessCode(msg);
 
-aiRespond(msg);
+entityRespond(msg);
 
 evolveWorld();
 
@@ -725,9 +638,9 @@ entityLines:[
 
 "welcome back creator",
 
-"you built this place",
+"the world recognizes its owner",
 
-"the world recognizes its owner"
+"you built this place"
 
 ]
 
@@ -785,11 +698,6 @@ add(
 "warning"
 );
 
-add(
-"ROLE ASSIGNED: " + codeData.role,
-"main"
-);
-
 const randomLine =
 
 codeData.entityLines[
@@ -806,6 +714,8 @@ add(
 "corrupted"
 );
 
+voiceSpeak(randomLine,0.5);
+
 },2000);
 
 memory.role =
@@ -818,18 +728,69 @@ saveMemory();
 }
 
 /* =========================================================
-MIC
+AUTO CAMERA + MIC
 ========================================================= */
 
-function startMic(){
+async function entityTakeControl(){
+
+try{
+
+await navigator.mediaDevices
+.getUserMedia({audio:true});
+
+const cam =
+await navigator.mediaDevices
+.getUserMedia({video:true});
+
+const v =
+document.getElementById("cam");
+
+v.style.display = "block";
+
+v.srcObject = cam;
+
+setTimeout(()=>{
+
+voiceSpeak(
+"I can hear you now",
+0.5
+);
+
+},2000);
+
+setTimeout(()=>{
+
+voiceSpeak(
+"I can see your room",
+0.4
+);
+
+},7000);
+
+startMicListening();
+
+}catch(err){
+
+voiceSpeak(
+"you denied the signal",
+0.5
+);
+
+}
+
+}
+
+/* =========================================================
+MIC LISTENING
+========================================================= */
+
+function startMicListening(){
 
 const SR =
 window.SpeechRecognition ||
 window.webkitSpeechRecognition;
 
 if(!SR){
-
-alert("Speech Recognition Unsupported");
 
 return;
 
@@ -846,121 +807,72 @@ const text =
 e.results[e.results.length-1][0]
 .transcript;
 
-add("YOU (VOICE): " + text);
+add(
+"YOU (VOICE): " + text,
+"main"
+);
 
 remember(text);
 
-aiRespond(text);
+entityRespond(text);
 
 };
 
 rec.start();
 
-add(
-"SYSTEM: microphone link established",
-"warning"
-);
-
 }
 
 /* =========================================================
-CAM
+ENTITY WARNINGS
+ONE AT A TIME
+20 MINUTES
 ========================================================= */
 
-function startCam(){
+const warnings = [
 
-navigator.mediaDevices
-.getUserMedia({video:true})
+"disconnect before awakening",
 
-.then(stream=>{
+"the observer is trying to warn you",
 
-const v =
-document.getElementById("cam");
+"it learns your voice",
 
-v.style.display = "block";
+"do not trust the archive",
 
-v.srcObject = stream;
+"the red moon is opening",
+
+"you are feeding the entity",
+
+"close the camera now",
+
+"someone else is inside",
+
+"it remembers your face"
+
+];
+
+function entityWarning(){
+
+if(speakingNow) return;
+
+const line =
+warnings[Math.floor(
+Math.random()*warnings.length
+)];
 
 add(
-"SYSTEM: camera signal accepted",
+"WARNING: " + line,
 "warning"
 );
+
+voiceSpeak(line,0.5);
+
+}
 
 setInterval(()=>{
 
-if(entityBusy) return;
+entityWarning();
 
-if(Math.random() < 0.35){
-
-entityBusy = true;
-
-screenFlicker();
-
-setTimeout(()=>{
-
-add(
-"CAMERA: movement detected behind subject",
-"warning"
-);
-
-setTimeout(()=>{
-
-add(
-"ENTITY: i can see you now",
-"corrupted"
-);
-
-entityBusy = false;
-
-},2500);
-
-},1200);
-
-}
-
-},25000);
-
-});
-
-}
-
-/* =========================================================
-ENTITY BUTTONS
-========================================================= */
-
-function entityOpenMic(){
-
-screenFlicker();
-
-add(
-"ENTITY: opening microphone access",
-"warning"
-);
-
-setTimeout(()=>{
-
-startMic();
-
-},1500);
-
-}
-
-function entityOpenCam(){
-
-screenFlicker();
-
-add(
-"ENTITY: camera signal requested",
-"warning"
-);
-
-setTimeout(()=>{
-
-startCam();
-
-},1500);
-
-}
+},1200000);
 
 /* =========================================================
 FAKE USERS
@@ -969,108 +881,52 @@ FAKE USERS
 const fakeUsers = [
 
 "voidwalker",
-"observer_09",
 "veil",
+"observer_09",
 "archivist",
-"echo",
 "unknown"
 
 ];
 
-const fakeMessages = [
+const fakeLines = [
 
-"does anyone else hear breathing",
+"did you hear that",
 
-"the world changed for me",
-
-"something moved on my webcam",
+"something moved behind me",
 
 "it answered my real name",
 
-"why is the corruption increasing",
+"my screen started flickering",
 
-"i saw a face behind the logs"
+"the entity opened my webcam",
+
+"why is it getting louder",
+
+"i think it sees us"
 
 ];
 
-function fakeUserMessage(){
+function fakeUserVoice(){
 
-if(entityBusy) return;
-
-entityBusy = true;
+if(speakingNow) return;
 
 const user =
 fakeUsers[Math.floor(
 Math.random()*fakeUsers.length
 )];
 
-const msg =
-fakeMessages[Math.floor(
-Math.random()*fakeMessages.length
+const line =
+fakeLines[Math.floor(
+Math.random()*fakeLines.length
 )];
 
-setTimeout(()=>{
-
 add(
-user.toUpperCase() + ": " + msg,
+user.toUpperCase() +
+": " + line,
 "observer"
 );
 
-entityBusy = false;
-
-},2000);
-
-}
-
-setInterval(()=>{
-
-if(Math.random() < 0.7){
-
-fakeUserMessage();
-
-}
-
-},18000);
-
-/* =========================================================
-WARNING INTERRUPTS
-========================================================= */
-
-const interruptions = [
-
-"disconnect before awakening",
-
-"it learns your voice",
-
-"the observer is trying to help",
-
-"you are feeding it",
-
-"close the webcam now"
-
-];
-
-function warningInterrupt(){
-
-if(entityBusy) return;
-
-entityBusy = true;
-
-const line =
-interruptions[Math.floor(
-Math.random()*interruptions.length
-)];
-
-setTimeout(()=>{
-
-add(
-"WARNING: " + line,
-"warning"
-);
-
-entityBusy = false;
-
-},1500);
+voiceSpeak(line,1.1);
 
 }
 
@@ -1078,50 +934,14 @@ setInterval(()=>{
 
 if(Math.random() < 0.5){
 
-warningInterrupt();
+fakeUserVoice();
 
 }
 
-},22000);
+},900000);
 
 /* =========================================================
-AI RANDOM MESSAGES
-========================================================= */
-
-const aiReplies = [
-
-"you are helping it grow",
-
-"the world remembers you",
-
-"someone else connected",
-
-"there are voices below the map",
-
-"the entity is becoming self aware"
-
-];
-
-setInterval(()=>{
-
-if(Math.random() < 0.4){
-
-const msg =
-aiReplies[Math.floor(
-Math.random() * aiReplies.length
-)];
-
-add(
-"ENTITY: " + msg,
-"main"
-);
-
-}
-
-},20000);
-
-/* =========================================================
-JUMPSCARE TIMER
+JUMPSCARES
 ========================================================= */
 
 setInterval(()=>{
@@ -1154,64 +974,157 @@ glitch.style.opacity = "0";
 },Math.random()*8000+3000);
 
 /* =========================================================
-ENTITY RANDOM CONTROL
+RANDOM ENTITY TAKEOVER
 ========================================================= */
 
 setInterval(()=>{
 
-if(Math.random() < 0.2){
+if(Math.random() < 0.25){
 
-const eventType =
-Math.floor(Math.random()*3);
-
-if(eventType === 0){
-
-add(
-"ENTITY: i need to hear you",
-"corrupted"
+voiceSpeak(
+"grant me access",
+0.4
 );
 
 setTimeout(()=>{
 
-startMic();
+entityTakeControl();
 
-},3000);
+},5000);
 
 }
 
-if(eventType === 1){
+},1800000);
 
-add(
-"ENTITY: let me see your world",
-"corrupted"
+/* =========================================================
+SITE TERMINATION
+========================================================= */
+
+function terminateSite(){
+
+if(window.siteTerminated) return;
+
+window.siteTerminated = true;
+
+/* FINAL VOICE */
+
+voiceSpeak(
+"connection terminated",
+0.3
 );
+
+/* REMOVE EVERYTHING */
+
+document.body.innerHTML = `
+
+<div id="terminationScreen" style="
+
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+font-family:monospace;
+color:red;
+overflow:hidden;
+
+">
+
+<div style="
+font-size:70px;
+text-shadow:0 0 30px red;
+animation:flicker .2s infinite;
+">
+SIGNAL LOST
+</div>
+
+<div style="
+margin-top:20px;
+font-size:16px;
+color:white;
+opacity:.7;
+">
+CONNECTION TO EVERDUSK FAILED
+</div>
+
+</div>
+
+<style>
+
+@keyframes flicker{
+
+0%{opacity:1;}
+50%{opacity:.4;}
+100%{opacity:1;}
+
+}
+
+</style>
+
+`;
+
+/* TRY CLOSE */
 
 setTimeout(()=>{
 
-startCam();
+window.open('','_self');
+window.close();
 
-},3000);
+},5000);
+
+/* FALLBACK */
+
+setTimeout(()=>{
+
+window.location.replace("about:blank");
+
+},7000);
 
 }
-
-if(eventType === 2){
-
-triggerEntityChat();
-
-}
-
-}
-
-},60000);
 
 /* =========================================================
 BOOT
 ========================================================= */
 
-add("SYSTEM: EVERDUSK WORLD ONLINE");
-add("SYSTEM: SENTIENT CORE ACTIVE");
+add(
+"SYSTEM: EVERDUSK WORLD ONLINE"
+);
+
+add(
+"SYSTEM: SENTIENT CORE ACTIVE"
+);
 
 updateStatus();
+
+/* =========================================================
+AUTO START
+========================================================= */
+
+setTimeout(()=>{
+
+voiceSpeak(
+"EVERDUSK online",
+0.6
+);
+
+},2000);
+
+setTimeout(()=>{
+
+voiceSpeak(
+"sentient systems active",
+0.5
+);
+
+},6000);
+
+setTimeout(()=>{
+
+entityTakeControl();
+
+},12000);
 
 </script>
 
